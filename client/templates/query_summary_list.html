@@ -1,0 +1,9 @@
+<template name="querySummaryList">
+  {{> naturalLanguageInput}}
+  <h2>Past Queries</h2>
+  <div class="posts">
+    {{#each querySummaries}}
+    {{> querySummaryItem}}
+    {{/each}}
+  </div>
+</template>

@@ -1,7 +1,8 @@
 import { Template } from 'meteor/templating';
 import { ReactiveVar } from 'meteor/reactive-var';
 
-import './main.html';
+// errors in browser consol
+// import './main.html'; 
 
 // Template.hello.onCreated(function helloOnCreated() {
 //   // counter starts at 0
@@ -20,7 +21,5 @@ import './main.html';
 //     instance.counter.set(instance.counter.get() + 1);
 //   },
 // });
-
-Meteor.subscribe('categories');
 
 // Meteor.subscribe('posts', 'bob-smith');
