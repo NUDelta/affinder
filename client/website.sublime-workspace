@@ -1,0 +1,678 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+			[
+				"query",
+				"query_categories_by_many"
+			],
+			[
+				"simil",
+				"similar_kws"
+			],
+			[
+				"merge",
+				"merge_many_dfs"
+			],
+			[
+				"textacy",
+				"textacy_doc_generator"
+			],
+			[
+				"SPA",
+				"SPACY_MAX_DOC_LENGTH"
+			],
+			[
+				"categ",
+				"categories"
+			],
+			[
+				"categor",
+				"category"
+			],
+			[
+				"cate",
+				"categories"
+			],
+			[
+				"cats",
+				"cats_tfidf"
+			],
+			[
+				"query_",
+				"query_categories_by_word"
+			],
+			[
+				"affs",
+				"affs_generator"
+			],
+			[
+				"docum",
+				"document_names"
+			],
+			[
+				"all",
+				"all_categories"
+			],
+			[
+				"test_ve",
+				"test_vectorizer_textacy"
+			],
+			[
+				"document",
+				"document_text_iterator"
+			],
+			[
+				"cat",
+				"categories"
+			],
+			[
+				"documn",
+				"document_filepaths"
+			],
+			[
+				"docu",
+				"document_filepaths"
+			],
+			[
+				"stop",
+				"stop_words"
+			],
+			[
+				"feat",
+				"feature_extraction"
+			],
+			[
+				"import",
+				"important_words"
+			],
+			[
+				"impor",
+				"important_word_idxs"
+			],
+			[
+				"if",
+				"ifmain\tif __name__ == '__main__'"
+			],
+			[
+				"get_curr",
+				"get_current_location"
+			]
+		]
+	},
+	"buffers":
+	[
+		{
+			"file": "/Users/ryan/youralien/youralien.github.io/_data/organisers.yml",
+			"settings":
+			{
+				"buffer_size": 159,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "/Users/ryan/youralien/youralien.github.io/index.html",
+			"settings":
+			{
+				"buffer_size": 3874,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "/Users/ryan/youralien/youralien.github.io/_layouts/page.html",
+			"settings":
+			{
+				"buffer_size": 211,
+				"line_ending": "Unix"
+			}
+		}
+	],
+	"build_system": "",
+	"build_system_choices":
+	[
+	],
+	"build_varint": "",
+	"command_palette":
+	{
+		"height": 392.0,
+		"last_filter": "REIN",
+		"selected_items":
+		[
+			[
+				"REIN",
+				"Indentation: Reindent Lines"
+			],
+			[
+				"rein",
+				"Indentation: Reindent Lines"
+			],
+			[
+				"reind",
+				"Indentation: Reindent Lines"
+			],
+			[
+				"r",
+				"Indentation: Reindent Lines"
+			],
+			[
+				"css",
+				"Format CSS: Expanded"
+			],
+			[
+				"install",
+				"Package Control: Install Package"
+			],
+			[
+				"redin",
+				"Indentation: Reindent Lines"
+			],
+			[
+				"iden",
+				"Indentation: Reindent Lines"
+			],
+			[
+				"indent",
+				"Indentation: Reindent Lines"
+			],
+			[
+				"markdown",
+				"Markdown Preview: Preview in Browser"
+			],
+			[
+				"flake",
+				"User: Python Flake8 Lint"
+			],
+			[
+				"instal",
+				"Package Control: Install Package"
+			],
+			[
+				"markdo",
+				"Set Syntax: Markdown Extended"
+			],
+			[
+				"remove",
+				"Package Control: Remove Package"
+			],
+			[
+				"markdow",
+				"Set Syntax: Markdown"
+			],
+			[
+				"lisp",
+				"Set Syntax: Lisp"
+			],
+			[
+				"listp",
+				"Package Control: List Packages"
+			],
+			[
+				"whi",
+				"Whitespace: Remove Trailing Whitespace"
+			],
+			[
+				"re",
+				"Indentation: Reindent Lines"
+			],
+			[
+				"rei",
+				"Indentation: Reindent Lines"
+			],
+			[
+				"idnent",
+				"Indentation: Reindent Lines"
+			],
+			[
+				"inst",
+				"Package Control: Install Package"
+			],
+			[
+				"install ",
+				"Install Package Control"
+			]
+		],
+		"width": 412.0
+	},
+	"console":
+	{
+		"height": 0.0,
+		"history":
+		[
+		]
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"expanded_folders":
+	[
+		"/Users/ryan/youralien/youralien.github.io",
+		"/Users/ryan/youralien/youralien.github.io/_data",
+		"/Users/ryan/youralien/youralien.github.io/_layouts",
+		"/Users/ryan/youralien/youralien.github.io/_posts",
+		"/Users/ryan/youralien/youralien.github.io/assets"
+	],
+	"file_history":
+	[
+		"/Users/ryan/youralien/youralien.github.io/_layouts/post.html",
+		"/Users/ryan/youralien/youralien.github.io/_config.yml",
+		"/Users/ryan/youralien/youralien.github.io/_includes/analytics.html",
+		"/Users/ryan/youralien/youralien.github.io/assets/css/style-v=cba79c2df0.css",
+		"/Users/ryan/youralien/youralien.github.io/_posts/2015-10-26-robots.md",
+		"/Users/ryan/youralien/youralien.github.io/cv.md",
+		"/Users/ryan/youralien/youralien.github.io/2017-12-19-paperairplane.md",
+		"/Users/ryan/youralien/youralien.github.io/active_projects.html",
+		"/Users/ryan/youralien/youralien.github.io/index.html",
+		"/Users/ryan/youralien/youralien.github.io/_includes/header.html",
+		"/Users/ryan/youralien/youralien.github.io/_posts/about.md",
+		"/Users/ryan/youralien/youralien.github.io/_includes/footer.html",
+		"/Users/ryan/youralien/youralien.github.io/_includes/head.html",
+		"/Users/ryan/NUDelta/microscope/client/main.js",
+		"/Users/ryan/NUDelta/microscope/server/publications.js",
+		"/Users/ryan/NUDelta/microscope/client/templates/category_list.js",
+		"/Users/ryan/NUDelta/microscope/client/templates/category_list.html",
+		"/Users/ryan/NUDelta/microscope/server/fixtures.js",
+		"/Users/ryan/NUDelta/microscope/lib/collections/categories.js",
+		"/Users/ryan/NUDelta/microscope/client/templates/affordance_input.html",
+		"/Users/ryan/NUDelta/microscope/client/templates/categoryItem.html",
+		"/Users/ryan/NUDelta/microscope/client/main.html",
+		"/Users/ryan/NUDelta/microscope/client/stylesheets/style.css",
+		"/Users/ryan/NUDelta/microscope/client/templates/env_requirement_input.html",
+		"/Users/ryan/NUDelta/microscope/client/main.css",
+		"/Users/ryan/NUDelta/affordanceaware/test_affordance_language.py",
+		"/Users/ryan/NUDelta/affordanceaware/main.py",
+		"/Users/ryan/NUDelta/affordanceaware/constrained-language.txt",
+		"/Users/ryan/NUDelta/affordanceaware/README.md",
+		"/Users/ryan/NUDelta/affordanceaware/yelp_academic_etl.py",
+		"/Users/ryan/Desktop/contextawarecomputing-interactiveML.txt",
+		"/Users/ryan/NUDelta/affordanceaware/storytime_affordances.txt",
+		"/Users/ryan/NUDelta/affordanceaware/test_yelp_academic_etl.py",
+		"/Users/ryan/NUDelta/affordanceaware/affordance_language.py",
+		"/Users/ryan/NUDelta/affordanceaware/yelp_mining.md",
+		"/Users/ryan/NUDelta/affordanceaware/category_predictor.py",
+		"/Users/ryan/NUDelta/affordanceaware/wordpairs.csv",
+		"/Users/ryan/NUDelta/affordanceaware/constrained_language.txt",
+		"/Users/ryan/Library/Application Support/Sublime Text 3/Packages/User/Flake8Lint.sublime-settings",
+		"/Users/ryan/quicklisp/local-projects/cs325/ex/triple_match_query.lisp",
+		"/Users/ryan/NUDelta/affordanceaware/tests/test_yelp_academic_etl.py",
+		"/Users/ryan/NUDelta/knowledge-graph-api/.gitignore",
+		"/Users/ryan/NUDelta/affordanceaware/predict.py",
+		"/Users/ryan/NUDelta/affordanceaware/reviewtext/Japanese.txt",
+		"/Users/ryan/NUDelta/affordanceaware/Japanese.txt",
+		"/Users/ryan/NUDelta/affordanceaware/requirements.txt",
+		"/Users/ryan/NUDelta/knowledge-graph-api/kg-api.py",
+		"/Users/ryan/NUDelta/knowledge-graph-api/README.md",
+		"/Users/ryan/NUDelta/affordanceaware/secrets.sh",
+		"/Users/ryan/NUDelta/affordanceaware/mainNEW.py",
+		"/Users/ryan/quicklisp/local-projects/cs325/exercise-tests.lisp",
+		"/Users/ryan/quicklisp/local-projects/cs325/ex/class5.lisp",
+		"/Users/ryan/quicklisp/local-projects/cs325/ex/graham5-9.lisp",
+		"/Users/ryan/quicklisp/local-projects/cs325/ex/quiz4.lisp",
+		"/Users/ryan/quicklisp/local-projects/cs325/ex/class-triples.lisp",
+		"/Users/ryan/quicklisp/local-projects/cs325/ex/graham2-4+7+8+9.lisp",
+		"/Users/ryan/quicklisp/local-projects/cs325/ex/graham3-8.lisp",
+		"/Users/ryan/quicklisp/local-projects/cs325/class-triples.lisp",
+		"/Users/ryan/quicklisp/local-projects/cs325/ex/http-request.lisp"
+	],
+	"find":
+	{
+		"height": 40.0
+	},
+	"find_in_files":
+	{
+		"height": 110.0,
+		"where_history":
+		[
+			""
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": false,
+		"find_history":
+		[
+			"organiser.name",
+			"else",
+			"jane-doe",
+			".photo",
+			"blogDate",
+			"inner-wide",
+			"menu",
+			"site-navigation",
+			"page-link",
+			"hero-text",
+			"cv",
+			"home",
+			"CV",
+			"inner",
+			"post-grid",
+			"inner",
+			"posts",
+			"for",
+			"ease",
+			"transition",
+			"hero-text"
+		],
+		"highlight": true,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": false,
+		"replace_history":
+		[
+		],
+		"reverse": false,
+		"show_context": true,
+		"use_buffer2": true,
+		"whole_word": false,
+		"wrap": true
+	},
+	"groups":
+	[
+		{
+			"selected": 1,
+			"sheets":
+			[
+				{
+					"buffer": 0,
+					"file": "/Users/ryan/youralien/youralien.github.io/_data/organisers.yml",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 159,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								143,
+								143
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/YAML/YAML.sublime-syntax"
+						},
+						"translation.x": 100.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 1,
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "/Users/ryan/youralien/youralien.github.io/index.html",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 3874,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								725,
+								725
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/HTML/HTML.sublime-syntax",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 0,
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"file": "/Users/ryan/youralien/youralien.github.io/_layouts/page.html",
+					"semi_transient": true,
+					"settings":
+					{
+						"buffer_size": 211,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								13,
+								14
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/HTML/HTML.sublime-syntax"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 2,
+					"type": "text"
+				}
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 27.0
+	},
+	"input":
+	{
+		"height": 45.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"output.find_results":
+	{
+		"height": 0.0
+	},
+	"output.markdown":
+	{
+		"height": 162.0
+	},
+	"pinned_build_system": "",
+	"project": "website.sublime-project",
+	"replace":
+	{
+		"height": 50.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+			[
+				"index",
+				"index.html"
+			],
+			[
+				"head",
+				"_includes/head.html"
+			],
+			[
+				"_confi",
+				"_config.yml"
+			],
+			[
+				"main.js",
+				"microscope/client/main.js"
+			],
+			[
+				"server/public",
+				"microscope/server/publications.js"
+			],
+			[
+				"fix",
+				"microscope/server/fixtures.js"
+			],
+			[
+				"categories.",
+				"microscope/lib/collections/categories.js"
+			],
+			[
+				"affordnce_input",
+				"microscope/client/templates/affordance_input.html"
+			],
+			[
+				"category_",
+				"microscope/client/templates/category_list.html"
+			],
+			[
+				"main",
+				"affordanceaware/main.py"
+			],
+			[
+				"yelp_m",
+				"affordanceaware/yelp_mining.md"
+			],
+			[
+				"yelp_aca",
+				"affordanceaware/yelp_academic_etl.py"
+			],
+			[
+				"afford",
+				"affordanceaware/affordance_language.py"
+			],
+			[
+				"read",
+				"affordanceaware/README.md"
+			],
+			[
+				"category",
+				"affordanceaware/category_predictor.py"
+			],
+			[
+				"category_pre",
+				"affordanceaware/category_predictor.py"
+			],
+			[
+				"yelp_min",
+				"affordanceaware/yelp_mining.md"
+			],
+			[
+				"test_y",
+				"affordanceaware/test_yelp_academic_etl.py"
+			],
+			[
+				"secre",
+				"affordanceaware/secrets.sh"
+			],
+			[
+				"main.py",
+				"affordanceaware/main.py"
+			],
+			[
+				"mainnew",
+				"affordanceaware/mainNEW.py"
+			],
+			[
+				"ex",
+				"exercise-tests.lisp"
+			],
+			[
+				"excer",
+				"ex/class-triples.lisp"
+			],
+			[
+				"5-",
+				"ex/graham5-9.lisp"
+			],
+			[
+				"ga",
+				"ex/graham2-4+7+8+9.lisp"
+			],
+			[
+				"grah",
+				"ex/graham2-4+7+8+9.lisp"
+			],
+			[
+				"class",
+				"ex/class-triples.lisp"
+			],
+			[
+				"exc",
+				"exercise-tests.lisp"
+			],
+			[
+				"tets",
+				"exercise-tests.lisp"
+			]
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 500.0,
+		"last_filter": "",
+		"selected_items":
+		[
+			[
+				"",
+				"~/quicklisp/cs325.sublime-workspace"
+			]
+		],
+		"width": 380.0
+	},
+	"select_symbol":
+	{
+		"height": 392.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 1140.0
+	},
+	"selected_group": 0,
+	"settings":
+	{
+	},
+	"show_minimap": true,
+	"show_open_files": false,
+	"show_tabs": true,
+	"side_bar_visible": true,
+	"side_bar_width": 172.0,
+	"status_bar_visible": true,
+	"template_settings":
+	{
+	}
+}
