@@ -9,3 +9,4 @@ if (Categories.find().count() === 0) {
 		name: 'Packaging and Shipping',
 	});
 }
+
