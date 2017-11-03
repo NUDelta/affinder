@@ -1,5 +1,18 @@
 <template name="queryBuilderPage">
   <div class="post-page page">
     {{> querySummaryItem}}
+    <!-- <div class="col-sm-4 col-sm-offset-1"> -->
+    <div><h2>Related Place Categories</h2></div>
+    <div class="col-sm-6">
+      <div class="list-group" id="list1">
+<!--         <a href="#" class="list-group-item">test<button type="checkbox" class="pull-right">But</button></a>
+        <a href="#" class="list-group-item">bar<button  type="button" class="pull-right">Yo</button></a> -->
+
+        {{#each cat in (includedCategories categories excluded_categories)}}
+          <!-- https://codepen.io/Mestika/pen/XJNzEM -->
+          <a href="#" class="list-group-item">{{cat}}<button type="button" class="remove-category btn btn-danger btn-sm pull-right">x</button></a>
+        {{/each}}
+      </div>
+    </div>
   </div>
 </template>

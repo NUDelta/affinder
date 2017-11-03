@@ -1,3 +1,9 @@
+/* affinder add-ons */
+.remove-category {
+	padding: 0px 6px;
+}
+
+/* Existing */
 .grid-block, .main, .post, .comments li, .comment-form {
 	background: #fff;
 	border-radius: 3px;
