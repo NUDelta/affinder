@@ -7,6 +7,9 @@ Meteor.publish('querySummaries', function() {
   return Queries.find();
 });
 
+Meteor.publish('weatherFeatures', function() {
+  return WeatherFeatures.find();
+})
 
  // on the server
 // Meteor.publish('posts', function() {return Posts.find({flagged: false});

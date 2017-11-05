@@ -1,0 +1,19 @@
+<template name="weatherBlockBuilder">
+  <div class="panel-group col-sm-6 post">
+    <h4>Construct from Weather Legos</h4>
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h4 class="panel-title">
+          <a data-toggle="collapse" href="#weather-playground-collapse">Weather legos available for "{{query}}"</a>
+        </h4>
+      </div>
+      <div id="weather-playground-collapse" class="panel-collapse collapse">
+
+        {{#each weatherFeatures}}
+          <a href="#" class="list-group-item">{{name}}</a>
+        {{/each}}
+     
+      </div>
+    </div>
+  </div>
+</template>
