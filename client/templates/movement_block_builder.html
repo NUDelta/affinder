@@ -1,7 +1,8 @@
 <template name="movementBlockBuilder">
-  <div class="panel-group col-sm-6 post">
+  <div class="panel-group post">
     <h4>Construct from movement legos</h4>
-    <div class="panel panel-default">
+    <div class="col-sm-6">
+    <div class="panel panel-default ">
       <div class="panel-heading">
         <h4 class="panel-title">
           <a data-toggle="collapse" href="#movement-playground-collapse">Raw mobile movement sensor features to define "{{query}}"</a>
@@ -33,6 +34,8 @@
      
       </form>
     </div>
+  </div>
+  <div class="col-sm-6">
     <div class="panel panel-default">
       <div class="panel-heading">
         <h4 class="panel-title">
@@ -50,6 +53,6 @@
         {{/each}}
       </div>
     </div>
-
   </div>
+</div>
 </template>

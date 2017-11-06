@@ -1,7 +1,8 @@
 <template name="weatherBlockBuilder">
-  <div class="panel-group col-sm-6 post">
+  <div class="panel-group post">
     <h4>Construct from Weather Legos</h4>
-    <div class="panel panel-default">
+    <div class="col-sm-6">
+    <div class="panel panel-default ">
       <div class="panel-heading">
         <h4 class="panel-title">
           <a data-toggle="collapse" href="#weather-playground-collapse">Raw weather features to define "{{query}}"</a>
@@ -33,6 +34,8 @@
      
       </form>
     </div>
+  </div>
+  <div class="col-sm-6">
     <div class="panel panel-default">
       <div class="panel-heading">
         <h4 class="panel-title">
@@ -44,11 +47,12 @@
         <div id="{{_id}}" href="#" class="list-group-item">
           {{query}}
           <button type="button" class="btn btn-primary btn-sm pull-right btn-panel-item">Use lego</button>
-          <button href="{{pathFor 'queryBuilderPage'}}" type="link" class="btn btn-info btn-redirect  btn-sm pull-right btn-panel-item">See definition</button>
+          <button href="{{pathFor 'queryBuilderPage'}}" type="link" class="btn btn-info btn-redirect btn-sm pull-right btn-panel-item">See definition</button>
 
         </div>
         {{/each}}
       </div>
     </div>
   </div>
+</div>
 </template>
