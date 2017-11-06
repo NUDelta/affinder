@@ -1,20 +1,20 @@
-Template.weatherBlockBuilder.helpers({
-  weatherFeatures: function() {
-    return WeatherFeatures.find().fetch();
+Template.movementBlockBuilder.helpers({
+  movementFeatures: function() {
+    return MovementFeatures.find().fetch();
   },
 
-  existingWeatherBlocks: function() {
-    return Queries.find({hasWeatherRules: true}).fetch();
+  existingMovementBlocks: function() {
+    return Queries.find({hasMovementRules: true}).fetch();
   },
 
-  ruleForWeatherFeature: function(featureName) {
+  ruleForMovementFeature: function(featureName) {
     // TODO: if rules are already defined, place the rule
     // in the form input.
   }
 
 });
 
-Template.weatherBlockBuilder.events({
+Template.movementBlockBuilder.events({
   'submit form': function(e) {
     e.preventDefault();
 
@@ -25,16 +25,13 @@ Template.weatherBlockBuilder.events({
       var ruleText = ruleDefs[i].value;
       // FIXME: featureName isn't being saved as
       // variable value, just 'featureName' itself
-      var weatherRule = {
+      var rule = {
         featureName : ruleText        
       }
 
       if (ruleText) {
         Queries.update(this._id, {
-          $set: {"hasWeatherRules": true}, 
-          $addToSet : {
-            "weatherRules": weatherRule
-          }
+          $set: {"hasMovementRules": true}, 
         });
       }
 
