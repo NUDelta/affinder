@@ -7,9 +7,14 @@ Template.weatherBlockBuilder.helpers({
     return Queries.find({hasWeatherRules: true}).fetch();
   },
 
-  ruleForWeatherFeature: function(featureName) {
-    // TODO: if rules are already defined, place the rule
-    // in the form input.
+  getRuleDef: function(id, featureName) {
+    var obj = {};
+    obj[featureName] = true;
+    const out = Queries.findOne({_id: id}, {fields: obj});
+    if (featureName in out)
+      return out[featureName];
+    else
+      return "";
   }
 
 });
@@ -23,20 +28,13 @@ Template.weatherBlockBuilder.events({
     for (var i = ruleDefs.length - 1; i >= 0; i--) {
       var featureName = ruleDefs[i].id;
       var ruleText = ruleDefs[i].value;
-      // FIXME: featureName isn't being saved as
-      // variable value, just 'featureName' itself
-      var weatherRule = {
-        featureName : ruleText        
-      }
+      
+      var obj = {};
+      obj[featureName] = ruleText;
+      obj["hasWeatherRules"] = true;
 
-      if (ruleText) {
-        Queries.update(this._id, {
-          $set: {"hasWeatherRules": true}, 
-          $addToSet : {
-            "weatherRules": weatherRule
-          }
-        });
-      }
+      if (ruleText)
+        Queries.update(this._id, {$set: obj});
 
     }
   },

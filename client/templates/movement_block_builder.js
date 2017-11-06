@@ -7,9 +7,14 @@ Template.movementBlockBuilder.helpers({
     return Queries.find({hasMovementRules: true}).fetch();
   },
 
-  ruleForMovementFeature: function(featureName) {
-    // TODO: if rules are already defined, place the rule
-    // in the form input.
+  getRuleDef: function(id, featureName) {
+    var obj = {};
+    obj[featureName] = true;
+    const out = Queries.findOne({_id: id}, {fields: obj});
+    if (featureName in out)
+      return out[featureName];
+    else
+      return "";
   }
 
 });
@@ -23,17 +28,13 @@ Template.movementBlockBuilder.events({
     for (var i = ruleDefs.length - 1; i >= 0; i--) {
       var featureName = ruleDefs[i].id;
       var ruleText = ruleDefs[i].value;
-      // FIXME: featureName isn't being saved as
-      // variable value, just 'featureName' itself
-      var rule = {
-        featureName : ruleText        
-      }
 
-      if (ruleText) {
-        Queries.update(this._id, {
-          $set: {"hasMovementRules": true}, 
-        });
-      }
+      var obj = {};
+      obj[featureName] = ruleText;
+      obj["hasMovementRules"] = true;
+
+      if (ruleText)
+        Queries.update(this._id, {$set: obj})
 
     }
   },
