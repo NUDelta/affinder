@@ -33,10 +33,17 @@ if (WeatherFeatures.find().count() === 0) {
   })
 }
 
-// if (WeatherLegos.find().count() === 0) {
-//   WeatherLegos.insert({
-//     name: ''
-//     feature: 
-//     definition: 
-//   });
-// }
+if (MovementFeatures.find().count() === 0) {
+  MovementFeatures.insert({
+    name: "speed",
+    description: "Speed of user given by the change in their mobile phone GPS location. Units of mph"
+  });
+
+  MovementFeatures.insert({
+    name: "period-of-accelerometer",
+    description: "If there is any periodic patterns in a mobile user's \
+    accelerometer data, the value of this parameter will tell you the \
+    length of that period."
+  })
+}
+

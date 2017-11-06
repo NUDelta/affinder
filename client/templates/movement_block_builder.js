@@ -36,6 +36,13 @@ Template.movementBlockBuilder.events({
       }
 
     }
+  },
+
+  'click .btn-redirect': function(e) {
+    const url = $(e.target).attr('href')
+    const id = url.split('/').pop()
+    Router.go('queryBuilderPage', {_id: id});
   }
+
 
 })

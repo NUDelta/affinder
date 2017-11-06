@@ -43,6 +43,9 @@
         {{#each existingMovementBlocks}}
         <div id="{{_id}}" href="#" class="list-group-item">
           {{query}}
+          <button type="button" class="btn btn-primary btn-sm pull-right btn-panel-item">Use lego</button>
+          <button href="{{pathFor 'queryBuilderPage'}}" type="link" class="btn btn-redirect btn-info btn-sm pull-right btn-panel-item">See definition</button>
+
         </div>
         {{/each}}
       </div>

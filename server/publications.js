@@ -11,6 +11,9 @@ Meteor.publish('weatherFeatures', function() {
   return WeatherFeatures.find();
 })
 
+Meteor.publish('movementFeatures', function() {
+  return MovementFeatures.find();
+})
  // on the server
 // Meteor.publish('posts', function() {return Posts.find({flagged: false});
 // });
