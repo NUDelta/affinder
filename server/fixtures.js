@@ -10,6 +10,9 @@ if (Categories.find().count() === 0) {
 	});
 }
 
+// Kite, Bike, Running, Sailing, Book reading weather
+//
+
 // Raw Weather Parameter Features used to construct legos
 // TODO: add programatic definitions based on the Weather API
 // https://openweathermap.org/current
@@ -29,3 +32,11 @@ if (WeatherFeatures.find().count() === 0) {
     description: 'Rain volume for the last 3 hours'
   })
 }
+
+// if (WeatherLegos.find().count() === 0) {
+//   WeatherLegos.insert({
+//     name: ''
+//     feature: 
+//     definition: 
+//   });
+// }
