@@ -14,8 +14,13 @@ Template.placeCategoryBuilder.events({
 
 Template.placeCategoryBuilder.helpers({
   'includedCategories': function(allCats, excludeCats) {
-    return allCats.filter(function(item) { 
-      return !excludeCats.includes(item);
-    });
+    if (excludeCats) {
+      return allCats.filter(function(item) { 
+        return !excludeCats.includes(item);
+      });
+    }
+    else {
+      return allCats;
+    }
   }
 })
