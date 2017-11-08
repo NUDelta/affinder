@@ -1,0 +1,14 @@
+<template name="legoComposition">
+  <div class="post">
+    <div class="post-content"> 
+      {{#each (legoNames subLegos)}}
+        {{#if @index}}
+          AND
+        {{/if}}
+        <a href="{{pathFor 'queryBuilderPage'}}">
+          {{query}}
+        </a>
+      {{/each}}
+    </div>
+  </div>
+</template>
