@@ -1,20 +1,11 @@
 Template.weatherBlockBuilder.helpers({
-  weatherFeatures: function() {
+  rawFeatures: function() {
+    // data context for rawFeatureBuilder
     return WeatherFeatures.find().fetch();
   },
 
   existingWeatherBlocks: function() {
     return Queries.find({hasWeatherRules: true}).fetch();
-  },
-
-  getRuleDef: function(id, featureName) {
-    var obj = {};
-    obj[featureName] = true;
-    const out = Queries.findOne({_id: id}, {fields: obj});
-    if (featureName in out)
-      return out[featureName];
-    else
-      return "";
   }
 
 });
@@ -37,12 +28,5 @@ Template.weatherBlockBuilder.events({
         Queries.update(this._id, {$set: obj});
 
     }
-  },
-
-  'click .btn-redirect': function(e) {
-    const url = $(e.target).attr('href')
-    const id = url.split('/').pop()
-    Router.go('queryBuilderPage', {_id: id});
   }
-
 })

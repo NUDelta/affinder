@@ -1,20 +1,11 @@
 Template.movementBlockBuilder.helpers({
-  movementFeatures: function() {
+  rawFeatures: function() {
+    // data context for rawFeatureBuilder
     return MovementFeatures.find().fetch();
   },
 
   existingMovementBlocks: function() {
     return Queries.find({hasMovementRules: true}).fetch();
-  },
-
-  getRuleDef: function(id, featureName) {
-    var obj = {};
-    obj[featureName] = true;
-    const out = Queries.findOne({_id: id}, {fields: obj});
-    if (featureName in out)
-      return out[featureName];
-    else
-      return "";
   }
 
 });
@@ -37,13 +28,5 @@ Template.movementBlockBuilder.events({
         Queries.update(this._id, {$set: obj})
 
     }
-  },
-
-  'click .btn-redirect': function(e) {
-    const url = $(e.target).attr('href')
-    const id = url.split('/').pop()
-    Router.go('queryBuilderPage', {_id: id});
   }
-
-
 })
