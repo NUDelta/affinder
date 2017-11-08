@@ -37,12 +37,5 @@ Template.weatherBlockBuilder.events({
         Queries.update(this._id, {$set: obj});
 
     }
-  },
-
-  'click .btn-redirect': function(e) {
-    const url = $(e.target).attr('href')
-    const id = url.split('/').pop()
-    Router.go('queryBuilderPage', {_id: id});
   }
-
 })

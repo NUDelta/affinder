@@ -44,16 +44,7 @@
       </div>
       <div id="movement-previous-collapse" class="panel-collapse collapse">
         {{#each existingMovementBlocks}}
-        <div id="{{_id}}" href="#" class="list-group-item">
-          {{query}}
-          <button queryId="{{../_id}}" type="button" class="btn-use-lego btn btn-primary btn-sm pull-right btn-panel-item">
-            Use lego
-          </button>
-          <button href="{{pathFor 'queryBuilderPage'}}" type="link" class="btn btn-redirect btn-info btn-sm pull-right btn-panel-item">
-            See definition
-          </button>
-
-        </div>
+          {{> legoItemSelector}}
         {{/each}}
       </div>
     </div>

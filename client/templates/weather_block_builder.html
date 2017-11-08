@@ -44,12 +44,7 @@
       </div>
       <div id="weather-previous-collapse" class="panel-collapse collapse">
         {{#each existingWeatherBlocks}}
-        <div id="{{_id}}" href="#" class="list-group-item">
-          {{query}}
-          <button type="button" class="btn btn-primary btn-sm pull-right btn-panel-item">Use lego</button>
-          <button href="{{pathFor 'queryBuilderPage'}}" type="link" class="btn btn-info btn-redirect btn-sm pull-right btn-panel-item">See definition</button>
-
-        </div>
+          {{> legoItemSelector}}
         {{/each}}
       </div>
     </div>
