@@ -1,20 +1,11 @@
 Template.movementBlockBuilder.helpers({
-  movementFeatures: function() {
+  rawFeatures: function() {
+    // data context for rawFeatureBuilder
     return MovementFeatures.find().fetch();
   },
 
   existingMovementBlocks: function() {
     return Queries.find({hasMovementRules: true}).fetch();
-  },
-
-  getRuleDef: function(id, featureName) {
-    var obj = {};
-    obj[featureName] = true;
-    const out = Queries.findOne({_id: id}, {fields: obj});
-    if (featureName in out)
-      return out[featureName];
-    else
-      return "";
   }
 
 });
