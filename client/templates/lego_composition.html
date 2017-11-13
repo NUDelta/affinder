@@ -2,12 +2,7 @@
   <div class="post">
     <div class="post-content"> 
       {{#each (legoNames subLegos)}}
-        {{#if @index}}
-          AND
-        {{/if}}
-        <a href="{{pathFor 'queryBuilderPage'}}">
-          {{query}}
-        </a>
+        {{> legoCompositionBlock}}
       {{/each}}
     </div>
   </div>

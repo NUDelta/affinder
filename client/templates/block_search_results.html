@@ -1,0 +1,18 @@
+<template name="blockSearchResults">
+  <div class="panel-group post">
+    <div>
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h4 class="panel-title">
+            <a data-toggle="collapse" href="#block-search-results"> Block Search Results</a>
+          </h4>
+        </div>
+        <div id="block-search-results" class="panel-collapse collapse">
+          {{#each searchResults}}
+          {{> legoItemSelector}}
+          {{/each}}
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
