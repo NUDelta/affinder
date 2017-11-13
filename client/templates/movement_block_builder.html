@@ -2,33 +2,33 @@
   <div class="panel-group post">
     <h4>Construct from movement legos</h4>
     <div class="col-sm-6">
-    <div class="panel panel-default ">
-      <div class="panel-heading">
-        <h4 class="panel-title">
-          <a data-toggle="collapse" href="#movement-playground-collapse">Raw mobile movement sensor features to define "{{query}}"</a>
-        </h4>
-      </div>
-      <form id="movement-playground-collapse" class="panel-collapse collapse">
-        <button type="submit" class="btn btn-primary">Save movement Rules</button>
-        {{#each rawFeatures}}
+      <div class="panel panel-default ">
+        <div class="panel-heading">
+          <h4 class="panel-title">
+            <a data-toggle="collapse" href="#movement-playground-collapse">Raw mobile movement sensor features to define "{{query}}"</a>
+          </h4>
+        </div>
+        <form id="movement-playground-collapse" class="panel-collapse collapse">
+          <button type="submit" class="btn btn-primary">Save movement Rules</button>
+          {{#each rawFeatures}}
           {{> rawFeatureDefinition}}
-        {{/each}}
-      </form>
-    </div>
-  </div>
-  <div class="col-sm-6">
-    <div class="panel panel-default">
-      <div class="panel-heading">
-        <h4 class="panel-title">
-          <a data-toggle="collapse" href="#movement-previous-collapse">Previous Affordances built using movement</a>
-        </h4>
+          {{/each}}
+        </form>
       </div>
-      <div id="movement-previous-collapse" class="panel-collapse collapse">
-        {{#each existingMovementBlocks}}
+    </div>
+    <div class="col-sm-6">
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h4 class="panel-title">
+            <a data-toggle="collapse" href="#movement-previous-collapse">Previous Affordances built using movement</a>
+          </h4>
+        </div>
+        <div id="movement-previous-collapse" class="panel-collapse collapse">
+          {{#each existingMovementBlocks}}
           {{> legoItemSelector}}
-        {{/each}}
+          {{/each}}
+        </div>
       </div>
     </div>
   </div>
-</div>
 </template>
