@@ -1,5 +1,7 @@
 <template name="legoCompositionBlock">
-	<a class="chip xchip" href="{{pathFor 'queryBuilderPage'}}">
+	<a class="chip xchip"
+     sublegoId="{{_id}}"
+     queryId="{{../_id}}">
 	  <span class="sq">{{query}}</span>
 	  <span class="x"></span>
 	</a>
