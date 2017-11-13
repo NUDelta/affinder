@@ -1,9 +1,52 @@
+/* */
 /* affinder add-ons */
+/* */
 .remove-category .btn-panel-item {
 	padding: 0px 6px;
 }
 
+/* google images search blocks style, verbatim */
+a.chip.xchip{
+	background-color: #fff;
+}
+a.chip.xchip span.sq {
+	color: #666;
+	margin-right: 7px;
+}
+a.chip {
+	border-radius: 3px;
+	box-shadow: 0 2px 2px 0 rgba(0,0,0,0.16), 0 0 0 1px rgba(0,0,0,0.08);
+	box-sizing: border-box;
+	display: inline-block;
+	height: 49px;
+	margin-right: 8px;
+	overflow: hidden;
+	padding: 0 16px;
+}
+a.chip span.sq {
+	display: inline-block;
+	font-size: 14;
+	font-family: 'Roboto',arial,sans-serif;
+	font-weight: 300;
+	line-height: 49px
+	text-decoration: none;
+	white-space: nowrap;
+	position: relative;
+	padding-top: 15px;
+}
+a.chip.xchip .x {
+	background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACQAAAAkCAQAAABLCVATAAABEUlEQVR4AeWWt3UCQRBA8aYpKIKrQD18TCwTbgnkVIHp4i4UIeHlNxp5zTsNdjLmZ2v+etO4w6DNmMSWglIp2JI0pX2ZZMiCA1JHUxcMz9Vk7BF89mSnJU1ekDN4pnlM02KFnMkKX+X0xuPZnxu5kOz/lbJTvKNCLFSaaqd9UBctTJElLR6orEZTWixN2ry+/Q6mN633VKNSzUday/TqQNuKxmiyrWRUtZQfRlaUEF/la5RkRVvEV/kaZWNFBeKrfI2SW1GJ+Cpfo5TxotihhU122PJHbciAIxJwaAOukVcGMRfbJP6qtUHz8svfVz2fpXmiGfFATs5/sufukz1ncOknYkRiQ06p5GxImtJu3F+8AXd0lPf62kHsAAAAAElFTkSuQmCC);
+	background-size: 18px 18px;
+	display: inline-block;
+	height: 18px;
+	vertical-align: text-bottom;
+	width: 18px;
+}
+
+
+/* */
 /* Existing */
+/* */
 .grid-block, .main, .post, .comments li, .comment-form {
 	background: #fff;
 	border-radius: 3px;

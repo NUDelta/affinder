@@ -1,14 +1,23 @@
 <template name="legoComposition">
   <div class="post">
     <div class="post-content"> 
-      {{#each (legoNames subLegos)}}
+
+<!--       {{#each (legoNames subLegos)}}
         {{#if @index}}
           AND
         {{/if}}
         <a href="{{pathFor 'queryBuilderPage'}}">
           {{query}}
         </a>
+      {{/each}} -->
+
+      {{#each (legoNames subLegos)}}
+        {{> legoCompositionBlock}}
       {{/each}}
+      <a class="chip xchip" href="http://google.com">
+        <span class="sq">lego block name</span>
+        <span class="x"></span>
+      </a>
     </div>
   </div>
 </template>
