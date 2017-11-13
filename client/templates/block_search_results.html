@@ -8,7 +8,7 @@
           </h4>
         </div>
         <div id="block-search-results" class="panel-collapse collapse">
-          {{#each searchResults}}
+          {{#each searchResults _id}}
           {{> legoItemSelector}}
           {{/each}}
         </div>

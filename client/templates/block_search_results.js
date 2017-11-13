@@ -1,6 +1,6 @@
 Template.blockSearchResults.helpers({
-  searchResults: function(searchQuery) {
+  searchResults: function(queryId, searchQuery) {
     // TODO: use searchQuery to filter down all the existing blocks
-    return Queries.find().fetch();
+    return Queries.find({_id: { $not: queryId }}).fetch();
   }
 })
