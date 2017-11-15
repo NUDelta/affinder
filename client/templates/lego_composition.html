@@ -1,5 +1,8 @@
 <template name="legoComposition">
-  <div class="post">
+  <div id="lego-composition" class="post">
+    <div class="post-header">
+      <h4>{{query}}</h4>
+    </div>
     <div class="post-content"> 
       {{#each (legoNames subLegos)}}
         {{> legoCompositionBlock}}
