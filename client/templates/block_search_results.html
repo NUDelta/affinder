@@ -1,7 +1,22 @@
 <template name="blockSearchResults">
   <div class="panel-group post">
     <div>
-      <div class="panel panel-default">
+      <div id="recommended-search-results">
+        <h4>Recommended blocks other users have built</h4>
+        {{#each searchResults _id query}}
+        {{> legoItemSelector}}
+        {{/each}}
+      </div>
+      <form class="main form">
+        <div class="input-group">
+          <span class="input-group-addon" for="queryString">Search for Prebuilt Blocks</span>
+          <div class="controls">
+            <input name="queryString" id="searchResultsInput" type="text" class="form-control" placeholder={{query}}>
+          </div>
+        </div>
+        <button type="submit" value="Submit" class="btn btn-primary">Search for prebuilt blocks</button>
+      </form>
+<!--       <div class="panel panel-default">
         <div class="panel-heading">
           <h4 class="panel-title">
             <a data-toggle="collapse" href="#block-search-results"> Block Search Results</a>
@@ -13,6 +28,7 @@
           {{/each}}
         </div>
       </div>
-    </div>
+ -->    </div>
+
   </div>
 </template>
