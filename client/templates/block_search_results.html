@@ -4,14 +4,14 @@
       <h4>Break the situation into pieces by</h4>
       <div>
         <h4>1) Using predefined situations, or</h4>
-        <form class="main form">
+        <div class="main form">
           <div class="input-group">
             <span class="input-group-addon" for="queryString">Search for Prebuilt Blocks</span>
             <div class="controls">
               <input name="queryString" id="searchResultsInput" type="text" class="form-control" value="{{query}}">
             </div>
           </div>
-        </form>
+        </div>
         {{#each searchResults _id}}
           {{> legoItemSelector}}
         {{/each}}
