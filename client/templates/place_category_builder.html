@@ -1,18 +1,9 @@
 <template name="placeCategoryBuilder">
-  <div class="panel-group post">
-    <h4>Construct Place Legos</h4>
-    <div class="panel panel-default ">
-      <div class="panel-heading">
-        <h4 class="panel-title">
-          <a data-toggle="collapse" href="#place-collapse">Places {{query}}</a>
-        </h4>
-      </div>
-      <div id="place-collapse" class="panel-collapse collapse">
-        {{#each cat in (includedCategories categories excluded_categories)}}
-        <!-- https://codepen.io/Mestika/pen/XJNzEM -->
-        <a href="#" class="list-group-item">{{cat}}<button type="button" class="remove-category btn btn-danger btn-sm pull-right">x</button></a>
-        {{/each}}
-      </div>
-    </div>
-  </div>
+  {{#each cat in (includedCategories categories excluded_categories)}}
+    <a class="chip xchip"
+       placeCategory="{{cat}}">
+      <span class="sq"><a href="{{_id}}">{{cat}}</a></span>
+      <span class="x"></span>
+    </a>
+  {{/each}}
 </template>

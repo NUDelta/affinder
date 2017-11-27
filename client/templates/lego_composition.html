@@ -1,9 +1,13 @@
 <template name="legoComposition">
-  <div class="post">
+  <div id="lego-composition" class="post">
+    <div class="post-header">
+      <button class="btn btn-warning btn-lg">{{query}}</button>
+    </div>
     <div class="post-content"> 
       {{#each (legoNames subLegos)}}
         {{> legoCompositionBlock}}
       {{/each}}
+      {{> placeCategoryBuilder}}
     </div>
   </div>
 </template>

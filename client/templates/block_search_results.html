@@ -1,17 +1,24 @@
 <template name="blockSearchResults">
   <div class="panel-group post">
     <div>
-      <div class="panel panel-default">
-        <div class="panel-heading">
-          <h4 class="panel-title">
-            <a data-toggle="collapse" href="#block-search-results"> Block Search Results</a>
-          </h4>
-        </div>
-        <div id="block-search-results" class="panel-collapse collapse">
-          {{#each searchResults _id}}
+      <h4>Break the situation into pieces by</h4>
+      <div>
+        <h4>1) Using predefined situations, or</h4>
+        <form class="main form">
+          <div class="input-group">
+            <span class="input-group-addon" for="queryString">Search for Prebuilt Blocks</span>
+            <div class="controls">
+              <input name="queryString" id="searchResultsInput" type="text" class="form-control" value="{{query}}">
+            </div>
+          </div>
+        </form>
+        {{#each searchResults _id}}
           {{> legoItemSelector}}
-          {{/each}}
-        </div>
+        {{/each}}
+      </div>
+      <div>
+        <h4>2) Defining a new situation helper</h4>
+        {{> naturalLanguageInput}}
       </div>
     </div>
   </div>

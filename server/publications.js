@@ -14,11 +14,19 @@ Meteor.publish('weatherFeatures', function() {
 Meteor.publish('movementFeatures', function() {
   return MovementFeatures.find();
 })
- // on the server
-// Meteor.publish('posts', function() {return Posts.find({flagged: false});
-// });
 
- // on the server
-// Meteor.publish('posts', function(author) {
-// return Posts.find({flagged: false, author: author});
-// });
+Meteor.publish("blockSearch", function(searchValue) {
+  check(searchValue, String);
+  const res = Queries.find(
+    {$text: {$search: searchValue} }
+  );
+
+  // This is a hack to work around the lack of $text support on the client side Minimongo lib
+  // without which we would have trouble recreating the search results on the client
+  const key = JSON.stringify(searchValue);
+  const resultIds = res.map(e => e._id);
+  Queries.BlockSearchResults.upsert(key, {results: resultIds});
+
+  // publish the results to the client side
+  return Queries.BlockSearchResults.find(key);
+});
