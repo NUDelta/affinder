@@ -1,21 +1,28 @@
 <template name="blockSearchResults">
   <div class="panel-group post">
     <div>
-      <div id="recommended-search-results">
-        <h4>Recommended blocks other users have built</h4>
-        {{#each searchResults _id query}}
-        {{> legoItemSelector}}
+      <h4>Break the situation into pieces by</h4>
+      <div>
+        <h4>1) Using predefined situations, or</h4>
+        <form class="main form">
+          <div class="input-group">
+            <span class="input-group-addon" for="queryString">Search for Prebuilt Blocks</span>
+            <div class="controls">
+              <input name="queryString" id="searchResultsInput" type="text" class="form-control" value="{{query}}">
+            </div>
+          </div>
+<!--           <div class="controls">
+            <button type="submit" value="Submit" class="btn btn-sm btn-primary">Search for prebuilt blocks</button>
+          </div> -->
+        </form>
+        {{#each searchResults _id}}
+          {{> legoItemSelector}}
         {{/each}}
       </div>
-      <form class="main form">
-        <div class="input-group">
-          <span class="input-group-addon" for="queryString">Search for Prebuilt Blocks</span>
-          <div class="controls">
-            <input name="queryString" id="searchResultsInput" type="text" class="form-control" placeholder={{query}}>
-          </div>
-        </div>
-        <button type="submit" value="Submit" class="btn btn-primary">Search for prebuilt blocks</button>
-      </form>
+      <div>
+        <h4>2) Defining a new situation helper</h4>
+        {{> naturalLanguageInput}}
+      </div>
 <!--       <div class="panel panel-default">
         <div class="panel-heading">
           <h4 class="panel-title">
