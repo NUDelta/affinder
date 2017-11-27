@@ -1,7 +1,15 @@
+Template.naturalLanguageInput.helpers({
+  'submitButtonText': function() {
+    return Session.get("submitNaturalLanguageInputButtonText") || "Submit";
+  }
+})
+
 Template.naturalLanguageInput.events({
   'submit form': function(e, template) {
     e.preventDefault();
     
+    Session.set("submitNaturalLanguageInputButtonText", "Loading...");
+
     parentQueryId = "";
     if (template.data) {
       parentQueryId = template.data._id;
@@ -24,6 +32,8 @@ Template.naturalLanguageInput.events({
           $addToSet: { "subLegos": data._id }
         });
       }
+
+      Session.set("submitNaturalLanguageInputButtonText", "Submit");
 
       Router.go('queryBuilderPage', {_id: data._id});
 
