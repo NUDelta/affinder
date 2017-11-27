@@ -11,9 +11,6 @@
               <input name="queryString" id="searchResultsInput" type="text" class="form-control" value="{{query}}">
             </div>
           </div>
-<!--           <div class="controls">
-            <button type="submit" value="Submit" class="btn btn-sm btn-primary">Search for prebuilt blocks</button>
-          </div> -->
         </form>
         {{#each searchResults _id}}
           {{> legoItemSelector}}
@@ -23,19 +20,6 @@
         <h4>2) Defining a new situation helper</h4>
         {{> naturalLanguageInput}}
       </div>
-<!--       <div class="panel panel-default">
-        <div class="panel-heading">
-          <h4 class="panel-title">
-            <a data-toggle="collapse" href="#block-search-results"> Block Search Results</a>
-          </h4>
-        </div>
-        <div id="block-search-results" class="panel-collapse collapse">
-          {{#each searchResults _id query}}
-          {{> legoItemSelector}}
-          {{/each}}
-        </div>
-      </div>
- -->    </div>
-
+    </div>
   </div>
 </template>
