@@ -1,7 +1,8 @@
 <template name="querySummaryItem">
-  <div class="post">
-    <div class="post-content">
-      <a href="{{pathFor 'queryBuilderPage'}}"><h3>{{query}}</h3></a>
-    </div>
-  </div>
+  <a class="chip btn btn-warning"
+     sublegoId="{{_id}}"
+     queryId="{{../_id}}"
+     href="{{pathFor 'queryBuilderPage'}}">
+    <span class="sq">{{query}}</span>
+  </a>
 </template>
