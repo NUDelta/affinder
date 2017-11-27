@@ -17,9 +17,11 @@ Template.blockSearchResults.helpers({
     // ad-hoc collection containing the sorted ids ...
     const key = JSON.stringify(Session.get("searchInputText"));
     const result = Queries.BlockSearchResults.findOne(key);
-    const idsInSortOrder = result.results.filter(id => queryId !== id);
-    const blocksInSortedOrder = idsInSortOrder.map(id => Queries.findOne(id));
-    return blocksInSortedOrder;
+    if (result) {
+      const idsInSortOrder = result.results.filter(id => queryId !== id);
+      const blocksInSortedOrder = idsInSortOrder.map(id => Queries.findOne(id));
+      return blocksInSortedOrder;      
+    }
   }
 })
 
