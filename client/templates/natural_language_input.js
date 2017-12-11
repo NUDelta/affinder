@@ -21,6 +21,8 @@ Template.naturalLanguageInput.events({
       query: queryString
     };
 
+    Router.go('wordBrainstorm', {_id: data._id});
+    /*
     Meteor.call('affordanceLanguageProcess', query, function (error, data) {
       if (error)
         return alert(error.reason);
@@ -38,5 +40,6 @@ Template.naturalLanguageInput.events({
       Router.go('queryBuilderPage', {_id: data._id});
 
     });
+    */
   }
 })
