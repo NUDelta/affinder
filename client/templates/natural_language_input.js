@@ -6,6 +6,8 @@ Template.naturalLanguageInput.helpers({
 
 Template.naturalLanguageInput.events({
   'submit form': function(e, template) {
+    // e is an event
+    // template is a blaze template object
     e.preventDefault();
     
     Session.set("submitNaturalLanguageInputButtonText", "Loading...");
