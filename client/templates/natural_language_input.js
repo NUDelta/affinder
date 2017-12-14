@@ -1,6 +1,6 @@
 Template.naturalLanguageInput.helpers({
   submitButtonText() {
-    return Session.get("submitNaturalLanguageInputButtonText") || "Go to Editor";
+    return "Go to Editor";
   },
   whoPrompt() {
     return "Ping who?";
@@ -30,44 +30,24 @@ Template.naturalLanguageInput.helpers({
     return "When ready, continue constructing a situational trigger a mobile phone can sense.";
   }
 
-})
+});
 
 Template.naturalLanguageInput.events({
   'submit form': function(e, template) {
     e.preventDefault();
-    
-    Session.set("submitNaturalLanguageInputButtonText", "Loading...");
 
-    parentQueryId = "";
-    if (template.data) {
-      parentQueryId = template.data._id;
-    }
-
-    const queryString = $(e.target).find('[name=queryString]').val()
-
-    var query = {
-      query: queryString
+    var situation = {
+      who: $(e.target).find('[name=who]').val(),
+      what: $(e.target).find('[name=what]').val(),
+      where: $(e.target).find('[name=where]').val(),
+      when: $(e.target).find('[name=when]').val(),
     };
 
-    Router.go('wordBrainstorm', {_id: data._id});
-    /*
-    Meteor.call('affordanceLanguageProcess', query, function (error, data) {
-      if (error)
-        return alert(error.reason);
-
-      if (parentQueryId) {
-        // If creating a sublego / situation helper within the parent block interface,
-        // add this block implicitly to the lego composition
-        Queries.update(parentQueryId, {
-          $addToSet: { "subLegos": data._id }
-        });
-      }
-
-      Session.set("submitNaturalLanguageInputButtonText", "Submit");
-
-      Router.go('queryBuilderPage', {_id: data._id});
-
-    });
-    */
+    if (template.data) {
+      Queries.update(template.data._id, {$set: situation});
+    } else {
+      const queryId = Queries.insert(situation);
+      Router.go('queryBuilderPage', {_id: queryId});
+    }
   }
 })
