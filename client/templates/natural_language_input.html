@@ -1,30 +1,24 @@
 <template name="naturalLanguageInput">
   <form class="main form">
-    <h3>New Situational Cue</h3>
-    <p>When a user meets the requirements of a situation, the cue is activated.</p>
-    <p>Using plain English, write out some of these requirements to get started constructing.</p>
-    <div class="input-group">
-      <span class="input-group-addon" for="who">{{whoPrompt}}</span>
-      <div class="controls">
-        <input name="who" id="who" type="text" class="form-control" placeholder="{{whoPlaceholder}}">
-      </div>
-    </div>
+    <h3>{{header}}</h3>
+    <p>{{explanation}}</p>
+    <p>{{instructions}}</p>
     <div class="input-group">
       <span class="input-group-addon" for="what">{{whatPrompt}}</span>
       <div class="controls">
-        <input name="what" id="what" type="text" class="form-control" placeholder="{{whatPlaceholder}}">
+        <input name="what" id="what" type="text" class="form-control" value="{{what}}" placeholder="{{whatPlaceholder}}">
       </div>
     </div>
     <div class="input-group">
       <span class="input-group-addon" for="where">{{wherePrompt}}</span>
       <div class="controls">
-        <input name="where" id="where" type="text" class="form-control" placeholder="{{wherePlaceholder}}">
+        <input name="where" id="where" type="text" class="form-control" value="{{where}}" placeholder="{{wherePlaceholder}}">
       </div>
     </div>
     <div class="input-group">
       <span class="input-group-addon" for="when">{{whenPrompt}}</span>
       <div class="controls">
-        <input name="when" id="when" type="text" class="form-control" placeholder="{{whenPlaceholder}}">
+        <input name="when" id="when" type="text" class="form-control" value="{{when}}" placeholder="{{whenPlaceholder}}">
       </div>
     </div>
 

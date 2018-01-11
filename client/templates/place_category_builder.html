@@ -1,9 +1,9 @@
 <template name="placeCategoryBuilder">
   {{#each cat in (includedCategories categories excluded_categories)}}
-    <a class="chip xchip"
+    <div class="chip xchip terminal"
        placeCategory="{{cat}}">
-      <span class="sq"><a href="{{_id}}">{{cat}}</a></span>
+      <span class="sq">{{cat}}</span>
       <span class="x"></span>
-    </a>
+    </div>
   {{/each}}
 </template>
