@@ -308,8 +308,7 @@ blockdefiner {
 }
 /* terminal blocks */
 .chip.xchip.terminal {
-	/* yelpy-red, with some transparency */
 	border-style: solid;
-	/*border-color: #d3232399;*/
+	/* yelpy-red, with some transparency */
 	background-color: #d3232399;
 }

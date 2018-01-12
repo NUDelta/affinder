@@ -62,9 +62,27 @@ Template.naturalLanguageInput.events({
 
     if (template.data) {
       Queries.update(template.data._id, {$set: situation});
+      input = {
+        _id: template.data._id,
+        query: ([what, where, when].join(" "))
+      };
+      Meteor.call('updateYelpPlaceCategories', input, function (error, data) {
+        if (error) {
+          return alert(error.reason)
+        }
+      });
     } else {
       const queryId = Queries.insert(situation);
       Router.go('queryBuilderPage', {_id: queryId});
+      input = {
+        _id: queryId
+        query: ([what, where, when].join(" "))
+      };
+      Meteor.call('updateYelpPlaceCategories', input, function (error, data) {
+        if (error) {
+          return alert(error.reason)
+        }
+      });
     }
   }
 })
