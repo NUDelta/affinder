@@ -307,8 +307,28 @@ blockdefiner {
 	width: 18px;
 }
 /* terminal blocks */
-.chip.xchip.terminal {
+.chip.xchip.yelp {
 	border-style: solid;
 	/* yelpy-red, with some transparency */
-	background-color: #d3232399;
+	border-color: #d32323cc;
+	background-color: #d32323cc;
+	color: black;
+	text-shadow: -1px 0 white, 0 1px white, 1px 0 white, 0 -1px white;
 }
+
+/* loading spinner */
+.glyphicon-refresh-animate {
+    -animation: spin .7s infinite linear;
+    -webkit-animation: spin2 .7s infinite linear;
+}
+
+@-webkit-keyframes spin2 {
+    from { -webkit-transform: rotate(0deg);}
+    to { -webkit-transform: rotate(360deg);}
+}
+
+@keyframes spin {
+    from { transform: scale(1) rotate(0deg);}
+    to { transform: scale(1) rotate(360deg);}
+}
+

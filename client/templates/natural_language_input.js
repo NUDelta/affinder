@@ -30,7 +30,7 @@ Template.naturalLanguageInput.helpers({
     return "WHEN/TIME";
   },
   whenPlaceholder() {
-    return "sunrise, autumn, during finals period";
+    return "";
   },
   readyText() {
     if (this.hasOwnProperty("_id")) {
@@ -60,25 +60,29 @@ Template.naturalLanguageInput.events({
       query: ([what, where, when].join(" "))
     };
 
-    if (template.data) {
+    if (template.data) {  // If word brainstorm is being updated in the editor
       Queries.update(template.data._id, {$set: situation});
       input = {
         _id: template.data._id,
         query: ([what, where, when].join(" "))
       };
+      Session.set('yelpLoading', true);
       Meteor.call('updateYelpPlaceCategories', input, function (error, data) {
+        Session.set('yelpLoading', false);
         if (error) {
           return alert(error.reason)
         }
       });
-    } else {
+    } else {  // Starting a new query / situation
       const queryId = Queries.insert(situation);
       Router.go('queryBuilderPage', {_id: queryId});
       input = {
-        _id: queryId
+        _id: queryId,
         query: ([what, where, when].join(" "))
       };
+      Session.set('yelpLoading', true);
       Meteor.call('updateYelpPlaceCategories', input, function (error, data) {
+        Session.set('yelpLoading', false);
         if (error) {
           return alert(error.reason)
         }

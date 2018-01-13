@@ -19,5 +19,9 @@ Template.placeCategoryBuilder.helpers({
     else {
       return allCats;
     }
+  },
+
+  'yelpLoading': function() {
+    return Session.get('yelpLoading');
   }
 })
