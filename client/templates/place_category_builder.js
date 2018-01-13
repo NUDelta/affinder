@@ -6,6 +6,12 @@ Template.placeCategoryBuilder.events({
       $addToSet: {excluded_categories: cat2rm}
     });
 
+  },
+
+  'change #toggleYelp': function(e) {
+    Queries.update(this._id, {
+      $set: {disable_categories: e.target.checked}
+    });
   }
 });
 

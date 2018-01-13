@@ -4,13 +4,21 @@
     {{#if yelpLoading}}
       {{> loadingSpinner}}
     {{else}}
-      {{#each cat in (includedCategories categories excluded_categories)}}
-        <div class="chip xchip yelp"
-           placeCategory="{{cat}}">
-          <span class="sq">{{cat}}</span>
-          <span class="x"></span>
-        </div>
-      {{/each}}
-    {{/if}}  
+      <div class="form-check">
+        <input type="checkbox" class="form-check-input" id="toggleYelp" checked="{{disable_categories}}">
+        <label class="form-check-label" for="toggleYelp">Remove Yelp Categories from Definition</label>
+      </div>
+      {{#if disable_categories}}
+        Not using Yelp for this situation definition
+      {{else}}
+        {{#each cat in (includedCategories categories excluded_categories)}}
+          <div class="chip xchip yelp"
+             placeCategory="{{cat}}">
+            <span class="sq">{{cat}}</span>
+            <span class="x"></span>
+          </div>
+        {{/each}}
+      {{/if}}
+    {{/if}}
   </div>
 </template>
