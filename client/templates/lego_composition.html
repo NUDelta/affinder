@@ -1,9 +1,12 @@
 <template name="legoComposition">
   <div id="lego-composition" class="post">
     <div class="post-header">
-      <button class="btn btn-warning btn-lg">{{query}}</button>
+      <span>
+        <h3>Definition for <button class="btn btn-warning btn">{{query}}</button></h3>
+      </span>
     </div>
-    <div class="post-content"> 
+    <div class="post-content">
+      {{> newBlockDef}}
       {{#each (legoNames subLegos)}}
         {{> legoCompositionBlock}}
       {{/each}}

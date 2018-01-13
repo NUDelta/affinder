@@ -1,9 +1,16 @@
 <template name="placeCategoryBuilder">
-  {{#each cat in (includedCategories categories excluded_categories)}}
-    <a class="chip xchip"
-       placeCategory="{{cat}}">
-      <span class="sq"><a href="{{_id}}">{{cat}}</a></span>
-      <span class="x"></span>
-    </a>
-  {{/each}}
+  <div>
+    <h4>Yelp Places related to {{query}}</h4>
+    {{#if yelpLoading}}
+      {{> loadingSpinner}}
+    {{else}}
+      {{#each cat in (includedCategories categories excluded_categories)}}
+        <div class="chip xchip yelp"
+           placeCategory="{{cat}}">
+          <span class="sq">{{cat}}</span>
+          <span class="x"></span>
+        </div>
+      {{/each}}
+    {{/if}}  
+  </div>
 </template>

@@ -1,9 +1,18 @@
 <template name="queryBuilderPage">
-  <div class="post-page page">
-    {{> legoComposition}}
-    {{> googleImageSearch}}
-    {{> blockSearchResults }}
-    {{> weatherBlockBuilder}}
-    {{> movementBlockBuilder}}
+  <div class="editor-parent">
+    <wordbrainstorm>
+      {{> naturalLanguageInput}}
+      {{> legoComposition}}
+    </wordbrainstorm>
+
+    <blockselector>
+      {{> blockSearchResults }}
+    </blockselector>
+
+    <blockdefiner>
+      {{> weatherBlockBuilder}}
+      {{> movementBlockBuilder}}
+    </blockdefiner>
+    <!-- {{> googleImageSearch}} -->
   </div>
 </template>

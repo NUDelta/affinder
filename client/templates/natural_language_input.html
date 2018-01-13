@@ -1,11 +1,28 @@
 <template name="naturalLanguageInput">
   <form class="main form">
+    <h3>{{header}}</h3>
+    <p>{{explanation}}</p>
+    <p>{{instructions}}</p>
     <div class="input-group">
-      <span class="input-group-addon" for="queryString">A situation where a person is</span>
+      <span class="input-group-addon" for="what">{{whatPrompt}}</span>
       <div class="controls">
-        <input name="queryString" id="queryString" type="text" class="form-control" placeholder="describe affordance requirements for participants" aria-describedby="basic-addon1">
+        <input name="what" id="what" type="text" class="form-control" value="{{what}}" placeholder="{{whatPlaceholder}}">
       </div>
     </div>
+    <div class="input-group">
+      <span class="input-group-addon" for="where">{{wherePrompt}}</span>
+      <div class="controls">
+        <input name="where" id="where" type="text" class="form-control" value="{{where}}" placeholder="{{wherePlaceholder}}">
+      </div>
+    </div>
+    <div class="input-group">
+      <span class="input-group-addon" for="when">{{whenPrompt}}</span>
+      <div class="controls">
+        <input name="when" id="when" type="text" class="form-control" value="{{when}}" placeholder="{{whenPlaceholder}}">
+      </div>
+    </div>
+
+    <p>{{readyText}}</p>
     <button type="submit" class="btn btn-primary">{{submitButtonText}}</button>
   </form>
 </template>

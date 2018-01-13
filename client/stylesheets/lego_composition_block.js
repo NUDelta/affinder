@@ -11,3 +11,20 @@ Template.legoCompositionBlock.events({
     });
   }
 })
+
+Template.newBlockDef.events({
+  'click #addNewBlock': function(e) {
+    // get query info from frontend
+    newBlock = $("#newBlock");
+    const input_text = newBlock[0].value;
+    situation = {
+      query: input_text,
+    }
+    // update model
+    const childQueryId = Queries.insert(situation);
+    const parentQueryId = $(e.target)[0].baseURI.split('/').slice(-1)[0];
+    Queries.update(parentQueryId, {
+      $addToSet: {"subLegos": childQueryId}
+    })
+  }
+})

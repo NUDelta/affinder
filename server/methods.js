@@ -4,8 +4,9 @@ import { exec } from 'child_process';
 
 Meteor.methods({
 
-  affordanceLanguageProcess: function(queryAttributes) {
+  updateYelpPlaceCategories: function(queryAttributes) {
     check(queryAttributes, {
+      _id: String,
       query: String
     });
 
@@ -17,15 +18,8 @@ Meteor.methods({
     const categories = JSON.parse(Meteor.wrapAsync(exec)(cmd));
     console.log(categories);
 
-    var query = _.extend(queryAttributes, {
-      submitted: new Date(),
-      categories: Array.from(categories)
+    var queryId = Queries.update(queryAttributes._id, {
+      $addToSet: {"categories": {$each: Array.from(categories) } }
     });
-
-    var queryId = Queries.insert(query);
-
-    return {
-      _id: queryId
-    };
   }
 });
