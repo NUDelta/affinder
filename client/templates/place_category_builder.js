@@ -17,8 +17,17 @@ Template.placeCategoryBuilder.events({
 
 Template.placeCategoryBuilder.helpers({
   'includedCategories': function(allCats, excludeCats) {
+    allCats = allCats.map(function(item) {
+      if (item instanceof Array) {
+        // item: [category-name, tfidf-weight]
+        return item[0];  // grab only category-name
+      } else {
+        // item: category-name
+        return item;
+      }
+    });
     if (excludeCats) {
-      return allCats.filter(function(item) { 
+      return allCats.filter(function(item) {
         return !excludeCats.includes(item);
       });
     }
