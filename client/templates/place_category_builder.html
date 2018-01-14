@@ -11,6 +11,7 @@
       {{#if disable_categories}}
         Not using Yelp for this situation definition
       {{else}}
+        <h5>Proxy Measure of Precision defined by SUM(TF-IDF) = {{correlatedPrecision categories excluded_categories}}</h5>
         {{#each cat in (includedCategories categories excluded_categories)}}
           <div class="chip xchip yelp"
              placeCategory="{{cat}}">

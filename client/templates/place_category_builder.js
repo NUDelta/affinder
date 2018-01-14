@@ -15,6 +15,25 @@ Template.placeCategoryBuilder.events({
   }
 });
 
+function includedCatWeightTuple(allCats, excludeCats) {
+  if (excludeCats) {
+    return allCats.filter(function(item) {
+      if (item instanceof Array) {
+        return !excludeCats.includes(item[0]);
+      } else {
+        return false;   // since no tfidf values are associated, we wont return any
+      }
+    });
+  } else {
+    return allCats;
+  }
+}
+
+function includedTfidfWeights(allCats, excludeCats) {
+  included = includedCatWeightTuple(allCats, excludeCats);
+  return included.map(function(item) { return item[1]; });
+}
+
 Template.placeCategoryBuilder.helpers({
   'includedCategories': function(allCats, excludeCats) {
     allCats = allCats.map(function(item) {
@@ -34,6 +53,13 @@ Template.placeCategoryBuilder.helpers({
     else {
       return allCats;
     }
+  },
+
+  'correlatedPrecision': function(allCats, excludeCats) {
+    weights = includedTfidfWeights(allCats, excludeCats);
+    sum = weights.reduce(function(a, b) { return a + b; });
+    avg = sum / weights.length;
+    return avg.toFixed(4);
   },
 
   'yelpLoading': function() {
