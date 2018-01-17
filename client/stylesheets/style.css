@@ -332,3 +332,8 @@ blockdefiner {
     to { transform: scale(1) rotate(360deg);}
 }
 
+/* progress bar for yelp tfidf weightings */
+.progress-limit-label {
+	font-size: 0.75em;
+}
+

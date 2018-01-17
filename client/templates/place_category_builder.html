@@ -11,7 +11,20 @@
       {{#if disable_categories}}
         Not using Yelp for this situation definition
       {{else}}
-        <h5>Proxy Measure of Precision defined by SUM(TF-IDF) = {{correlatedPrecision categories excluded_categories}}</h5>
+        <h5>Proxy Measure of Precision defined by SUM(TF-IDF) for each term in the phrase "{{query}}":</h5>
+        <div class="progress">
+          <div class="input-group">
+            <span class="input-group-addon progress-limit-label">{{minProgressBar categories}}</span>
+            <div class="progress-bar" role="progressbar"
+                style="width: {{percentProgress categories excluded_categories}}%"
+                aria-valuenow="{{percentProgress categories excluded_categories}}"
+                aria-valuemin="{{minProgressBar categories}}"
+                aria-valuemax="{{maxProgressBar categories}}">
+              {{proxyPrecision categories excluded_categories}}
+            </div>
+            <span class="input-group-addon progress-limit-label">{{maxProgressBar categories}}</span>
+          </div>
+        </div>
         {{#each cat in (includedCategories categories excluded_categories)}}
           <div class="chip xchip yelp"
              placeCategory="{{cat}}">
