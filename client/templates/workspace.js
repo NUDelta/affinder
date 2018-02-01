@@ -1,9 +1,9 @@
+WORKSPACE = "";
+
 Template.blockly.rendered = function() {
   var toolBoxTree = defaultToolbox();
-  console.log(stringifyToolboxTree(toolBoxTree));
 
-
-  var workspace = Blockly.inject('blocklyDiv',
+  WORKSPACE = Blockly.inject('blocklyDiv',
     {toolbox: stringifyToolboxTree(toolBoxTree),
      zoom:
          {controls: true,
@@ -14,13 +14,20 @@ Template.blockly.rendered = function() {
           scaleSpeed: 1.2},
      trashcan: true});
 
-  workspace.addChangeListener(function (event) {
-    var code = Blockly.JavaScript.workspaceToCode(workspace);
+  WORKSPACE.addChangeListener(function (event) {
+    var code = Blockly.JavaScript.workspaceToCode(WORKSPACE);
     document.getElementById('compiledBlockly').value = code;
   });
+
+  // document.getElementById("foo-button").addClickListener(function (event) {
+  //   console.log("WE IN");
+  //   var newTree = defaultToolbox();
+  //   newTree["placeCategories"] = "";
+  //   workspace.updateToolbox(newTree);
+  // })
 };
 
-function defaultToolbox() {
+defaultToolbox = function () {
   var toolbox = {};
   toolbox["placeCategories"] = defaultToolboxPlaceCategories();
   toolbox["weather"] = defaultToolboxWeather();
@@ -29,7 +36,7 @@ function defaultToolbox() {
   return toolbox;
 }
 
-function stringifyToolboxTree(toolboxTree) {
+stringifyToolboxTree = function(toolboxTree) {
   var string = '<xml id="toolbox" style="display: none">'
   string += toolboxTree["placeCategories"];
   string += '<sep gap="48"></sep>';
@@ -40,7 +47,7 @@ function stringifyToolboxTree(toolboxTree) {
   return string;
 }
 
-function defaultToolboxPlaceCategories() {
+defaultToolboxPlaceCategories = function() {
   return `
   <category name="Place Categories">
     <block type="logic_operation">
@@ -59,7 +66,7 @@ function defaultToolboxPlaceCategories() {
   `;
 }
 
-function defaultToolboxWeather() {
+defaultToolboxWeather = function() {
   return `
   <category name="Weather" color="210">
     <!-- from https://openweathermap.org/weather-conditions -->
@@ -100,7 +107,7 @@ function defaultToolboxWeather() {
   `;
 }
 
-function defaultToolboxTime() {
+defaultToolboxTime = function() {
   return `
   <category name="Time">
     <block type="variables_get">
@@ -165,7 +172,7 @@ function defaultToolboxTime() {
   `;
 }
 
-function defaultToolboxOperators() {
+defaultToolboxOperators = function() {
   return `
   <category name="Operators">
     <block type="logic_operation"></block>
