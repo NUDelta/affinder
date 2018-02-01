@@ -7,6 +7,10 @@ Meteor.publish('querySummaries', function() {
   return Queries.find();
 });
 
+Meteor.publish('Workspace', function() {
+  return Workspace.find();
+})
+
 Meteor.publish('weatherFeatures', function() {
   return WeatherFeatures.find();
 })

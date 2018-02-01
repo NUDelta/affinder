@@ -1,0 +1,178 @@
+<template name="workspace">
+  <div class="wrapper">
+    <div class="box header">
+      <div>Todo List</div>
+      <nav aria-label="Page navigation">
+        <ul class="pagination">
+          <li>
+            <a href="#" aria-label="Previous">
+              <span aria-hidden="true">&laquo;</span>
+            </a>
+          </li>
+          <li><a href="#discover">Discover</a></li>
+          <li><a href="#construct">Construct</a></li>
+          <li><a href="#compile">Compile and Check</a></li>
+          <li><a href="#test-sim">Test in Simulation</a></li>
+          <li>
+            <a href="#" aria-label="Next">
+              <span aria-hidden="true">&raquo;</span>
+            </a>
+          </li>
+        </ul>
+      </nav>
+    </div>
+    <div id="discover" class="box sidebar">
+      Discover Context Legos
+      {{> featureDiscovery}}
+    </div>
+    <div id="construct" class="box topcontent">
+      <div>
+        Construct Legos
+      </div>
+      <div>
+
+<!--         <div id="name" class="form-group">
+          <div class="form-inline">
+            <label>Name</label>
+            <input type="text" class="form-control" placeholder="Name your detector">
+          </div>
+        </div>
+ -->        
+        <span><button id="compile" class="btn btn-primary">Compile</button></span>
+        <span><button id="test-sim" class="btn btn-success">Test Detector using Simulator</button></span>
+      </div>
+      {{> blockly}}
+      
+    </div>
+    <!-- <div class="box bottomcontent">Scratch Space</div> -->
+  </div>
+</template>
+
+
+<template name="blockly">
+  <div id="blocklyDiv" style="height: 550px; width:1260px;"></div>
+  <xml id="toolbox" style="display: none">
+    <category name="Place Categories">
+      <block type="logic_operation">
+        <value name="A">
+          <block type="variables_get">
+            <field name="VAR">Japanese</field>
+          </block>
+        </value>
+        <value name="B">
+          <block type="variables_get">
+            <field name="VAR">Chinese</field>
+          </block>        
+        </value>
+      </block>
+    </category>
+
+    <category name="Weather" color="210">
+      <!-- from https://openweathermap.org/weather-conditions -->
+      <block type="variables_get">
+        <field name="VAR">thunderstorm</field>
+      </block>
+      <block type="variables_get">
+        <field name="VAR">drizzle</field>
+      </block>
+      <block type="variables_get">
+        <field name="VAR">rain</field>
+      </block>
+      <block type="variables_get">
+        <field name="VAR">snow</field>
+      </block>
+      <block type="variables_get">
+        <field name="VAR">fog</field>
+      </block>
+      <block type="variables_get">
+        <field name="VAR">smoke</field>
+      </block>
+      <block type="variables_get">
+        <field name="VAR">clear</field>
+      </block>
+      <block type="variables_get">
+        <field name="VAR">clouds</field>
+      </block>
+      <block type="variables_get">
+        <field name="VAR">windy</field>
+      </block>
+      <block type="variables_get">
+        <field name="VAR">hot</field>
+      </block>
+      <block type="variables_get">
+        <field name="VAR">cold</field>
+      </block>
+    </category>
+
+    <category name="Time">
+      <block type="variables_get">
+        <field name="VAR">sunrise</field>
+      </block>
+      <block type="variables_get">
+        <field name="VAR">sunset</field>
+      </block>
+      <block type="variables_get">
+        <field name="VAR">hour</field>
+      </block>
+      <block type="variables_get">
+        <field name="VAR">minute</field>
+      </block>
+      <block type="logic_compare">
+        <value name="A">
+          <block type="variables_get">
+            <field name="VAR">hour</field>
+          </block>
+        </value>
+        <value name="B">
+          <block type="math_number">
+            <field name="NUM">13</field>
+          </block>
+        </value>
+      </block>
+
+      <!-- x < hour < y -->
+      <block type="logic_operation">
+        <value name="A">
+          <block type="logic_compare">
+            <value name="A">
+              <block type="variables_get">
+                <field name="VAR">hour</field>
+              </block>
+            </value>
+            <field name="OP">GT</field>
+            <value name="B">
+              <block type="math_number">
+                <field name="NUM">11</field>
+              </block>
+            </value>
+          </block>
+        </value>
+        <value name="B">
+          <block type="logic_compare">
+            <value name="A">
+              <block type="variables_get">
+                <field name="VAR">hour</field>
+              </block>
+            </value>
+            <field name="OP">LT</field>
+            <value name="B">
+              <block type="math_number">
+                <field name="NUM">13</field>
+              </block>
+            </value>
+          </block>
+        </value>
+      </block>
+
+    </category>
+
+    <category name="Operators">
+      <block type="logic_operation"></block>
+      <block type="logic_compare"></block>
+    </category>
+  </xml>
+  <div class="form-group">
+    <label for="compiledBlockly">Blockly to Code</label>
+    <textarea class="form-control" id="compiledBlockly" rows="3"></textarea>
+  </div>
+</template>

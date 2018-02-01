@@ -1,0 +1,25 @@
+<template name="featureDiscovery">
+  {{> searchBar}}
+  <!-- {{> blockSearchResults}} -->
+  <!-- {{> searchResults}} -->
+</template>
+
+<template name="searchBar">
+  <div class="input-group">
+    <span class="input-group-addon" for="search">Search</span>
+    <div class="controls">
+      <input name="search" id="search" type="text" class="form-control" value="{{search}}" placeholder="{{whatPlaceholder}}">
+    </div>
+  </div>
+<!--   <div class="input-group">
+      <button type="submit" class="btn btn-primary">Send to Scratch Space</button>
+  </div> -->
+</template>
+
+<template name="searchResults">
+  <div class="search-result-wrapper">
+    <div class="box">One</div>
+    <div class="box">Two</div>
+    <div class="box">Three</div>
+  </div>
+</template>

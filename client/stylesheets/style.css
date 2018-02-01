@@ -234,27 +234,65 @@ body {
 /* affinder add-ons */
 /* */
 
-/* TODO: grid styles */
-/*.editor-parent {
+/* workspace grid style */
+.sidebar {
+	grid-area: sidebar;
+}
+
+.topcontent {
+	grid-area: topcontent;
+}
+
+.header {
+	grid-area: header;
+}
+
+.bottomcontent {
+	grid-area: bottomcontent;
+}
+
+
+.wrapper {
+	display: grid;
+	grid-gap: 10px;
+	grid-template-columns: 450px 1280px;
+	grid-template-rows: 125px 550px 550px;
+	grid-template-areas:
+	"header header"
+	"sidebar topcontent"
+	"sidebar  topcontent";
+	background-color: #fff;
+	color: #444;
+}
+
+
+.box {
+	background-color: #444;
+	color: #fff;
+	border-radius: 5px;
+	padding: 10px;
+	font-size: 150%;
+}
+
+.header,
+.bottomcontent {
+  background-color: #999;
+}
+
+
+/* search results grid styles */
+.search-results-wrapper {
 	display: grid;
 	grid-template-columns: 1fr 1fr;
-	grid-template-rows: 1fr 1fr;
-	grid-area: "situation_ideas" "situation_ideas"
-						 "block_selectors" "block_definition";
+	grid-gap: 10px;
 }
 
-wordbrainstorm {
-	grid-name: "situation_ideas";
+.lego-search-results {
+	grid-area: lego-search-results;
 }
 
-blockselector {
-	grid-name: "block_selectors";
-}
+/* construct legos grid styles */
 
-blockdefiner {
-	grid-name: "block_definitions";
-}
-*/
 
 .remove-category .btn-panel-item {
 	padding: 0px 6px;

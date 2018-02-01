@@ -24,3 +24,6 @@ iron:router
 sacha:spin
 check
 audit-argument-checks
+blockly:blockly
+blockly:blocks
+blockly:javascript
