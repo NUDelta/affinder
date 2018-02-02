@@ -47,23 +47,48 @@ stringifyToolboxTree = function(toolboxTree) {
   return string;
 }
 
+wrapBlocksInCategory = function(name, blocks) {
+  category = '<category name="' + name + '">';
+  category += blocks;
+  category += '</category>';
+  return category;
+}
+
+createVariable = function(name) {
+  variable = `
+  <block type="variables_get">
+    <field name="VAR">`;
+  variable += name;
+  variable += `</field>
+  </block>`;
+  return variable;
+}
+
+createAndOrBlock = function(a, b) {
+  block = `
+  <block type="logic_operation">
+    <value name="A">`;
+  block += a;
+  block += `</value>
+        <value name="B">`;
+  block += b;
+  block += `</value>
+    </block>`;
+  return block;
+}
+
+createMultiVarAndOrBlock = function(abc) {
+  const reducer = (accum, currentValue) =>
+    createAndOrBlock(accum,
+                     createVariable(currentValue));
+  return abc.slice(1).reduce(reducer, createVariable(abc[0]));
+}
+
 defaultToolboxPlaceCategories = function() {
-  return `
-  <category name="Place Categories">
-    <block type="logic_operation">
-      <value name="A">
-        <block type="variables_get">
-          <field name="VAR">Japanese</field>
-        </block>
-      </value>
-      <value name="B">
-        <block type="variables_get">
-          <field name="VAR">Chinese</field>
-        </block>
-      </value>
-    </block>
-  </category>
-  `;
+  return wrapBlocksInCategory("Place Categories",
+    createMultiVarAndOrBlock(["Japanese", "Chinese", "Korean"]) +
+    createMultiVarAndOrBlock(["Beach", "Lakes"])
+    );
 }
 
 defaultToolboxWeather = function() {
