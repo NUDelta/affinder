@@ -1,24 +1,49 @@
 <template name="featureDiscovery">
-  {{> searchBar}}
+  <div class="panel panel-default">
+    {{> searchBar}}
+  </div>
+
+  <div class="panel panel-default discover-panel">
+    <div class="panel-heading">
+      <div><h3 class="panel-title">Recommended Place Categories</h3></div>
+      <div>
+        <button id="foo-button" type="button" class="btn btn-small btn-primary">Convert to Blockly</button>
+      </div>
+    </div>
+    <div class="panel-body">
+      {{#if yelpLoading}}
+        {{> loadingSpinner}}
+      {{else}}
+        {{#each cat in (includedCategories currentQueryId)}}
+          <div class="chip xchip yelp"
+             placeCategory="{{cat}}">
+            <span class="sq">{{cat}}</span>
+            <span class="x"></span>
+          </div>
+        {{/each}}
+      {{/if}}
+
+
+    </div>
+  </div>
+
+
   <!-- {{> blockSearchResults}} -->
   <!-- {{> searchResults}} -->
 </template>
 
 <template name="searchBar">
-  <div class="input-group">
-    <span class="input-group-addon" for="search">Search</span>
-    <div class="controls">
-      <input name="search" id="search" type="text" class="form-control" value="{{search}}" placeholder="{{whatPlaceholder}}">
+  <form id="blockSearch">
+    <div class="input-group">
+      <input name="search" type="text" class="form-control" placeholder="Search for...">
+      <span class="input-group-btn">
+        <button class="btn btn-default" type="submit">Go!</button>
+        <button name="info" class="btn btn-default" type="button" aria-label="Help me use discover">
+          <span class="glyphicon glyphicon-question-sign"  aria-hidden="true"></span>
+        </button>
+      </span>
     </div>
-  </div>
-  <div class="input-group">
-      <button type="submit" class="btn btn-primary">Send to Scratch Space</button>
-  </div>
-
-  <div class="input-group">
-      <button id="foo-button" type="button" class="btn btn-primary">TEST</button>
-  </div>
-
+  </form>
 </template>
 
 <template name="searchResults">

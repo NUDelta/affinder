@@ -279,7 +279,10 @@ body {
   background-color: #999;
 }
 
-
+/*.discover-panel {
+	border-radius: 5px;
+	padding: 10px;
+}*/
 /* search results grid styles */
 .search-results-wrapper {
 	display: grid;
