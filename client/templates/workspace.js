@@ -67,6 +67,7 @@ createVariable = function(name) {
 createAndOrBlock = function(a, b) {
   block = `
   <block type="logic_operation">
+    <field name="OP">OR</field>
     <value name="A">`;
   block += a;
   block += `</value>
