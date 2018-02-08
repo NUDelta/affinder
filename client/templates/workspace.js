@@ -33,6 +33,7 @@ defaultToolbox = function () {
   toolbox["weather"] = defaultToolboxWeather();
   toolbox["time"] = defaultToolboxTime();
   toolbox["operators"] = defaultToolboxOperators();
+  toolbox["variables"] = defaultToolboxVariables();
   return toolbox;
 }
 
@@ -42,7 +43,9 @@ stringifyToolboxTree = function(toolboxTree) {
   string += '<sep gap="48"></sep>';
   string += toolboxTree["weather"];
   string += toolboxTree["time"];
+  string += '<sep gap="48"></sep>';
   string += toolboxTree["operators"];
+  string += toolboxTree["variables"];
   string += "</xml>";
   return string;
 }
@@ -207,3 +210,8 @@ defaultToolboxOperators = function() {
   `;
 }
 
+defaultToolboxVariables = function() {
+  return `
+  <category name="Variables" custom="VARIABLE"></category>
+  `
+}
