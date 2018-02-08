@@ -25,7 +25,7 @@ Template.blockly.rendered = function() {
   });
 };
 
-function splitVarDeclarationAndRules(code) {
+splitVarDeclarationAndRules = function(code) {
   var lines = code.split('\n');
   var threshold = lines.findIndex(e => e == "");
   var varDecl = lines.slice(0, threshold);

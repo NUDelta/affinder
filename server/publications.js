@@ -34,3 +34,7 @@ Meteor.publish("blockSearch", function(searchValue) {
   // publish the results to the client side
   return Queries.BlockSearchResults.find(key);
 });
+
+Meteor.publish('Detectors', function() {
+  return Detectors.find();
+})
