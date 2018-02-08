@@ -71,6 +71,7 @@ Template.featureDiscovery.events({
     obj = Queries.findOne(Session.get("currentQueryId"))
     cats = resolveAllAndExcludedCats(obj.categories, obj.excluded_categories);
     cats = cats.map(function(elem) { return elem.replace("&", "&amp;"); });
+    cats = cats.map(function(elem) { return elem.toLowerCase(); })
     newTree["placeCategories"] = wrapBlocksInCategory("Recommended Place Categories",
       createMultiVarAndOrBlock(cats));
     WORKSPACE.updateToolbox(stringifyToolboxTree(newTree));

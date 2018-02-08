@@ -20,7 +20,7 @@ Template.blockly.rendered = function() {
 
     var splitJS = splitVarDeclarationAndRules(code);
 
-    context = {'Japanese': true, 'thursday': true};
+    context = {'japanese': true, 'thursday': true};
     mockTestDetector(context, splitJS[0], splitJS[1]);
   });
 };
@@ -117,8 +117,8 @@ createMultiVarAndOrBlock = function(abc) {
 
 defaultToolboxPlaceCategories = function() {
   return wrapBlocksInCategory("Place Categories",
-    createMultiVarAndOrBlock(["Japanese", "Chinese", "Korean"]) +
-    createMultiVarAndOrBlock(["Beach", "Lakes"])
+    createMultiVarAndOrBlock(["japanese", "chinese", "korean"]) +
+    createMultiVarAndOrBlock(["beach", "lakes"])
     );
 }
 
@@ -143,6 +143,9 @@ defaultToolboxWeather = function() {
     </block>
     <block type="variables_get">
       <field name="VAR">smoke</field>
+    </block>
+    <block type="variables_get">
+      <field name="VAR">haze</field>
     </block>
     <block type="variables_get">
       <field name="VAR">clear</field>
