@@ -50,8 +50,10 @@ Template.featureDiscovery.helpers({
   },
 
   'includedCategories': function(queryId) {
-    obj = Queries.findOne(queryId);
-    return resolveAllAndExcludedCats(obj.categories, obj.excluded_categories);
+    if (queryId) {
+      obj = Queries.findOne(queryId);
+      return resolveAllAndExcludedCats(obj.categories, obj.excluded_categories);
+    }
   }
 });
 
