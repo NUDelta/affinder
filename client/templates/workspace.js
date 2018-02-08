@@ -151,6 +151,28 @@ defaultToolboxTime = function() {
     <block type="variables_get">
       <field name="VAR">minute</field>
     </block>
+    <block type="variables_get">
+      <field name="VAR">monday</field>
+    </block>
+    <block type="variables_get">
+      <field name="VAR">tuesday</field>
+    </block>
+    <block type="variables_get">
+      <field name="VAR">wednesday</field>
+    </block>
+    <block type="variables_get">
+      <field name="VAR">thursday</field>
+    </block>
+    <block type="variables_get">
+      <field name="VAR">friday</field>
+    </block>
+    <block type="variables_get">
+      <field name="VAR">saturday</field>
+    </block>
+    <block type="variables_get">
+      <field name="VAR">sunday</field>
+    </block>
+
     <block type="logic_compare">
       <value name="A">
         <block type="variables_get">
