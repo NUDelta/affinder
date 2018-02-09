@@ -176,6 +176,12 @@ defaultToolboxTime = function() {
       <field name="VAR">sunset</field>
     </block>
     <block type="variables_get">
+      <field name="VAR">daytime</field>
+    </block>
+    <block type="variables_get">
+      <field name="VAR">nighttime</field>
+    </block>
+    <block type="variables_get">
       <field name="VAR">hour</field>
     </block>
     <block type="variables_get">
@@ -202,7 +208,18 @@ defaultToolboxTime = function() {
     <block type="variables_get">
       <field name="VAR">sunday</field>
     </block>
-
+    <block type="variables_get">
+      <field name="VAR">america_los_angeles</field>
+    </block>
+    <block type="variables_get">
+      <field name="VAR">america_denver</field>
+    </block>
+    <block type="variables_get">
+      <field name="VAR">america_chicago</field>
+    </block>
+    <block type="variables_get">
+      <field name="VAR">america_new_york</field>
+    </block>
     <block type="logic_compare">
       <value name="A">
         <block type="variables_get">
