@@ -169,6 +169,40 @@ defaultToolboxWeather = function() {
 defaultToolboxTime = function() {
   return `
   <category name="Time">
+    <!-- x < hour < y -->
+    <block type="logic_operation">
+      <value name="A">
+        <block type="logic_compare">
+          <value name="A">
+            <block type="variables_get">
+              <field name="VAR">hour</field>
+            </block>
+          </value>
+          <field name="OP">GT</field>
+          <value name="B">
+            <block type="math_number">
+              <field name="NUM">11</field>
+            </block>
+          </value>
+        </block>
+      </value>
+      <value name="B">
+        <block type="logic_compare">
+          <value name="A">
+            <block type="variables_get">
+              <field name="VAR">hour</field>
+            </block>
+          </value>
+          <field name="OP">LT</field>
+          <value name="B">
+            <block type="math_number">
+              <field name="NUM">13</field>
+            </block>
+          </value>
+        </block>
+      </value>
+    </block>
+
     <block type="variables_get">
       <field name="VAR">sunrise</field>
     </block>
@@ -232,51 +266,16 @@ defaultToolboxTime = function() {
         </block>
       </value>
     </block>
-
-    <!-- x < hour < y -->
-    <block type="logic_operation">
-      <value name="A">
-        <block type="logic_compare">
-          <value name="A">
-            <block type="variables_get">
-              <field name="VAR">hour</field>
-            </block>
-          </value>
-          <field name="OP">GT</field>
-          <value name="B">
-            <block type="math_number">
-              <field name="NUM">11</field>
-            </block>
-          </value>
-        </block>
-      </value>
-      <value name="B">
-        <block type="logic_compare">
-          <value name="A">
-            <block type="variables_get">
-              <field name="VAR">hour</field>
-            </block>
-          </value>
-          <field name="OP">LT</field>
-          <value name="B">
-            <block type="math_number">
-              <field name="NUM">13</field>
-            </block>
-          </value>
-        </block>
-      </value>
-    </block>
   </category>
   `;
 }
 
 defaultToolboxOperators = function() {
-  return `
-  <category name="Operators">
-    <block type="logic_operation"></block>
-    <block type="logic_compare"></block>
-  </category>
-  `;
+  return wrapBlocksInCategory("and or =",
+    createAndOrBlock("", "") +
+    '<block type="logic_compare"></block>' + 
+    createAndOrBlock(createAndOrBlock("",""),
+                     createAndOrBlock("","")));
 }
 
 defaultToolboxVariables = function() {
