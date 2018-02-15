@@ -20,16 +20,16 @@ Template.blockSearchResults.helpers({
     if (result) {
       const idsInSortOrder = result.results.filter(id => queryId !== id);
       const blocksInSortedOrder = idsInSortOrder.map(id => Queries.findOne(id));
-      return blocksInSortedOrder;      
+      return blocksInSortedOrder;
     }
   }
-})
+});
 
 Template.blockSearchResults.events({
   'input #searchResultsInput': function(e, template) {
     Session.set("searchInputText", e.target.value);
   }
-})
+});
 
 if (Meteor.isServer) {
   Queries._ensureIndex({

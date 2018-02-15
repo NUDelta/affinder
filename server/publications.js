@@ -7,13 +7,17 @@ Meteor.publish('querySummaries', function() {
   return Queries.find();
 });
 
+Meteor.publish('Workspace', function() {
+  return Workspace.find();
+});
+
 Meteor.publish('weatherFeatures', function() {
   return WeatherFeatures.find();
-})
+});
 
 Meteor.publish('movementFeatures', function() {
   return MovementFeatures.find();
-})
+});
 
 Meteor.publish("blockSearch", function(searchValue) {
   check(searchValue, String);
@@ -29,4 +33,8 @@ Meteor.publish("blockSearch", function(searchValue) {
 
   // publish the results to the client side
   return Queries.BlockSearchResults.find(key);
+});
+
+Meteor.publish('Detectors', function() {
+  return Detectors.find();
 });

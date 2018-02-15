@@ -1,0 +1,55 @@
+<template name="featureDiscovery">
+  <div class="panel panel-default">
+    {{> searchBar}}
+  </div>
+
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <div><h3 class="panel-title">Recommended Place Categories</h3></div>
+      <div>
+        <button id="convert-button" type="button" class="btn btn-small btn-primary">Convert to Blockly</button>
+      </div>
+    </div>
+    <div class="panel-body">
+      {{#if yelpLoading}}
+        {{> loadingSpinner}}
+      {{else}}
+        {{#each cat in (includedCategories currentQueryId)}}
+          <div class="chip xchip yelp"
+             placeCategory="{{cat}}">
+            <span class="sq">{{cat}}</span>
+            <span class="x"></span>
+          </div>
+        {{/each}}
+      {{/if}}
+
+
+    </div>
+  </div>
+
+
+  <!-- {{> blockSearchResults}} -->
+  <!-- {{> searchResults}} -->
+</template>
+
+<template name="searchBar">
+  <form id="blockSearch">
+    <div class="input-group">
+      <input name="search" type="text" class="form-control" placeholder="Search for...">
+      <span class="input-group-btn">
+        <button class="btn btn-default" type="submit">Go!</button>
+        <button name="info" class="btn btn-default" type="button" aria-label="Help me use discover">
+          <span class="glyphicon glyphicon-question-sign"  aria-hidden="true"></span>
+        </button>
+      </span>
+    </div>
+  </form>
+</template>
+
+<template name="searchResults">
+  <div class="search-result-wrapper">
+    <div class="box">One</div>
+    <div class="box">Two</div>
+    <div class="box">Three</div>
+  </div>
+</template>

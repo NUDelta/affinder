@@ -1,0 +1,52 @@
+<template name="workspace">
+  <div class="wrapper">
+
+    <div class="box header">
+      <div>Todo List</div>
+      <nav aria-label="Page navigation">
+        <ul class="pagination">
+          <li>
+            <a href="#" aria-label="Previous">
+              <span aria-hidden="true">&laquo;</span>
+            </a>
+          </li>
+          <li><a href="#discover">Discover</a></li>
+          <li><a href="#construct">Construct</a></li>
+          <li><a href="#checksave">Check and Save</a></li>
+          <li><a href="#test-sim">Test in Simulation</a></li>
+          <li>
+            <a href="#" aria-label="Next">
+              <span aria-hidden="true">&raquo;</span>
+            </a>
+          </li>
+        </ul>
+      </nav>
+    </div>
+
+    <div id="discover" class="box sidebar">
+      Discover Types of Places
+      {{> featureDiscovery}}
+    </div>
+
+    <div id="construct" class="box topcontent">
+      <div>
+        Construct Legos
+      </div>
+      <div>
+        <form>
+          <div class="input-group">
+            <input name="detectorname" type="text" class="form-control" placeholder="Describe your detector..." required="true">
+            <span class="input-group-btn">
+              <button class="btn btn-default" id="checksave" type="submit">Save!</button>
+              <button name="info" class="btn btn-default" type="button" aria-label="Help me name and save my detector">
+                <span class="glyphicon glyphicon-question-sign"  aria-hidden="true"></span>
+              </button>
+            </span>
+          </div>
+        </form>
+      </div>
+      {{> blockly}}
+      
+    </div>
+  </div>
+</template>
