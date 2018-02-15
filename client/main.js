@@ -1,8 +1,5 @@
 import { Template } from 'meteor/templating';
 import { ReactiveVar } from 'meteor/reactive-var';
-// import "../.blockly/blockly_compressed.js";
-// import "../.blockly/blocks_compressed.js";
-// import "../.blockly/msg/js/en.js";
 // errors in browser consol
 // import './main.html'; 
 
