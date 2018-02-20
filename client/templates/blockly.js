@@ -66,6 +66,10 @@ defaultToolbox = function () {
 
 stringifyToolboxTree = function(toolboxTree) {
   var string = '<xml id="toolbox" style="display: none">'
+  if (toolboxTree.hasOwnProperty("discoveries")) {
+    string += toolboxTree["discoveries"];
+    string += '<sep gap="48"></sep>';
+  }
   string += toolboxTree["placeCategories"];
   string += '<sep gap="48"></sep>';
   string += toolboxTree["weather"];

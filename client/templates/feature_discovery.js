@@ -4,6 +4,10 @@ Template.searchBar.events({
 
     const queryText = $(e.target).find('[name=search]').val();
 
+    // Directed Search
+    Session.set("searchInputText", queryText);
+
+    // Stretch Search
     const queryId = Queries.insert({ query: queryText });
     Session.set('yelpLoading', true);
     Session.set('currentQueryId', queryId);
@@ -49,16 +53,43 @@ Template.featureDiscovery.helpers({
     return Session.get('currentQueryId');
   },
 
+  'searchInputText': function() {
+    return Session.get('searchInputText');
+  },
+
   'includedCategories': function(queryId) {
     if (queryId) {
       obj = Queries.findOne(queryId);
       return resolveAllAndExcludedCats(obj.categories, obj.excluded_categories);
     }
+  },
+
+  'directedSearchResults': function() {
+    if (Session.get("searchInputText")) {
+      Meteor.subscribe("blockSearch", Session.get("searchInputText"));
+
+      // We cannot re-use the query as MiniMongo does not support the $text operator!
+      // Instead of resorting to a Meteor method we can hack around it by relying on an extra
+      // ad-hoc collection containing the sorted ids ...
+      const key = JSON.stringify(Session.get("searchInputText"));
+      const result = Detectors.BlockSearchResults.findOne(key);
+      if (result) {
+        const idsInSortOrder = result.results;
+        const blocksInSortedOrder = idsInSortOrder.map(id => Detectors.findOne(id));
+        return blocksInSortedOrder;
+      }
+    }
   }
+
 });
 
+if (Meteor.isServer) {
+  Detectors._ensureIndex({
+    "description": "text"
+  });
+}
 Template.featureDiscovery.events({
-  'click .x': function(e) {
+  'click .btn-remove': function(e) {
     const cat2rm = $(e.target).parent().attr('placeCategory');
 
     Queries.update(Session.get('currentQueryId'), {
@@ -66,16 +97,29 @@ Template.featureDiscovery.events({
     });
   },
 
+  'click .btn-use-block': function(e) {
+    newTree = defaultToolbox();
+    // TODO(rlouie): turn detector rules into blocks again if not elementary
+    // let detectorId = $(e.target).parent().attr('detectorId');
+    let detectorDescription = $(e.target).parent().attr('detectorDescription');
+    detectorDescription = formatDetectorVarNames(detectorDescription);
+    newTree["discoveries"] = wrapBlocksInCategory(detectorDescription,
+      createVariable(detectorDescription));
+    WORKSPACE.updateToolbox(stringifyToolboxTree(newTree));
+  },
+
   'click #convert-button': function(e) {
     newTree = defaultToolbox();
-    obj = Queries.findOne(Session.get("currentQueryId"))
+    obj = Queries.findOne(Session.get("currentQueryId"));
     cats = resolveAllAndExcludedCats(obj.categories, obj.excluded_categories);
-    cats = cats.map(function(elem) { return elem.replace("&", "&amp;"); });
-    cats = cats.map(function(elem) { return elem.toLowerCase(); })
-    newTree["placeCategories"] = wrapBlocksInCategory("Recommended Place Categories",
+    cats = cats.map(function(elem) { return formatDetectorVarNames(elem); });
+    newTree["placeCategories"] = wrapBlocksInCategory("Categories describing '" + obj.query +"'",
       createMultiVarAndOrBlock(cats));
     WORKSPACE.updateToolbox(stringifyToolboxTree(newTree));
   }
 
-})
+});
 
+function formatDetectorVarNames(elem) {
+  return elem.replace("&", "&amp;").toLowerCase();
+}

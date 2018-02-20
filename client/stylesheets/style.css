@@ -255,10 +255,9 @@ body {
 .wrapper {
 	display: grid;
 	grid-gap: 10px;
-	grid-template-columns: 450px 1280px;
-	grid-template-rows: 125px 550px 550px;
+	grid-template-columns: 600px 1280px;
+	grid-template-rows: 1fr 1fr;
 	grid-template-areas:
-	"header header"
 	"sidebar topcontent"
 	"sidebar  topcontent";
 	background-color: #fff;
@@ -272,11 +271,6 @@ body {
 	border-radius: 5px;
 	padding: 10px;
 	font-size: 150%;
-}
-
-.header,
-.bottomcontent {
-  background-color: #999;
 }
 
 /* search results grid styles */
@@ -295,6 +289,14 @@ body {
 
 .remove-category .btn-panel-item {
 	padding: 0px 6px;
+}
+
+.panel-heading {
+	font-size: 12pt;
+}
+.list-group {
+	font-size: 10pt;
+	color: black;
 }
 
 /* requirement: lego composition stays on top, is always visible */
