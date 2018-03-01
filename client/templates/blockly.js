@@ -232,6 +232,9 @@ defaultToolboxTime = function() {
       <field name="VAR">minute</field>
     </block>
     <block type="variables_get">
+      <field name="VAR">sunset_time_minutes</field>
+    </block>
+    <block type="variables_get">
       <field name="VAR">monday</field>
     </block>
     <block type="variables_get">
