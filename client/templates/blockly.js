@@ -31,7 +31,7 @@ splitVarDeclarationAndRules = function(code) {
   var varDecl = lines.slice(0, threshold);
   var rules = lines.splice(threshold + 1).filter(e => e != "");
   return [varDecl, rules];
-}
+};
 
 mockTestDetector = function (elementaryContext, varDecl, rules) {
   // elementaryContext: key value pairs of (elementaryContext: values)
@@ -42,7 +42,7 @@ mockTestDetector = function (elementaryContext, varDecl, rules) {
   editedCode = varDecl.concat(contextAsJS).concat(rules).join('\n');
   console.log(editedCode);
   console.log(eval(editedCode));
-}
+};
 
 keyvalues2vardecl = function(obj) {
   vardecl = [];
@@ -52,7 +52,7 @@ keyvalues2vardecl = function(obj) {
     }
   }
   return vardecl;
-}
+};
 
 defaultToolbox = function () {
   var toolbox = {};
@@ -62,10 +62,14 @@ defaultToolbox = function () {
   toolbox["operators"] = defaultToolboxOperators();
   toolbox["variables"] = defaultToolboxVariables();
   return toolbox;
-}
+};
 
 stringifyToolboxTree = function(toolboxTree) {
   var string = '<xml id="toolbox" style="display: none">'
+  if (toolboxTree.hasOwnProperty("discoveries")) {
+    string += toolboxTree["discoveries"];
+    string += '<sep gap="48"></sep>';
+  }
   string += toolboxTree["placeCategories"];
   string += '<sep gap="48"></sep>';
   string += toolboxTree["weather"];
@@ -75,14 +79,14 @@ stringifyToolboxTree = function(toolboxTree) {
   string += toolboxTree["variables"];
   string += "</xml>";
   return string;
-}
+};
 
 wrapBlocksInCategory = function(name, blocks) {
   category = '<category name="' + name + '">';
   category += blocks;
   category += '</category>';
   return category;
-}
+};
 
 createVariable = function(name) {
   variable = `
@@ -92,7 +96,7 @@ createVariable = function(name) {
   variable += `</field>
   </block>`;
   return variable;
-}
+};
 
 createAndOrBlock = function(a, b) {
   block = `
@@ -106,21 +110,27 @@ createAndOrBlock = function(a, b) {
   block += `</value>
     </block>`;
   return block;
-}
+};
 
 createMultiVarAndOrBlock = function(abc) {
-  const reducer = (accum, currentValue) =>
-    createAndOrBlock(accum,
-                     createVariable(currentValue));
-  return abc.slice(1).reduce(reducer, createVariable(abc[0]));
-}
+  if (abc.length === 1) {
+    return createVariable(abc[0]);
+  }
+  else if (abc.length === 2) {
+    return createAndOrBlock(createVariable(abc[0]), createVariable(abc[1]));
+  } else {
+    return createAndOrBlock(
+      createAndOrBlock(createVariable(abc[0]), createVariable(abc[1])),
+      createMultiVarAndOrBlock(abc.slice(2, abc.length)));
+  }
+};
 
 defaultToolboxPlaceCategories = function() {
   return wrapBlocksInCategory("Place Categories",
     createMultiVarAndOrBlock(["japanese", "chinese", "korean"]) +
     createMultiVarAndOrBlock(["beach", "lakes"])
     );
-}
+};
 
 defaultToolboxWeather = function() {
   return `
@@ -164,7 +174,7 @@ defaultToolboxWeather = function() {
     </block>
   </category>
   `;
-}
+};
 
 defaultToolboxTime = function() {
   return `
@@ -222,6 +232,9 @@ defaultToolboxTime = function() {
       <field name="VAR">minute</field>
     </block>
     <block type="variables_get">
+      <field name="VAR">sunset_time_minutes</field>
+    </block>
+    <block type="variables_get">
       <field name="VAR">monday</field>
     </block>
     <block type="variables_get">
@@ -268,7 +281,7 @@ defaultToolboxTime = function() {
     </block>
   </category>
   `;
-}
+};
 
 defaultToolboxOperators = function() {
   return wrapBlocksInCategory("and or =",
@@ -276,10 +289,10 @@ defaultToolboxOperators = function() {
     '<block type="logic_compare"></block>' + 
     createAndOrBlock(createAndOrBlock("",""),
                      createAndOrBlock("","")));
-}
+};
 
 defaultToolboxVariables = function() {
   return `
   <category name="Variables" custom="VARIABLE"></category>
   `
-}
+};

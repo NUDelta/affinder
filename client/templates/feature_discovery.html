@@ -2,31 +2,34 @@
   <div class="panel panel-default">
     {{> searchBar}}
   </div>
+  <div class="search-results-wrapper">
 
-  <div class="panel panel-default">
-    <div class="panel-heading">
-      <div><h3 class="panel-title">Recommended Place Categories</h3></div>
-      <div>
-        <button id="convert-button" type="button" class="btn btn-small btn-primary">Convert to Blockly</button>
+    <div class="panel panel-default left-search">
+      <div class="panel-heading">
+        Directed Search
       </div>
-    </div>
-    <div class="panel-body">
-      {{#if yelpLoading}}
-        {{> loadingSpinner}}
-      {{else}}
-        {{#each cat in (includedCategories currentQueryId)}}
-          <div class="chip xchip yelp"
-             placeCategory="{{cat}}">
-            <span class="sq">{{cat}}</span>
-            <span class="x"></span>
-          </div>
+      <ul class="list-group">
+        {{#each directedSearchResults}}
+          {{> directedSearchResultItem}}
         {{/each}}
-      {{/if}}
-
-
+      </ul>
+    </div>
+    <div class="panel panel-default right-search">
+      <div class="panel-heading">
+        Yelp Categories you can find "{{searchInputText}}"
+        <button id="convert-button" type="button" class="btn btn-small btn-primary">Combine Categories</button>
+      </div>
+      <ul class="list-group">
+        {{#if yelpLoading}}
+          <li class="list-group-item">{{> loadingSpinner}}</li>
+        {{else}}
+          {{#each (includedCategories currentQueryId)}}
+            {{> stretchSearchResultItem}}
+          {{/each}}
+        {{/if}}
+      </ul>
     </div>
   </div>
-
 
   <!-- {{> blockSearchResults}} -->
   <!-- {{> searchResults}} -->
@@ -52,4 +55,22 @@
     <div class="box">Two</div>
     <div class="box">Three</div>
   </div>
+</template>
+
+<template name="directedSearchResultItem">
+  <li href="#" class="list-group-item" detectorDescription="{{description}}" detectorId="{{_id}}">
+    {{description}}
+    <button type="button" class="btn-use-block btn btn-primary btn-sm pull-right btn-panel-item">
+      <span class="glyphicon glyphicon-plus"  aria-hidden="true"></span>
+    </button>
+  </li>
+</template>
+
+<template name="stretchSearchResultItem">
+  <li href="#" class="list-group-item" placeCategory="{{this}}">
+    {{this}}
+    <button type="button" class="btn-remove btn btn-warning btn-sm pull-right btn-panel-item">
+      <span class="glyphicon glyphicon-remove"  aria-hidden="true"></span>
+    </button>
+  </li>
 </template>
