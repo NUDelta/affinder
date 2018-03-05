@@ -89,12 +89,22 @@ if (Meteor.isServer) {
   });
 }
 Template.featureDiscovery.events({
-  'click .btn-remove': function(e) {
+  'click .btn-remove-cat': function(e) {
     const cat2rm = $(e.target).parent().attr('placeCategory');
 
     Queries.update(Session.get('currentQueryId'), {
       $addToSet: {excluded_categories: cat2rm}
     });
+  },
+
+  'click .btn-add-cat': function(e) {
+    const cat2add = $(e.target).parent().attr('placeCategory');
+
+    newTree = defaultToolbox();
+    detectorDescription = formatDetectorVarNames(cat2add);
+    newTree["discoveries"] = wrapBlocksInCategory(detectorDescription,
+      createVariable(detectorDescription));
+    WORKSPACE.updateToolbox(stringifyToolboxTree(newTree));
   },
 
   'click .btn-use-block': function(e) {
