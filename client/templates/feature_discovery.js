@@ -64,6 +64,11 @@ Template.featureDiscovery.helpers({
     }
   },
 
+  'precision': function(queryId) {
+    obj = Queries.findOne(queryId);
+    return (obj.categories.length - obj.excluded_categories.length) / obj.categories.length
+  },
+
   'directedSearchResults': function() {
     if (Session.get("searchInputText")) {
       Meteor.subscribe("blockSearch", Session.get("searchInputText"));

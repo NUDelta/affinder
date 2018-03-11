@@ -255,7 +255,7 @@ body {
 .wrapper {
 	display: grid;
 	grid-gap: 10px;
-	grid-template-columns: 620px 1280px;
+	grid-template-columns: 620px 1580px;
 	grid-template-rows: 1fr 1fr;
 	grid-template-areas:
 	"sidebar topcontent"
@@ -264,6 +264,10 @@ body {
 	color: #444;
 }
 
+.blockly-div {
+	height: 1000px;
+	width:1560px;
+}
 
 .box {
 	background-color: #444;
