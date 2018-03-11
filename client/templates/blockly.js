@@ -58,7 +58,7 @@ defaultToolbox = function () {
   var toolbox = {};
   toolbox["placeCategories"] = defaultToolboxPlaceCategories();
   toolbox["weather"] = defaultToolboxWeather();
-  toolbox["time"] = defaultToolboxTime();
+  toolbox["time"] = defaultToolboxTimeOfDay() + defaultToolboxTimeOfWeek() + defaultToolboxTimeZone();
   toolbox["operators"] = defaultToolboxOperators();
   toolbox["variables"] = defaultToolboxVariables();
   return toolbox;
@@ -176,9 +176,9 @@ defaultToolboxWeather = function() {
   `;
 };
 
-defaultToolboxTime = function() {
-  return `
-  <category name="Time">
+defaultToolboxTimeOfDay = function() {
+    return `
+  <category name="Time of Day">
     <!-- x < hour < y -->
     <block type="logic_operation">
       <value name="A">
@@ -234,27 +234,26 @@ defaultToolboxTime = function() {
     <block type="variables_get">
       <field name="VAR">sunset_time_minutes</field>
     </block>
-    <block type="variables_get">
-      <field name="VAR">monday</field>
-    </block>
-    <block type="variables_get">
-      <field name="VAR">tuesday</field>
-    </block>
-    <block type="variables_get">
-      <field name="VAR">wednesday</field>
-    </block>
-    <block type="variables_get">
-      <field name="VAR">thursday</field>
-    </block>
-    <block type="variables_get">
-      <field name="VAR">friday</field>
-    </block>
-    <block type="variables_get">
-      <field name="VAR">saturday</field>
-    </block>
-    <block type="variables_get">
-      <field name="VAR">sunday</field>
-    </block>
+  </category>
+  `;
+};
+
+defaultToolboxTimeOfWeek = function() {
+    return wrapBlocksInCategory("Time of Week",
+      createMultiVarAndOrBlock(["monday", "tuesday", "wednesday", "thursday", "friday"]) +
+      createMultiVarAndOrBlock(["saturday", "sunday"]) +
+      createVariable("monday") +
+      createVariable("tuesday")+
+      createVariable("wednesday")+
+      createVariable("thursday")+
+      createVariable("friday")+
+      createVariable("saturday")+
+      createVariable("sunday"));
+};
+
+defaultToolboxTimeZone = function() {
+  return `
+  <category name="Time Zone">
     <block type="variables_get">
       <field name="VAR">america_los_angeles</field>
     </block>
@@ -267,26 +266,16 @@ defaultToolboxTime = function() {
     <block type="variables_get">
       <field name="VAR">america_new_york</field>
     </block>
-    <block type="logic_compare">
-      <value name="A">
-        <block type="variables_get">
-          <field name="VAR">hour</field>
-        </block>
-      </value>
-      <value name="B">
-        <block type="math_number">
-          <field name="NUM">13</field>
-        </block>
-      </value>
-    </block>
   </category>
   `;
 };
 
 defaultToolboxOperators = function() {
-  return wrapBlocksInCategory("and or =",
+  return wrapBlocksInCategory("and, or, not, =",
     createAndOrBlock("", "") +
-    '<block type="logic_compare"></block>' + 
+    '<block type="logic_negate"></block>' +
+    '<block type="logic_compare"></block>' +
+    createAndOrBlock(createAndOrBlock("",""), "") +
     createAndOrBlock(createAndOrBlock("",""),
                      createAndOrBlock("","")));
 };
