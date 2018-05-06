@@ -17,7 +17,7 @@ Meteor.methods({
       if (!error && response.statusCode == 200) {
         let res = JSON.parse(body);
         if (res !== Object(res)) {
-          log.warning("Locations/methods expected type Object but did not receive an Object")
+          console.warn("Locations/methods expected type Object but did not receive an Object")
         } else {
           console.log(res);
           let queryId = Queries.update(queryAttributes._id, {
@@ -25,7 +25,7 @@ Meteor.methods({
           });
         }
       } else {
-        log.warning("Yelp Category Search is not returning 200 status code");
+        console.warn("Yelp Category Search is not returning 200 status code");
       }
     }));
   }
