@@ -251,11 +251,10 @@ body {
 	grid-area: bottomcontent;
 }
 
-
 .wrapper {
 	display: grid;
 	grid-gap: 10px;
-	grid-template-columns: 620px 1580px;
+	grid-template-columns: 320px 1580px;
 	grid-template-rows: 1fr 1fr;
 	grid-template-areas:
 	"sidebar topcontent"
@@ -276,20 +275,6 @@ body {
 	padding: 10px;
 	font-size: 150%;
 }
-
-/* search results grid styles */
-.search-results-wrapper {
-	display: grid;
-	grid-template-columns: 0.9fr 1.1fr;
-	grid-gap: 10px;
-}
-
-.lego-search-results {
-	grid-area: lego-search-results;
-}
-
-/* construct legos grid styles */
-
 
 .remove-category .btn-panel-item {
 	padding: 0px 6px;

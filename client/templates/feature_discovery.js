@@ -68,24 +68,6 @@ Template.featureDiscovery.helpers({
     obj = Queries.findOne(queryId);
     return (obj.categories.length - obj.excluded_categories.length) / obj.categories.length
   },
-
-  'directedSearchResults': function() {
-    if (Session.get("searchInputText")) {
-      Meteor.subscribe("blockSearch", Session.get("searchInputText"));
-
-      // We cannot re-use the query as MiniMongo does not support the $text operator!
-      // Instead of resorting to a Meteor method we can hack around it by relying on an extra
-      // ad-hoc collection containing the sorted ids ...
-      const key = JSON.stringify(Session.get("searchInputText"));
-      const result = Detectors.BlockSearchResults.findOne(key);
-      if (result) {
-        const idsInSortOrder = result.results;
-        const blocksInSortedOrder = idsInSortOrder.map(id => Detectors.findOne(id));
-        return blocksInSortedOrder;
-      }
-    }
-  }
-
 });
 
 if (Meteor.isServer) {
