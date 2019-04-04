@@ -1,6 +1,7 @@
 import { Meteor } from 'meteor/meteor';
 
 import { exec } from 'child_process';
+import {Queries} from "../lib/collections/collections";
 
 Meteor.methods({
 

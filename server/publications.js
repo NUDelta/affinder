@@ -1,3 +1,5 @@
+import {Queries, Detectors} from "../lib/collections/collections";
+
 Meteor.publish('Queries', function() {
   // TODO(rlouie): limit to just the summary contents
   return Queries.find();
