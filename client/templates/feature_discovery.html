@@ -2,19 +2,8 @@
   <div class="panel panel-default">
     {{> searchBar}}
   </div>
-  <div class="search-results-wrapper">
-
-    <div class="panel panel-default left-search">
-      <div class="panel-heading">
-        Search by Matching Strings
-      </div>
-      <ul class="list-group">
-        {{#each directedSearchResults}}
-          {{> directedSearchResultItem}}
-        {{/each}}
-      </ul>
-    </div>
-    <div class="panel panel-default right-search">
+  <div>
+    <div class="panel panel-default">
       <div class="panel-heading">
         Yelp Categories you can find "{{searchInputText}}"
         <button id="convert-button" type="button" class="btn btn-small btn-primary">Combine Categories</button>
@@ -32,8 +21,6 @@
     </div>
   </div>
 
-  <!-- {{> blockSearchResults}} -->
-  <!-- {{> searchResults}} -->
 </template>
 
 <template name="searchBar">
@@ -48,23 +35,6 @@
       </span>
     </div>
   </form>
-</template>
-
-<template name="searchResults">
-  <div class="search-result-wrapper">
-    <div class="box">One</div>
-    <div class="box">Two</div>
-    <div class="box">Three</div>
-  </div>
-</template>
-
-<template name="directedSearchResultItem">
-  <li href="#" class="list-group-item" detectorDescription="{{description}}" detectorId="{{_id}}">
-    {{description}}
-    <button type="button" class="btn-use-block btn btn-primary btn-sm pull-right btn-panel-item">
-      <span class="glyphicon glyphicon-plus"  aria-hidden="true"></span>
-    </button>
-  </li>
 </template>
 
 <template name="stretchSearchResultItem">
