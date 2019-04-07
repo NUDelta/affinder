@@ -1,5 +1,17 @@
 # affinder
 
+## An Example Concept Expression that Affinder helps developers construct 
+
+Desired Concept to Express: "Open space for play", maybe such as place to toss a frisbee.
+Available Context Features? Place/Categories/Reviews, Weather, Time 
+
+(Asking Convo Assistants for "Whats a nice open space for play when I visit Evanston IL", why do we need this representation for retrieval, rather than what current search engines tell us?)
+
+Obstacle - Top Down: No available context features that detect "open space"
+
+Intermed. Concept: Start with parks (open grassy fields)
+
+
 ## Running
 Affinder depends on [`affinder-search`](https://github.com/youralien/affinder-search) to be running. Make sure [`updateYelpCategories`](https://github.com/NUDelta/affinder/blob/master/server/methods.js) is pointing to a running instance of affinder-search's search_yelp_categories_server.py
 

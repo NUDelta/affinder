@@ -1,3 +1,5 @@
+import {Detectors} from "../../lib/collections/collections";
+
 Template.workspace.events({
   'submit form': function(e) {
     e.preventDefault();

@@ -1,3 +1,5 @@
+import {Queries, Detectors} from "../../lib/collections/collections";
+
 Template.searchBar.events({
   'submit form#blockSearch': function(e) {
     e.preventDefault();
@@ -8,7 +10,7 @@ Template.searchBar.events({
     Session.set("searchInputText", queryText);
 
     // Stretch Search
-    const queryId = Queries.insert({ query: queryText });
+    const queryId = Queries.insert({ query: queryText, categories: [], excluded_categories: []});
     Session.set('yelpLoading', true);
     Session.set('currentQueryId', queryId);
     Meteor.call('updateYelpPlaceCategories',
@@ -77,7 +79,7 @@ if (Meteor.isServer) {
 }
 Template.featureDiscovery.events({
   'click .btn-remove-cat': function(e) {
-    const cat2rm = $(e.target).parent().attr('placeCategory');
+    const cat2rm = e.target.closest('li').getAttribute('placeCategory');
 
     Queries.update(Session.get('currentQueryId'), {
       $addToSet: {excluded_categories: cat2rm}
@@ -85,7 +87,7 @@ Template.featureDiscovery.events({
   },
 
   'click .btn-add-cat': function(e) {
-    const cat2add = $(e.target).parent().attr('placeCategory');
+    const cat2add = e.target.closest('li').getAttribute('placeCategory');
 
     newTree = defaultToolbox();
     detectorDescription = formatDetectorVarNames(cat2add);
