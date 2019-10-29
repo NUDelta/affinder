@@ -1,4 +1,4 @@
-import {Queries, Detectors} from "../lib/collections/collections";
+import {Queries, Detectors, ExampleSituations} from "../lib/collections/collections";
 
 Meteor.publish('Queries', function() {
   // TODO(rlouie): limit to just the summary contents
@@ -27,4 +27,25 @@ Meteor.publish("blockSearch", function(searchValue) {
 
 Meteor.publish('Detectors', function() {
   return Detectors.find();
+});
+
+const situationHumanReadableFields = {
+  "alias": true,
+  "name": true,
+  "image_url": true,
+  "url": true,
+  "coordinates": true,
+  "categories": true
+};
+Meteor.publish('ExampleSituations.HumanReadable.topK', function(topK) {
+  check(topK, Number);
+  return ExampleSituations.find({}, {
+    limit: topK,
+    fields: situationHumanReadableFields
+  });
+});
+Meteor.publish('ExampleSituations.HumanReadable', function() {
+  return ExampleSituations.find({}, {
+    fields: situationHumanReadableFields
+  });
 });

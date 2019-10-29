@@ -1,7 +1,10 @@
+'use strict';
 import { Meteor } from 'meteor/meteor';
+const yelp = require('yelp-fusion');
 
 import { exec } from 'child_process';
-import {Queries} from "../lib/collections/collections";
+import {ExampleSituations, Queries} from "../lib/collections/collections";
+import {AUTH} from "../lib/config";
 
 Meteor.methods({
 
@@ -29,5 +32,27 @@ Meteor.methods({
         console.warn("Yelp Category Search is not returning 200 status code");
       }
     }));
+  },
+
+  yelpFusionBusinessSearch: function(searchParams) {
+    check(searchParams, {
+      // https://www.yelp.com/developers/documentation/v3/business_search
+      term: String,
+      location: String,
+      categories: Match.Optional(String)
+    });
+
+    const client = yelp.client(AUTH.YELP_API_KEY);
+
+    client.search(searchParams).then(response => {
+      console.log(`We found ${response.jsonBody.businesses.length} place examples`);
+      response.jsonBody.businesses.forEach(business => {
+        ExampleSituations.insert(business);
+        const prettyJson = JSON.stringify(business, null, 4);
+        console.log(prettyJson);
+      });
+    }).catch(e => {
+      console.log(e);
+    });
   }
 });

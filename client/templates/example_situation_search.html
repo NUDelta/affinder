@@ -1,0 +1,83 @@
+<template name="exampleSituationSearch">
+  <h3>Situation Search</h3>
+  <form id="situationSearch">
+    <div class="input-group">
+      <input name="search" type="text" class="form-control" placeholder="Search Location">
+      <span class="input-group-btn">
+        <button class="btn btn-default" type="submit">Search Example Situations!</button>
+      </span>
+    </div>
+  </form>
+  <ul class="list-group">
+    {{#each situation in exampleSituations}}
+      <li class="list-group-item">
+        {{> situationItem (situationArgs situation)}}
+      </li>
+    {{/each}}
+  </ul>
+</template>
+
+<template name="situationItem">
+  <div style="display: table; table-layout: auto;">
+    <div style="display: table-cell; padding-right: 5px;">
+      <div class="place-photo-item">
+        <img
+            src={{situationImageUrl situation}}
+            width="90" height="90"
+            style="object-fit: cover; border-radius: 4px; vertical-align: middle;"
+        />
+      </div>
+    </div>
+    <div style="display: table-cell;">
+      <div class="place-name">
+        <h3 style="font-size: 16px; font-weight: 700;">
+          <p><a href="#">{{situationName situation}}</a></p>
+        </h3>
+      </div>
+      <div class="place-categories">
+        {{#each category in (situationCategoriesReadable situation)}}
+          <span><a href="#">
+            {{category}},
+          </a></span>
+          {{name}}
+        {{/each}}
+      </div>
+    </div>
+  </div>
+</template>
+
+<template name="situationListTest">
+  <ul class="list-group">
+    <li class="list-group-item">
+      {{> situationItemTest}}
+    </li>
+    <li class="list-group-item">
+      {{> situationItemTest}}
+    </li>
+  </ul>
+</template>
+
+<template name="situationItemTest">
+  <div style="display: table; table-layout: auto;">
+    <div style="display: table-cell; padding-right: 5px;">
+      <div class="place-photo-item">
+        <img
+            src="https://s3-media3.fl.yelpcdn.com/bphoto/FtsOLmsPSp6H5DqvvEWZLg/o.jpg"
+            width="90" height="90"
+            style="border-radius: 4px; vertical-align: middle;"
+        />
+      </div>
+    </div>
+    <div style="display: table-cell;">
+      <div class="place-name">
+        <h3 style="font-size: 16px; font-weight: 700;">
+          <p>1. <a href="#">Garfield Dog Park</a></p>
+        </h3>
+      </div>
+      <div class="place-categories">
+        <span><a href="#">Parks</a></span>
+        <span><a href="#">Dog Parks</a></span>
+      </div>
+    </div>
+  </div>
+</template>
