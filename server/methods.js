@@ -3,7 +3,7 @@ import { Meteor } from 'meteor/meteor';
 const yelp = require('yelp-fusion');
 
 import { exec } from 'child_process';
-import {ExampleSituations, Queries} from "../lib/collections/collections";
+import {ExampleSituations, Queries, LabeledExamples} from "../lib/collections/collections";
 import {AUTH} from "../lib/config";
 
 Meteor.methods({
@@ -54,5 +54,30 @@ Meteor.methods({
     }).catch(e => {
       console.log(e);
     });
+  },
+
+  'updateSituationExampleLabel'(selectFields, label) {
+    check(selectFields, {
+      'detectorId': String,
+      'situationId': String,
+      'situationAlias': String
+    });
+    check(label, String);
+
+    let booleanLabel;
+    if (label == 'true') {
+      booleanLabel = true;
+    } else if (label == 'false') {
+      booleanLabel = false;
+    }
+    if (booleanLabel !== null) {
+      LabeledExamples.upsert(selectFields, {
+        $set: {
+          'label': booleanLabel
+        }
+      });
+    } else {
+      console.error(`Was not passed a true or false string, instead got ${label}`);
+    }
   }
 });

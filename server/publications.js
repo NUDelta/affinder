@@ -1,4 +1,4 @@
-import {Queries, Detectors, ExampleSituations} from "../lib/collections/collections";
+import {Queries, Detectors, ExampleSituations, LabeledExamples} from "../lib/collections/collections";
 
 Meteor.publish('Queries', function() {
   // TODO(rlouie): limit to just the summary contents
@@ -30,6 +30,7 @@ Meteor.publish('Detectors', function() {
 });
 
 const situationHumanReadableFields = {
+  "_id": true,
   "alias": true,
   "name": true,
   "image_url": true,
@@ -48,4 +49,9 @@ Meteor.publish('ExampleSituations.HumanReadable', function() {
   return ExampleSituations.find({}, {
     fields: situationHumanReadableFields
   });
+});
+
+
+Meteor.publish('LabeledExamples', function() {
+  return LabeledExamples.find({});
 });

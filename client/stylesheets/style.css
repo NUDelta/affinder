@@ -249,6 +249,11 @@ body {
 
 .bottomcontent {
 	grid-area: bottomcontent;
+	display: grid;
+	grid-template-columns: 1fr 4fr;
+	grid-template-areas: "listview mapview";
+	background-color: #fff;
+	color: #444;
 }
 
 .wrapper {
@@ -263,6 +268,14 @@ body {
 	color: #444;
 }
 
+.example-situation-listview {
+	grid-area: listview;
+}
+
+.example-situation-mapview {
+	grid-area: mapview;
+}
+
 .blockly-div {
 	height: 300px;
 }
@@ -273,6 +286,15 @@ body {
 	border-radius: 3px;
 	padding: 5px;
 }
+
+/* BEGIN example situation search */
+.checkcontainer {
+	display: block;
+	position: relative;
+	width: 15ch;
+    user-select: none;
+}
+/* END example situation search */
 
 .remove-category .btn-panel-item {
 	padding: 0px 6px;
