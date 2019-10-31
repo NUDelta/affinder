@@ -1,12 +1,12 @@
 <template name="featureDiscovery">
-  <div class="panel panel-default">
+  <div>
     {{> searchBar}}
   </div>
   <div>
     <div class="panel panel-default">
       <div class="panel-heading">
-        Yelp Categories you can find "{{searchInputText}}"
-        <button id="convert-button" type="button" class="btn btn-small btn-primary">Combine Categories</button>
+        Place Categories for "{{searchInputText}}"
+        <button id="convert-button" type="button" class="btn btn-xs btn-primary">Combine Categories</button>
         <!--{{precision currentQueryId}}-->
       </div>
       <ul class="list-group">
@@ -29,9 +29,6 @@
       <input name="search" type="text" class="form-control" placeholder="Search for...">
       <span class="input-group-btn">
         <button class="btn btn-default" type="submit">Go!</button>
-        <button name="info" class="btn btn-default" type="button" aria-label="Help me use discover">
-          <span class="glyphicon glyphicon-question-sign"  aria-hidden="true"></span>
-        </button>
       </span>
     </div>
   </form>
@@ -40,10 +37,10 @@
 <template name="stretchSearchResultItem">
   <li href="#" class="list-group-item" placeCategory="{{this}}">
     {{this}}
-    <button type="button" class="btn-remove-cat btn btn-warning btn-sm pull-right btn-panel-item">
+    <button type="button" class="btn-remove-cat btn btn-warning btn-xs pull-right btn-panel-item">
       <span class="glyphicon glyphicon-trash"  aria-hidden="true"></span>
     </button>
-    <button type="button" class="btn-add-cat btn btn-primary btn-sm pull-right btn-panel-item">
+    <button type="button" class="btn-add-cat btn btn-primary btn-xs pull-right btn-panel-item">
       <span class="glyphicon glyphicon-plus"  aria-hidden="true"></span>
     </button>
   </li>

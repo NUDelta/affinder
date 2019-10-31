@@ -253,27 +253,25 @@ body {
 
 .wrapper {
 	display: grid;
-	grid-gap: 10px;
-	grid-template-columns: 320px 1580px;
-	grid-template-rows: 1fr 1fr;
+	grid-gap: 5px;
+	grid-template-columns: 1fr 6fr;
+	grid-template-rows: 1fr auto;
 	grid-template-areas:
 	"sidebar topcontent"
-	"sidebar  topcontent";
+	"sidebar bottomcontent";
 	background-color: #fff;
 	color: #444;
 }
 
 .blockly-div {
-	height: 1000px;
-	width:1560px;
+	height: 300px;
 }
 
 .box {
 	background-color: #444;
 	color: #fff;
-	border-radius: 5px;
-	padding: 10px;
-	font-size: 150%;
+	border-radius: 3px;
+	padding: 5px;
 }
 
 .remove-category .btn-panel-item {

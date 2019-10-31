@@ -31,23 +31,11 @@
       <div>
         Construct Detector
       </div>
-      <div>
-        <form>
-          <div class="input-group">
-            <input name="detectorname" type="text" class="form-control" placeholder="Describe your detector..." required="true">
-            <span class="input-group-btn">
-              <button class="btn btn-default" id="checksave" type="submit">Save!</button>
-              <button name="info" class="btn btn-default" type="button" aria-label="Help me name and save my detector">
-                <span class="glyphicon glyphicon-question-sign"  aria-hidden="true"></span>
-              </button>
-            </span>
-          </div>
-        </form>
-      </div>
+      {{> detectorInputOutput}}
       {{> blockly}}
     </div>
 
-    <div>
+    <div id="simulate" class="box bottomcontent">
       {{> exampleSituationSearch}}
     </div>
   </div>
