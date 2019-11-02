@@ -1,7 +1,9 @@
-WORKSPACE = "";
+import {applyDetector} from "../../lib/detectors/detectors";
+
+let WORKSPACE = "";
 
 Template.blockly.rendered = function() {
-  var toolBoxTree = defaultToolbox();
+  let toolBoxTree = defaultToolbox();
 
   WORKSPACE = Blockly.inject('blocklyDiv',
     {toolbox: stringifyToolboxTree(toolBoxTree),
@@ -15,47 +17,37 @@ Template.blockly.rendered = function() {
      trashcan: true});
 
   WORKSPACE.addChangeListener(function (event) {
-    var code = Blockly.JavaScript.workspaceToCode(WORKSPACE);
+    let code = Blockly.JavaScript.workspaceToCode(WORKSPACE);
     document.getElementById('compiledBlockly').value = code;
 
-    var splitJS = splitVarDeclarationAndRules(code);
+    let splitJS = splitVarDeclarationAndRules(code);
 
-    context = {'japanese': true, 'thursday': true};
+    let context = {'japanese': true, 'thursday': true};
     mockTestDetector(context, splitJS[0], splitJS[1]);
   });
 };
 
-splitVarDeclarationAndRules = function(code) {
-  var lines = code.split('\n');
-  var threshold = lines.findIndex(e => e == "");
-  var varDecl = lines.slice(0, threshold);
-  var rules = lines.splice(threshold + 1).filter(e => e != "");
+let splitVarDeclarationAndRules = function(code) {
+  let lines = code.split('\n');
+  let threshold = lines.findIndex(e => e == "");
+  let varDecl = lines.slice(0, threshold);
+  let rules = lines.splice(threshold + 1).filter(e => e != "");
   return [varDecl, rules];
 };
 
-mockTestDetector = function (elementaryContext, varDecl, rules) {
-  // elementaryContext: key value pairs of (elementaryContext: values)
-  // varDecl: list of strings of JS var declaration
+let mockTestDetector = function (userAffordances, varDecl, rules) {
+  // userAffordances: key value pairs of (elementaryContext: values)
+  // varDecl: list of strings of JS let declaration
   // rules: list of strings of JS context rules
-  var contextAsJS = keyvalues2vardecl(elementaryContext);
-  console.log(contextAsJS);
-  editedCode = varDecl.concat(contextAsJS).concat(rules).join('\n');
-  console.log(editedCode);
-  console.log(eval(editedCode));
+  let prediction = applyDetector(userAffordances, varDecl, rules);
+  console.log(`userAffordances: ${JSON.stringify(userAffordances)}`);
+  console.log(`varDecl: ${JSON.stringify(varDecl)}`);
+  console.log(`rules: ${JSON.stringify(rules)}`);
+  console.log(`prediction: ${prediction}`);
 };
 
-keyvalues2vardecl = function(obj) {
-  vardecl = [];
-  for (var key in obj) {
-    if (obj.hasOwnProperty(key)) {
-      vardecl.push("var " + key + " = " + obj[key] + ";")      
-    }
-  }
-  return vardecl;
-};
-
-defaultToolbox = function () {
-  var toolbox = {};
+let defaultToolbox = function () {
+  let toolbox = {};
   toolbox["placeCategories"] = defaultToolboxPlaceCategories();
   toolbox["weather"] = defaultToolboxWeather();
   toolbox["time"] = defaultToolboxTimeOfDay() + defaultToolboxTimeOfWeek() + defaultToolboxTimeZone();
@@ -64,8 +56,8 @@ defaultToolbox = function () {
   return toolbox;
 };
 
-stringifyToolboxTree = function(toolboxTree) {
-  var string = '<xml id="toolbox" style="display: none">'
+let stringifyToolboxTree = function(toolboxTree) {
+  let string = '<xml id="toolbox" style="display: none">'
   if (toolboxTree.hasOwnProperty("discoveries")) {
     string += toolboxTree["discoveries"];
     string += '<sep gap="48"></sep>';
@@ -81,15 +73,15 @@ stringifyToolboxTree = function(toolboxTree) {
   return string;
 };
 
-wrapBlocksInCategory = function(name, blocks) {
-  category = '<category name="' + name + '">';
+let wrapBlocksInCategory = function(name, blocks) {
+  let category = '<category name="' + name + '">';
   category += blocks;
   category += '</category>';
   return category;
 };
 
-createVariable = function(name) {
-  variable = `
+let createVariable = function(name) {
+  let variable = `
   <block type="variables_get">
     <field name="VAR">`;
   variable += name;
@@ -98,8 +90,8 @@ createVariable = function(name) {
   return variable;
 };
 
-createAndOrBlock = function(a, b) {
-  block = `
+let createAndOrBlock = function(a, b) {
+  let block = `
   <block type="logic_operation">
     <field name="OP">OR</field>
     <value name="A">`;
@@ -112,7 +104,7 @@ createAndOrBlock = function(a, b) {
   return block;
 };
 
-createMultiVarAndOrBlock = function(abc) {
+let createMultiVarAndOrBlock = function(abc) {
   if (abc.length === 1) {
     return createVariable(abc[0]);
   }
@@ -125,14 +117,14 @@ createMultiVarAndOrBlock = function(abc) {
   }
 };
 
-defaultToolboxPlaceCategories = function() {
+let defaultToolboxPlaceCategories = function() {
   return wrapBlocksInCategory("Place Categories",
     createMultiVarAndOrBlock(["japanese", "chinese", "korean"]) +
     createMultiVarAndOrBlock(["beach", "lakes"])
     );
 };
 
-defaultToolboxWeather = function() {
+let defaultToolboxWeather = function() {
   return `
   <category name="Weather" color="210">
     <!-- from https://openweathermap.org/weather-conditions -->
@@ -176,7 +168,7 @@ defaultToolboxWeather = function() {
   `;
 };
 
-defaultToolboxTimeOfDay = function() {
+let defaultToolboxTimeOfDay = function() {
     return `
   <category name="Time of Day">
     <!-- x < hour < y -->
@@ -238,7 +230,7 @@ defaultToolboxTimeOfDay = function() {
   `;
 };
 
-defaultToolboxTimeOfWeek = function() {
+let defaultToolboxTimeOfWeek = function() {
     return wrapBlocksInCategory("Time of Week",
       createMultiVarAndOrBlock(["monday", "tuesday", "wednesday", "thursday", "friday"]) +
       createMultiVarAndOrBlock(["saturday", "sunday"]) +
@@ -251,7 +243,7 @@ defaultToolboxTimeOfWeek = function() {
       createVariable("sunday"));
 };
 
-defaultToolboxTimeZone = function() {
+let defaultToolboxTimeZone = function() {
   return `
   <category name="Time Zone">
     <block type="variables_get">
@@ -270,7 +262,7 @@ defaultToolboxTimeZone = function() {
   `;
 };
 
-defaultToolboxOperators = function() {
+let defaultToolboxOperators = function() {
   return wrapBlocksInCategory("and, or, not, =",
     createAndOrBlock("", "") +
     '<block type="logic_negate"></block>' +
@@ -280,7 +272,7 @@ defaultToolboxOperators = function() {
                      createAndOrBlock("","")));
 };
 
-defaultToolboxVariables = function() {
+let defaultToolboxVariables = function() {
   return `
   <category name="Variables" custom="VARIABLE"></category>
   `
