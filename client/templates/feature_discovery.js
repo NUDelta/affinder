@@ -1,4 +1,12 @@
 import {Queries, Detectors} from "../../lib/collections/collections";
+import {
+  WORKSPACE,
+  createMultiVarAndOrBlock,
+  createVariable,
+  defaultToolbox,
+  stringifyToolboxTree,
+  wrapBlocksInCategory
+} from "./blockly";
 
 Template.searchBar.events({
   'submit form#blockSearch': function(e) {
@@ -61,13 +69,13 @@ Template.featureDiscovery.helpers({
 
   'includedCategories': function(queryId) {
     if (queryId) {
-      obj = Queries.findOne(queryId);
+      let obj = Queries.findOne(queryId);
       return resolveAllAndExcludedCats(obj.categories, obj.excluded_categories);
     }
   },
 
   'precision': function(queryId) {
-    obj = Queries.findOne(queryId);
+    let obj = Queries.findOne(queryId);
     return (obj.categories.length - obj.excluded_categories.length) / obj.categories.length
   },
 });
@@ -89,15 +97,15 @@ Template.featureDiscovery.events({
   'click .btn-add-cat': function(e) {
     const cat2add = e.target.closest('li').getAttribute('placeCategory');
 
-    newTree = defaultToolbox();
-    detectorDescription = formatDetectorVarNames(cat2add);
+    let newTree = defaultToolbox();
+    let detectorDescription = formatDetectorVarNames(cat2add);
     newTree["discoveries"] = wrapBlocksInCategory(detectorDescription,
       createVariable(detectorDescription));
     WORKSPACE.updateToolbox(stringifyToolboxTree(newTree));
   },
 
   'click .btn-use-block': function(e) {
-    newTree = defaultToolbox();
+    let newTree = defaultToolbox();
     // TODO(rlouie): turn detector rules into blocks again if not elementary
     // let detectorId = $(e.target).parent().attr('detectorId');
     let detectorDescription = $(e.target).parent().attr('detectorDescription');
@@ -108,9 +116,9 @@ Template.featureDiscovery.events({
   },
 
   'click #convert-button': function(e) {
-    newTree = defaultToolbox();
-    obj = Queries.findOne(Session.get("currentQueryId"));
-    cats = resolveAllAndExcludedCats(obj.categories, obj.excluded_categories);
+    let newTree = defaultToolbox();
+    let obj = Queries.findOne(Session.get("currentQueryId"));
+    let cats = resolveAllAndExcludedCats(obj.categories, obj.excluded_categories);
     cats = cats.map(function(elem) { return formatDetectorVarNames(elem); });
     newTree["placeCategories"] = wrapBlocksInCategory("Categories describing '" + obj.query +"'",
       createMultiVarAndOrBlock(cats));

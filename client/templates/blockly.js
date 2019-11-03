@@ -1,7 +1,8 @@
 import {applyDetector} from "../../lib/detectors/detectors";
 
-let WORKSPACE = "";
+export let WORKSPACE = "";
 
+export const compiledBlocklyDep = new Tracker.Dependency;
 Template.blockly.rendered = function() {
   let toolBoxTree = defaultToolbox();
 
@@ -16,9 +17,11 @@ Template.blockly.rendered = function() {
           scaleSpeed: 1.2},
      trashcan: true});
 
+
   WORKSPACE.addChangeListener(function (event) {
     let code = Blockly.JavaScript.workspaceToCode(WORKSPACE);
     document.getElementById('compiledBlockly').value = code;
+    compiledBlocklyDep.changed();
 
     let splitJS = splitVarDeclarationAndRules(code);
 
@@ -27,7 +30,7 @@ Template.blockly.rendered = function() {
   });
 };
 
-let splitVarDeclarationAndRules = function(code) {
+export const splitVarDeclarationAndRules = function(code) {
   let lines = code.split('\n');
   let threshold = lines.findIndex(e => e == "");
   let varDecl = lines.slice(0, threshold);
@@ -35,7 +38,7 @@ let splitVarDeclarationAndRules = function(code) {
   return [varDecl, rules];
 };
 
-let mockTestDetector = function (userAffordances, varDecl, rules) {
+export const mockTestDetector = function (userAffordances, varDecl, rules) {
   // userAffordances: key value pairs of (elementaryContext: values)
   // varDecl: list of strings of JS let declaration
   // rules: list of strings of JS context rules
@@ -46,7 +49,7 @@ let mockTestDetector = function (userAffordances, varDecl, rules) {
   console.log(`prediction: ${prediction}`);
 };
 
-let defaultToolbox = function () {
+export const defaultToolbox = function () {
   let toolbox = {};
   toolbox["placeCategories"] = defaultToolboxPlaceCategories();
   toolbox["weather"] = defaultToolboxWeather();
@@ -56,7 +59,7 @@ let defaultToolbox = function () {
   return toolbox;
 };
 
-let stringifyToolboxTree = function(toolboxTree) {
+export const stringifyToolboxTree = function(toolboxTree) {
   let string = '<xml id="toolbox" style="display: none">'
   if (toolboxTree.hasOwnProperty("discoveries")) {
     string += toolboxTree["discoveries"];
@@ -73,14 +76,14 @@ let stringifyToolboxTree = function(toolboxTree) {
   return string;
 };
 
-let wrapBlocksInCategory = function(name, blocks) {
+export const wrapBlocksInCategory = function(name, blocks) {
   let category = '<category name="' + name + '">';
   category += blocks;
   category += '</category>';
   return category;
 };
 
-let createVariable = function(name) {
+export const createVariable = function(name) {
   let variable = `
   <block type="variables_get">
     <field name="VAR">`;
@@ -90,7 +93,7 @@ let createVariable = function(name) {
   return variable;
 };
 
-let createAndOrBlock = function(a, b) {
+export const createAndOrBlock = function(a, b) {
   let block = `
   <block type="logic_operation">
     <field name="OP">OR</field>
@@ -104,7 +107,7 @@ let createAndOrBlock = function(a, b) {
   return block;
 };
 
-let createMultiVarAndOrBlock = function(abc) {
+export const createMultiVarAndOrBlock = function(abc) {
   if (abc.length === 1) {
     return createVariable(abc[0]);
   }
@@ -117,14 +120,14 @@ let createMultiVarAndOrBlock = function(abc) {
   }
 };
 
-let defaultToolboxPlaceCategories = function() {
+const defaultToolboxPlaceCategories = function() {
   return wrapBlocksInCategory("Place Categories",
     createMultiVarAndOrBlock(["japanese", "chinese", "korean"]) +
     createMultiVarAndOrBlock(["beach", "lakes"])
     );
 };
 
-let defaultToolboxWeather = function() {
+const defaultToolboxWeather = function() {
   return `
   <category name="Weather" color="210">
     <!-- from https://openweathermap.org/weather-conditions -->
@@ -168,7 +171,7 @@ let defaultToolboxWeather = function() {
   `;
 };
 
-let defaultToolboxTimeOfDay = function() {
+const defaultToolboxTimeOfDay = function() {
     return `
   <category name="Time of Day">
     <!-- x < hour < y -->
@@ -230,7 +233,7 @@ let defaultToolboxTimeOfDay = function() {
   `;
 };
 
-let defaultToolboxTimeOfWeek = function() {
+const defaultToolboxTimeOfWeek = function() {
     return wrapBlocksInCategory("Time of Week",
       createMultiVarAndOrBlock(["monday", "tuesday", "wednesday", "thursday", "friday"]) +
       createMultiVarAndOrBlock(["saturday", "sunday"]) +
@@ -243,7 +246,7 @@ let defaultToolboxTimeOfWeek = function() {
       createVariable("sunday"));
 };
 
-let defaultToolboxTimeZone = function() {
+const defaultToolboxTimeZone = function() {
   return `
   <category name="Time Zone">
     <block type="variables_get">
@@ -262,7 +265,7 @@ let defaultToolboxTimeZone = function() {
   `;
 };
 
-let defaultToolboxOperators = function() {
+const defaultToolboxOperators = function() {
   return wrapBlocksInCategory("and, or, not, =",
     createAndOrBlock("", "") +
     '<block type="logic_negate"></block>' +
@@ -272,7 +275,7 @@ let defaultToolboxOperators = function() {
                      createAndOrBlock("","")));
 };
 
-let defaultToolboxVariables = function() {
+const defaultToolboxVariables = function() {
   return `
   <category name="Variables" custom="VARIABLE"></category>
   `

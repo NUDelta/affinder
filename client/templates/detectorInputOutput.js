@@ -1,4 +1,5 @@
 import {Detectors} from "../../lib/collections/collections";
+import {splitVarDeclarationAndRules} from "./blockly";
 
 Template.detectorInputOutput.events({
   'submit form': function(e) {

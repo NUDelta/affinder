@@ -46,6 +46,9 @@
     <div style="display: table-cell;">
       {{> situationItemLabel situation=situation}}
     </div>
+    <div style="display: table-cell;">
+      {{> situationItemPrediction situation=situation}}
+    </div>
   </div>
 </template>
 
@@ -60,6 +63,13 @@
     False
     <input type="radio" value="false" checked="false" name="{{situation.alias}}">
     <span class="radiobtn"></span>
+  </label>
+</template>
+
+<template name="situationItemPrediction">
+  <p>Prediction</p>
+  <label>
+    <button class="btn btn-small">{{applyDetectorToSituation situation}}</button>
   </label>
 </template>
 

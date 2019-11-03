@@ -1,4 +1,7 @@
 import {ExampleSituations, LabeledExamples} from "../../lib/collections/collections";
+import {compiledBlocklyDep, splitVarDeclarationAndRules} from "./blockly";
+import {applyDetector, extractAffordances, matchAffordancesWithDetector} from "../../lib/detectors/detectors";
+
 
 Template.exampleSituationSearch.events({
   'submit form#situationSearch': function(e, target) {
@@ -12,8 +15,7 @@ Template.exampleSituationSearch.events({
 
     let [variables, rules] = splitVarDeclarationAndRules($('#compiledBlockly').val());
 
-
-    let vardecl2placecategory = (var_placecat) => {
+    const vardecl2placecategory = (var_placecat) => {
       // "var beach;"
       let placecat = var_placecat.split(' ')[1];
       // "beach;" or "beach"
@@ -63,7 +65,6 @@ Template.situationItem.helpers({
   'situationCategoriesAlias'(situation) {
     return situation.categories.map(obj => obj["alias"] );
   }
-
 });
 
 Template.situationItemLabel.events({
@@ -77,5 +78,21 @@ Template.situationItemLabel.events({
     console.log(JSON.stringify(selectFields));
     console.log(label);
     Meteor.call('updateSituationExampleLabel', selectFields, label);
+  }
+});
+
+Template.situationItemPrediction.helpers({
+  'applyDetectorToSituation'(situation) {
+    // TODO(rlouie): make this reactive or trigger upon a simulation update
+    compiledBlocklyDep.depend();
+    const detectorId = Session.get('detectorId');
+    // check if no detector for detectorId exists, otherwise attempt to match affordances to detector
+    if (!detectorId) {
+      return "n/a";
+    }
+    const affordances = extractAffordances(situation);
+    let [variables, rules] = splitVarDeclarationAndRules($('#compiledBlockly').val());
+    const prediction = applyDetector(affordances, variables, rules);
+    return prediction ? 'true' : 'false';
   }
 });
