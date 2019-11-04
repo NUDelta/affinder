@@ -1,4 +1,4 @@
-import {Queries, Detectors, ExampleSituations, LabeledExamples} from "../lib/collections/collections";
+import {Queries, Detectors, ExampleSituations} from "../lib/collections/collections";
 
 Meteor.publish('Queries', function() {
   // TODO(rlouie): limit to just the summary contents
@@ -32,11 +32,14 @@ Meteor.publish('Detectors', function() {
 const situationHumanReadableFields = {
   "_id": true,
   "alias": true,
+  "detectorId": true,
   "name": true,
   "image_url": true,
   "url": true,
   "coordinates": true,
-  "categories": true
+  "categories": true,
+  "label": true,
+  "prediction": true
 };
 Meteor.publish('ExampleSituations.HumanReadable.topK', function(topK) {
   check(topK, Number);
@@ -50,8 +53,9 @@ Meteor.publish('ExampleSituations.HumanReadable', function() {
     fields: situationHumanReadableFields
   });
 });
-
-
-Meteor.publish('LabeledExamples', function() {
-  return LabeledExamples.find({});
+Meteor.publish('ExampleSituations.HumanReadable.for.detectorId', function(detectorId) {
+  check(detectorId, String);
+  return ExampleSituations.find({'detectorId': detectorId}, {
+    fields: situationHumanReadableFields
+  });
 });

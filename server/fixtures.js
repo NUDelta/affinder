@@ -1,4 +1,4 @@
-import {Detectors, ExampleSituations, LabeledExamples} from "../lib/collections/collections";
+import {Detectors, ExampleSituations} from "../lib/collections/collections";
 import {CONFIG} from "../lib/config";
 
 // elementary contexts
@@ -17,6 +17,5 @@ Detectors.rawCollection().createIndex({"description": "text"});
 
 if (CONFIG.RESET) {
   ExampleSituations.remove({});
-  LabeledExamples.remove({});
 }
 

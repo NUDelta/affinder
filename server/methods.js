@@ -3,7 +3,7 @@ import { Meteor } from 'meteor/meteor';
 const yelp = require('yelp-fusion');
 
 import { exec } from 'child_process';
-import {ExampleSituations, Queries, LabeledExamples} from "../lib/collections/collections";
+import {ExampleSituations, Queries} from "../lib/collections/collections";
 import {AUTH} from "../lib/config";
 
 Meteor.methods({
@@ -34,33 +34,44 @@ Meteor.methods({
     }));
   },
 
-  yelpFusionBusinessSearch: function(searchParams) {
+  yelpFusionBusinessSearch: function(searchParams, detectorId) {
     check(searchParams, {
       // https://www.yelp.com/developers/documentation/v3/business_search
       term: String,
       location: String,
       categories: Match.Optional(String)
     });
+    check(detectorId, String);
 
     const client = yelp.client(AUTH.YELP_API_KEY);
 
     client.search(searchParams).then(response => {
       console.log(`We found ${response.jsonBody.businesses.length} place examples`);
       response.jsonBody.businesses.forEach(business => {
-        ExampleSituations.insert(business);
-        const prettyJson = JSON.stringify(business, null, 4);
-        console.log(prettyJson);
+        let uniqueIdentifiers = {
+          'id': business['id'],
+          'alias': business['alias'],
+          'detectorId': detectorId
+        };
+        const oneExample = ExampleSituations.findOne(uniqueIdentifiers);
+        if (!oneExample) {
+          let document = Object.assign(business, {'detectorId': detectorId});
+          ExampleSituations.insert(document);
+
+          const prettyJson = JSON.stringify(business, null, 4);
+          console.log(prettyJson);
+        }
       });
     }).catch(e => {
       console.log(e);
     });
   },
 
-  'updateSituationExampleLabel'(selectFields, label) {
+  'updateExampleSituationLabel'(selectFields, label) {
     check(selectFields, {
+      '_id': String,
       'detectorId': String,
-      'situationId': String,
-      'situationAlias': String
+      'alias': String
     });
     check(label, String);
 
@@ -71,13 +82,38 @@ Meteor.methods({
       booleanLabel = false;
     }
     if (booleanLabel !== null) {
-      LabeledExamples.upsert(selectFields, {
+      ExampleSituations.upsert(selectFields, {
         $set: {
           'label': booleanLabel
         }
       });
     } else {
       console.error(`Was not passed a true or false string, instead got ${label}`);
+    }
+  },
+
+  'updateExampleSituationPrediction'(selectFields, prediction) {
+    check(selectFields, {
+      '_id': String,
+      'detectorId': String,
+      'alias': String
+    });
+    check(prediction, String);
+
+    let booleanPrediction;
+    if (prediction == 'true') {
+      booleanPrediction = true;
+    } else if (prediction == 'false') {
+      booleanPrediction = false;
+    }
+    if (booleanPrediction !== null) {
+      ExampleSituations.upsert(selectFields, {
+        $set: {
+          'prediction': booleanPrediction
+        }
+      });
+    } else {
+      console.error(`Was not passed a true or false string, instead got ${prediction}`);
     }
   }
 });

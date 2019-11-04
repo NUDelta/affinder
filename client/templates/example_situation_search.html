@@ -1,20 +1,35 @@
 <template name="exampleSituationSearch">
   <div>Situation Search</div>
-  <form id="situationSearch">
-    <div class="input-group">
-      <input name="search" type="text" class="form-control" placeholder="Search Chicago">
-      <span class="input-group-btn">
-        <button class="btn btn-default" type="submit">Simulate Concept Expression</button>
-      </span>
-    </div>
-  </form>
-  <ul class="list-group">
-    {{#each situation in exampleSituations}}
-      <li class="list-group-item">
-        {{> situationItem (situationArgs situation)}}
-      </li>
-    {{/each}}
-  </ul>
+  {{#if Template.subscriptionsReady}}
+    <form id="situationSearch">
+      <div class="input-group">
+        <input name="search" type="text" class="form-control" placeholder="Search Chicago">
+        <span class="input-group-btn">
+          <button class="btn btn-default" type="submit">Simulate Concept Expression</button>
+        </span>
+      </div>
+    </form>
+    <ul class="list-group">
+      {{#each situation in exampleSituations}}
+        <li class="list-group-item">
+          {{> situationItem (situationArgs situation)}}
+        </li>
+      {{/each}}
+    </ul>
+  {{/if}}
+</template>
+
+<template name="exampleSituationIssues">
+  <div>Issues</div>
+  {{#if Template.subscriptionsReady}}
+    <ul class="list-group">
+      {{#each situation in falsePositives}}
+        <li class="list-group-item">
+          {{> situationIssueItem (situationArgs situation)}}
+        </li>
+      {{/each}}
+    </ul>
+  {{/if}}
 </template>
 
 <template name="situationItem">
@@ -44,7 +59,7 @@
       </div>
     </div>
     <div style="display: table-cell;">
-      {{> situationItemLabel situation=situation}}
+      {{> situationItemLabelEdit situation=situation}}
     </div>
     <div style="display: table-cell;">
       {{> situationItemPrediction situation=situation}}
@@ -52,25 +67,112 @@
   </div>
 </template>
 
-<template name="situationItemLabel">
+<template name="situationIssueItem">
+  <div style="display: table; table-layout: auto;">
+    <div style="display: table-cell; padding-right: 5px;">
+      <div class="place-photo-item">
+        <img
+            src={{situation.image_url}}
+            width="90" height="90"
+            style="object-fit: cover; border-radius: 4px; vertical-align: middle;"
+        />
+      </div>
+    </div>
+    <div style="display: table-cell;">
+      <div class="place-name" style="width: 50ch">
+        <h3 style="font-size: 16px; font-weight: 700;">
+          <p><a href="#">{{situation.name}}</a></p>
+        </h3>
+      </div>
+      <div class="place-categories">
+        {{#each category in (situationCategoriesAlias situation)}}
+          <span><a href="#">
+            {{category}},
+          </a></span>
+          {{name}}
+        {{/each}}
+      </div>
+    </div>
+    <div style="display: table-cell;">
+      {{> situationItemLabelView situation=situation}}
+    </div>
+    <div style="display: table-cell;">
+      {{> situationItemPrediction situation=situation}}
+    </div>
+  </div>
+</template>
+
+<template name="situationItemLabelView">
+  {{#if Template.subscriptionsReady}}
+    <p>Label</p>
+    <label>
+      <button class="btn btn-small">{{situationLabel situation}}</button>
+    </label>
+  {{/if}}
+</template>
+
+<template name="situationItemLabelEdit">
   <p>Label</p>
-  <label class="checkcontainer">
-    True
-    <input type="radio" value="true" checked="false" name="{{situation.alias}}">
-    <span class="radiobtn"></span>
-  </label>
-  <label class="checkcontainer">
-    False
-    <input type="radio" value="false" checked="false" name="{{situation.alias}}">
-    <span class="radiobtn"></span>
-  </label>
+  {{#if (hasLabel situation)}}
+    {{#if (isLabelTrue situation)}}
+      <label class="checkcontainer">
+        True
+        <input type="radio" value="true" checked name="{{situation.alias}}">
+        <span class="radiobtn"></span>
+      </label>
+      <label class="checkcontainer">
+        N/A
+        <input type="radio" value="true" disabled name="{{situation.alias}}">
+        <span class="radiobtn"></span>
+      </label>
+      <label class="checkcontainer">
+        False
+        <input type="radio" value="false" name="{{situation.alias}}">
+        <span class="radiobtn"></span>
+      </label>
+    {{else}}
+      <label class="checkcontainer">
+        True
+        <input type="radio" value="true" name="{{situation.alias}}">
+        <span class="radiobtn"></span>
+      </label>
+      <label class="checkcontainer">
+        N/A
+        <input type="radio" value="true" disabled name="{{situation.alias}}">
+        <span class="radiobtn"></span>
+      </label>
+      <label class="checkcontainer">
+        False
+        <input type="radio" value="false" checked name="{{situation.alias}}">
+        <span class="radiobtn"></span>
+      </label>
+    {{/if}}
+  {{else}}
+    <label class="checkcontainer">
+      True
+      <input type="radio" value="true" name="{{situation.alias}}">
+      <span class="radiobtn"></span>
+    </label>
+    <label class="checkcontainer">
+      N/A
+      <input type="radio" value="true" disabled checked name="{{situation.alias}}">
+      <span class="radiobtn"></span>
+    </label>
+    <label class="checkcontainer">
+      False
+      <input type="radio" value="false" name="{{situation.alias}}">
+      <span class="radiobtn"></span>
+    </label>
+  {{/if}}
 </template>
 
 <template name="situationItemPrediction">
-  <p>Prediction</p>
-  <label>
-    <button class="btn btn-small">{{applyDetectorToSituation situation}}</button>
-  </label>
+  {{#if Template.subscriptionsReady}}
+    <p>Prediction</p>
+    <label>
+      <button class="btn btn-small">{{applyDetectorToSituation situation}}</button>
+    </label>
+  {{/if}}
 </template>
 
 <template name="situationListTest">

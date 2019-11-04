@@ -8,6 +8,10 @@ import {
   wrapBlocksInCategory
 } from "./blockly";
 
+Template.searchBar.onCreated(function() {
+  this.subscribe('Queries');
+});
+
 Template.searchBar.events({
   'submit form#blockSearch': function(e) {
     e.preventDefault();
@@ -53,6 +57,10 @@ function resolveAllAndExcludedCats(allCats, excludeCats) {
     return allCats;
   }
 }
+
+Template.featureDiscovery.onCreated(function() {
+  this.subscribe('Queries');
+});
 
 Template.featureDiscovery.helpers({
   'yelpLoading': function() {

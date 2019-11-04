@@ -1,37 +1,40 @@
 <template name="featureDiscovery">
-  <div>
-    {{> searchBar}}
-  </div>
-  <div>
-    <div class="panel panel-default">
-      <div class="panel-heading">
-        Place Categories for "{{searchInputText}}"
-        <button id="convert-button" type="button" class="btn btn-xs btn-primary">Combine Categories</button>
-        <!--{{precision currentQueryId}}-->
-      </div>
-      <ul class="list-group">
-        {{#if yelpLoading}}
-          <li class="list-group-item">{{> loadingSpinner}}</li>
-        {{else}}
-          {{#each (includedCategories currentQueryId)}}
-            {{> stretchSearchResultItem}}
-          {{/each}}
-        {{/if}}
-      </ul>
+  {{#if Template.subscriptionsReady}}
+    <div>
+      {{> searchBar}}
     </div>
-  </div>
-
+    <div>
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          Place Categories for "{{searchInputText}}"
+          <button id="convert-button" type="button" class="btn btn-xs btn-primary">Combine Categories</button>
+          <!--{{precision currentQueryId}}-->
+        </div>
+        <ul class="list-group">
+          {{#if yelpLoading}}
+            <li class="list-group-item">{{> loadingSpinner}}</li>
+          {{else}}
+            {{#each (includedCategories currentQueryId)}}
+              {{> stretchSearchResultItem}}
+            {{/each}}
+          {{/if}}
+        </ul>
+      </div>
+    </div>
+  {{/if}}
 </template>
 
 <template name="searchBar">
-  <form id="blockSearch">
-    <div class="input-group">
-      <input name="search" type="text" class="form-control" placeholder="Search for...">
-      <span class="input-group-btn">
-        <button class="btn btn-default" type="submit">Go!</button>
-      </span>
-    </div>
-  </form>
+  {{#if Template.subscriptionsReady}}
+    <form id="blockSearch">
+      <div class="input-group">
+        <input name="search" type="text" class="form-control" placeholder="Search for...">
+        <span class="input-group-btn">
+          <button class="btn btn-default" type="submit">Go!</button>
+        </span>
+      </div>
+    </form>
+  {{/if}}
 </template>
 
 <template name="stretchSearchResultItem">

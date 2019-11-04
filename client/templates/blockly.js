@@ -123,7 +123,7 @@ export const createMultiVarAndOrBlock = function(abc) {
 const defaultToolboxPlaceCategories = function() {
   return wrapBlocksInCategory("Place Categories",
     createMultiVarAndOrBlock(["japanese", "chinese", "korean"]) +
-    createMultiVarAndOrBlock(["beach", "lakes"])
+    createMultiVarAndOrBlock(["beaches", "lakes"])
     );
 };
 

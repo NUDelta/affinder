@@ -1,6 +1,10 @@
 import {Detectors} from "../../lib/collections/collections";
 import {splitVarDeclarationAndRules} from "./blockly";
 
+Template.detectorInputOutput.onCreated(function() {
+  this.subscribe('Detectors');
+});
+
 Template.detectorInputOutput.events({
   'submit form': function(e) {
     e.preventDefault();
