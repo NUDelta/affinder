@@ -24,8 +24,12 @@ Meteor.methods({
           console.warn("Locations/methods expected type Object but did not receive an Object")
         } else {
           console.log(res);
+          let arrayOfObjects = res.map((tup) => {
+            return {'feature': tup[0], 'weight': tup[1]}
+          });
+          console.log(arrayOfObjects);
           let queryId = Queries.update(queryAttributes._id, {
-            $addToSet: {"categories": {$each: Array.from(res) } }
+            $push: {"categories": {$each: Array.from(arrayOfObjects) } }
           });
         }
       } else {

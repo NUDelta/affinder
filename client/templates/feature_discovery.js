@@ -43,6 +43,9 @@ function resolveAllAndExcludedCats(allCats, excludeCats) {
     if (item instanceof Array) {
       // item: [category-name, tfidf-weight]
       return item[0];  // grab only category-name
+    } else if (item instanceof Object) {
+      // item: {feature: category-name, weight: tfidif-weight}
+      return item.feature;
     } else {
       // item: category-name
       return item;
