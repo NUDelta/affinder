@@ -85,10 +85,23 @@ Template.featureDiscovery.helpers({
     }
   },
 
+  'includedFeaturesWeights': function(queryId) {
+    if (queryId) {
+      let obj = Queries.findOne(queryId);
+      return obj.categories;
+    }
+  },
+
   'precision': function(queryId) {
     let obj = Queries.findOne(queryId);
     return (obj.categories.length - obj.excluded_categories.length) / obj.categories.length
   },
+});
+
+Template.featureWeightItem.helpers({
+  'shortenDecimal': function(number) {
+    return number.toPrecision(2);
+  }
 });
 
 if (Meteor.isServer) {

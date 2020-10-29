@@ -14,8 +14,9 @@
           {{#if yelpLoading}}
             <li class="list-group-item">{{> loadingSpinner}}</li>
           {{else}}
-            {{#each (includedCategories currentQueryId)}}
-              {{> stretchSearchResultItem}}
+            <!-- {{#each (includedCategories currentQueryId)}} -->
+            {{#each (includedFeaturesWeights currentQueryId)}}
+              {{> featureWeightItem }}
             {{/each}}
           {{/if}}
         </ul>
@@ -35,6 +36,21 @@
       </div>
     </form>
   {{/if}}
+</template>
+
+<template name="featureWeightItem">
+  <li href="#" class="list-group-item" placeCategory="{{this.feature}}">
+    <div>
+      {{this.feature}}
+      <button type="button" class="btn-remove-cat btn btn-warning btn-xs pull-right btn-panel-item">
+        <span class="glyphicon glyphicon-trash"  aria-hidden="true"></span>
+      </button>
+      <button type="button" class="btn-add-cat btn btn-primary btn-xs pull-right btn-panel-item">
+        <span class="glyphicon glyphicon-plus"  aria-hidden="true"></span>
+      </button>
+      {{ shortenDecimal this.weight }}
+    </div>
+  </li>
 </template>
 
 <template name="stretchSearchResultItem">
