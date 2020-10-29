@@ -54,6 +54,7 @@ Meteor.methods({
       response.jsonBody.businesses.forEach(business => {
         let uniqueIdentifiers = {
           'id': business['id'],
+          'timeInserted': Date.now(),
           'alias': business['alias'],
           'detectorId': detectorId
         };

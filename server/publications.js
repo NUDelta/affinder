@@ -31,6 +31,7 @@ Meteor.publish('Detectors', function() {
 
 const situationHumanReadableFields = {
   "_id": true,
+  "timeInserted": true,
   "alias": true,
   "detectorId": true,
   "name": true,

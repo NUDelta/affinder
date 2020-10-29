@@ -58,7 +58,7 @@ Template.exampleSituationSearch.helpers({
     // TODO: Subscription not fast enough
     // Meteor.subscribe('ExampleSituations.HumanReadable', topK);
 
-    let examples = ExampleSituations.find({}).fetch();
+    let examples = ExampleSituations.find({}, {sort: {timeInserted: 1}}).fetch();
     return examples;
   },
   'situationArgs'(situation) {
