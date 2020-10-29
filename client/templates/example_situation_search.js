@@ -1,3 +1,4 @@
+import {Tracker} from 'meteor/tracker'
 import {ExampleSituations} from "../../lib/collections/collections";
 import {compiledBlocklyDep, splitVarDeclarationAndRules} from "./blockly";
 import {applyDetector, extractAffordances} from "../../lib/detectors/detectors";
@@ -8,48 +9,63 @@ Template.exampleSituationSearch.onCreated(function() {
   });
 });
 
+const getYelpPlaceInstancesForCurrentCategories = (detectorId) => {
+  // TODO(rlouie): simulate the detector by
+  // (1) automatically searching the place categories for location (city, search region).
+  //     This would identify all "positives", and then we could see false positives
+  //     It would be unaware of "negatives", where we might identify false negatives
+  // (2) letting user search by term for location (city, search region)
+
+  let [variables, rules] = splitVarDeclarationAndRules($('#compiledBlockly').val());
+
+  const vardecl2placecategory = (var_placecat) => {
+    // "var beaches;"
+    let placecat = var_placecat.split(' ')[1];
+    // "beaches;" or "beaches"
+    placecat = placecat.slice(-1) == ';' ? placecat.slice(0,-1) : placecat;
+    return placecat;
+  };
+
+  // TODO(rlouie): will this break if we create intermediate concepts, where variables are not place category aliases?
+  let placecategories = variables.map(var_placecat => vardecl2placecategory(var_placecat));
+
+  if (placecategories.length == 0) {
+    alert('Update your context expression to include some place categories');
+  } else {
+    let searchByPlaceCategory = {
+      term: '',
+      categories: (placecategories.length > 1 ? placecategories.join(',') : placecategories[0]),
+      location: 'Chicago, IL'
+    };
+    console.log(JSON.stringify(searchByPlaceCategory));
+    Meteor.call('yelpFusionBusinessSearch', searchByPlaceCategory, detectorId);
+  }
+}
+
 Template.exampleSituationSearch.events({
   'submit form#situationSearch': function(e, target) {
     e.preventDefault();
 
-    let detectorId = Session.get('detectorId');
-    if (!detectorId) {
-      let detectorDescription = prompt('Provide a detector description before simulating this detector');
-      $('input[name=detectorname]').val(detectorDescription);
-      $('#saveDetectorForm').trigger('submit');
-      return;
-    }
+    Tracker.autorun((computation) => {
+      // the current detector has not been saved into the database
+      if (!Session.get('detectorId')) {
+        let detectorDescription = $('input[name=detectorname]').val()
+        if (detectorDescription) {
+          // they forgot to save, so just save their current detector for them
+          $('#saveDetectorForm').trigger('submit');
+        } else {
+          detectorDescription = prompt('Provide a detector description before simulating this detector');
+          $('input[name=detectorname]').val(detectorDescription);
+          $('#saveDetectorForm').trigger('submit');
+        }
+        return;
+      }
 
-    // TODO(rlouie): simulate the detector by
-    // (1) automatically searching the place categories for location (city, search region).
-    //     This would identify all "positives", and then we could see false positives
-    //     It would be unaware of "negatives", where we might identify false negatives
-    // (2) letting user search by term for location (city, search region)
+      // detector is finally saved! don't keep checking, and now simulate the detector
+      computation.stop();
+      getYelpPlaceInstancesForCurrentCategories(Session.get('detectorId'));
 
-    let [variables, rules] = splitVarDeclarationAndRules($('#compiledBlockly').val());
-
-    const vardecl2placecategory = (var_placecat) => {
-      // "var beaches;"
-      let placecat = var_placecat.split(' ')[1];
-      // "beaches;" or "beaches"
-      placecat = placecat.slice(-1) == ';' ? placecat.slice(0,-1) : placecat;
-      return placecat;
-    };
-
-    // TODO(rlouie): will this break if we create intermediate concepts, where variables are not place category aliases?
-    let placecategories = variables.map(var_placecat => vardecl2placecategory(var_placecat));
-
-    if (placecategories.length == 0) {
-      alert('Update your context expression to include some place categories');
-    } else {
-      let searchByPlaceCategory = {
-        term: '',
-        categories: (placecategories.length > 1 ? placecategories.join(',') : placecategories[0]),
-        location: 'Chicago, IL'
-      };
-      console.log(JSON.stringify(searchByPlaceCategory));
-      Meteor.call('yelpFusionBusinessSearch', searchByPlaceCategory, detectorId);
-    }
+    });
   },
 });
 
