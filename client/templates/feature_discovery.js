@@ -110,6 +110,7 @@ if (Meteor.isServer) {
   });
 }
 Template.featureDiscovery.events({
+  // depreciated - may need to replace with a pinning model before combining 
   'click .btn-remove-cat': function(e) {
     const cat2rm = e.target.closest('li').getAttribute('placeCategory');
 
@@ -139,6 +140,7 @@ Template.featureDiscovery.events({
     WORKSPACE.updateToolbox(stringifyToolboxTree(newTree));
   },
 
+  // depreciated - may need to replace with a pinning model before combining
   'click #convert-button': function(e) {
     let newTree = defaultToolbox();
     let obj = Queries.findOne(Session.get("currentQueryId"));
