@@ -35,7 +35,7 @@ const getYelpPlaceInstancesForCurrentCategories = (detectorId) => {
     let searchByPlaceCategory = {
       term: '',
       categories: (placecategories.length > 1 ? placecategories.join(',') : placecategories[0]),
-      location: 'Chicago, IL'
+      location: document.getElementById('cityname').value
     };
     console.log(JSON.stringify(searchByPlaceCategory));
     Meteor.call('yelpFusionBusinessSearch', searchByPlaceCategory, detectorId);
