@@ -54,16 +54,18 @@ Meteor.methods({
       response.jsonBody.businesses.forEach(business => {
         let uniqueIdentifiers = {
           'id': business['id'],
-          'timeInserted': Date.now(),
           'alias': business['alias'],
           'detectorId': detectorId
         };
         const oneExample = ExampleSituations.findOne(uniqueIdentifiers);
         if (!oneExample) {
-          let document = Object.assign(business, {'detectorId': detectorId});
+          let document = Object.assign(business, {
+            'timeInserted': Date.now(),
+            'detectorId': detectorId
+          });
           ExampleSituations.insert(document);
 
-          const prettyJson = JSON.stringify(business, null, 4);
+          const prettyJson = JSON.stringify(document, null, 4);
           console.log(prettyJson);
         }
       });
