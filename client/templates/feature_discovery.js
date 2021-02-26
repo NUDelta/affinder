@@ -37,8 +37,10 @@ Template.searchBar.events({
       });
 
     // hide the abstraction prompt text, show the abstraction prompt button
-    document.getElementById('abstraction-prompt').style.display = "none";
-    document.getElementById('show-abstraction-prompt').style.display = "block";
+    if (Session.get('searchInputText') !== "") {
+      document.getElementById('abstraction-prompt').style.display = "none";
+      document.getElementById('show-abstraction-prompt').style.display = "block";
+    }
   }
 });
 
@@ -155,14 +157,14 @@ Template.featureDiscovery.events({
     WORKSPACE.updateToolbox(stringifyToolboxTree(newTree));
   },
 
-  'click #show-abstraction-prompt': function(e) {
-    let x = document.getElementById('abstraction-prompt');
-    if (x.style.display === "none") {
-      x.style.display = "block";
-    } else {
-      x.style.display = "none";
-    }
-  }
+  // 'click #show-abstraction-prompt': function(e) {
+  //   let x = document.getElementById('abstraction-prompt');
+  //   if (x.style.display === "none") {
+  //     x.style.display = "block";
+  //   } else {
+  //     x.style.display = "none";
+  //   }
+  // }
 });
 
 function formatDetectorVarNames(elem) {

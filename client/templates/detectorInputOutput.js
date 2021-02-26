@@ -5,7 +5,25 @@ Template.detectorInputOutput.onCreated(function() {
   this.subscribe('Detectors');
 });
 
+Template.detectorInputOutput.onRendered(function() {
+  document.getElementById('abstraction-prompt').style.display = "none";
+});
+
+Template.detectorInputOutput.helpers({
+  'searchInputText': function() {
+    return Session.get('searchInputText');
+  },
+});
+
 Template.detectorInputOutput.events({
+  'click #show-abstraction-prompt': function(e) {
+    let x = document.getElementById('abstraction-prompt');
+    if (x.style.display === "none") {
+      x.style.display = "block";
+    } else {
+      x.style.display = "none";
+    }
+  },
   'submit form': function(e) {
     e.preventDefault();
     let code = $('#compiledBlockly').val();

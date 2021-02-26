@@ -2,6 +2,12 @@
   <div>
     <form id="saveDetectorForm">
       <div class="input-group">
+        <span class="input-group-btn">
+          <button id="show-abstraction-prompt" class="btn btn-info" style="display: none;"><href>help me reflect about related cases</href></button>
+        </span>
+        <span id="abstraction-prompt">Why is "{{searchInputText}}" appropriate for the experience or activity?</span>
+      </div>
+      <div class="input-group">
         <input name="detectorname" type="text" class="form-control" placeholder="Describe your detector..." required="true">
         <span class="input-group-btn">
           {{#if Template.subscriptionsReady}}
