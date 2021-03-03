@@ -5,9 +5,11 @@
         <span class="input-group-btn">
           <button id="show-abstraction-prompt" class="btn btn-info" style="display: none;"><href>help me reflect about related cases</href></button>
         </span>
-        <span id="abstraction-prompt">Why is "{{searchInputText}}" appropriate for the experience or activity?</span>
+        <span id="abstraction-prompt">Why is "{{searchInputText}}" appropriate for the experience or activity? What are other cases that are appropriate in this way?”</span>
       </div>
       <div class="input-group">
+        <!-- wouldn't it be cool to have an autoresize text area, so people could organize their different concepts on each line?  -->
+        <!-- https://www.impressivewebs.com/textarea-auto-resize/ -->
         <input name="detectorname" type="text" class="form-control" placeholder="Describe your detector..." required="true">
         <span class="input-group-btn">
           {{#if Template.subscriptionsReady}}
