@@ -93,37 +93,47 @@ export const createVariable = function(name) {
   return variable;
 };
 
-export const createAndOrBlock = function(a, b) {
-  let block = `
-  <block type="logic_operation">
-    <field name="OP">OR</field>
-    <value name="A">`;
-  block += a;
-  block += `</value>
-        <value name="B">`;
-  block += b;
-  block += `</value>
-    </block>`;
-  return block;
+export const createLogicOperationBlock = function(operation, a, b) {
+  if ((operation == 'AND') || (operation == 'OR')) {
+    let block = `
+    <block type="logic_operation">
+      <field name="OP">${operation}</field>
+      <value name="A">`;
+    block += a;
+    block += `</value>
+          <value name="B">`;
+    block += b;
+    block += `</value>
+      </block>`;
+    return block;
+  }
+}
+
+export const createOrBlock = function(a, b) {
+  return createLogicOperationBlock('OR', a, b);
 };
 
-export const createMultiVarAndOrBlock = function(abc) {
+export const createAndBlock = function(a, b) {
+  return createLogicOperationBlock('AND', a, b);
+}
+
+export const createMultiVarOrBlock = function(abc) {
   if (abc.length === 1) {
     return createVariable(abc[0]);
   }
   else if (abc.length === 2) {
-    return createAndOrBlock(createVariable(abc[0]), createVariable(abc[1]));
+    return createOrBlock(createVariable(abc[0]), createVariable(abc[1]));
   } else {
-    return createAndOrBlock(
-      createAndOrBlock(createVariable(abc[0]), createVariable(abc[1])),
-      createMultiVarAndOrBlock(abc.slice(2, abc.length)));
+    return createOrBlock(
+      createOrBlock(createVariable(abc[0]), createVariable(abc[1])),
+      createMultiVarOrBlock(abc.slice(2, abc.length)));
   }
 };
 
 const defaultToolboxPlaceCategories = function() {
   return wrapBlocksInCategory("Place Categories",
-    createMultiVarAndOrBlock(["japanese", "chinese", "korean"]) +
-    createMultiVarAndOrBlock(["beaches", "lakes"])
+    createMultiVarOrBlock(["japanese", "chinese", "korean"]) +
+    createMultiVarOrBlock(["beaches", "lakes"])
     );
 };
 
@@ -235,8 +245,8 @@ const defaultToolboxTimeOfDay = function() {
 
 const defaultToolboxTimeOfWeek = function() {
     return wrapBlocksInCategory("Time of Week",
-      createMultiVarAndOrBlock(["monday", "tuesday", "wednesday", "thursday", "friday"]) +
-      createMultiVarAndOrBlock(["saturday", "sunday"]) +
+      createMultiVarOrBlock(["monday", "tuesday", "wednesday", "thursday", "friday"]) +
+      createMultiVarOrBlock(["saturday", "sunday"]) +
       createVariable("monday") +
       createVariable("tuesday")+
       createVariable("wednesday")+
@@ -267,12 +277,13 @@ const defaultToolboxTimeZone = function() {
 
 const defaultToolboxOperators = function() {
   return wrapBlocksInCategory("and, or, not, =",
-    createAndOrBlock("", "") +
+    createAndBlock("", "") +
+    createOrBlock("", "") +
     '<block type="logic_negate"></block>' +
     '<block type="logic_compare"></block>' +
-    createAndOrBlock(createAndOrBlock("",""), "") +
-    createAndOrBlock(createAndOrBlock("",""),
-                     createAndOrBlock("","")));
+    createOrBlock(createOrBlock("",""), "") +
+    createOrBlock(createOrBlock("",""),
+                     createOrBlock("","")));
 };
 
 const defaultToolboxVariables = function() {
