@@ -1,7 +1,7 @@
 import {Queries, Detectors} from "../../lib/collections/collections";
 import {
   WORKSPACE,
-  createMultiVarAndOrBlock,
+  createMultiVarOrBlock,
   createVariable,
   defaultToolbox,
   stringifyToolboxTree,
@@ -153,7 +153,7 @@ Template.featureDiscovery.events({
     let cats = resolveAllAndExcludedCats(obj.categories, obj.excluded_categories);
     cats = cats.map(function(elem) { return formatDetectorVarNames(elem); });
     newTree["placeCategories"] = wrapBlocksInCategory("Categories describing '" + obj.query +"'",
-      createMultiVarAndOrBlock(cats));
+      createMultiVarOrBlock(cats));
     WORKSPACE.updateToolbox(stringifyToolboxTree(newTree));
   },
 
