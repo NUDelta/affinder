@@ -294,11 +294,39 @@ body {
 }
 
 /* BEGIN example situation search */
-.checkcontainer {
-	display: block;
-	position: relative;
-	width: 15ch;
-    user-select: none;
+.human-labeling {
+	/* margin:4px; */
+	float:left;
+	width: 15ch
+}
+
+.human-labeling label {
+	float:left;
+	width:7ch;
+	margin:4px;
+	background-color:#EFEFEF;
+	border-radius:4px;
+	border:1px solid #D0D0D0;
+	overflow:auto;
+}
+
+.human-labeling label span {
+	text-align:center;
+	/* font-size: 32px; */
+	padding:13px 0px;
+	display:block;
+}
+
+.human-labeling label input {
+	position:absolute;
+	opacity:0.011;
+	z-index:100;
+	/* top:-20px; */
+}
+
+.human-labeling input:checked + span {
+	background-color:#404040;
+	color:#F7F7F7;
 }
 /* END example situation search */
 

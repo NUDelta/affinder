@@ -91,7 +91,7 @@
       </div>
     </div>
     <div style="display: table-cell;">
-      <div class="place-name" style="width: 50ch">
+      <div class="place-name" style="width: 50ch; vertical-align: top;">
         <h3 style="font-size: 16px; font-weight: 700;">
           <p><a href="{{situation.url}}" target="_blank">{{situation.name}}</a></p>
         </h3>
@@ -105,10 +105,10 @@
         {{/each}}
       </div>
     </div>
-    <div style="display: table-cell;">
+    <div style="display: table-cell; vertical-align: top; padding-top: 0;">
       {{> situationItemLabelView situation=situation}}
     </div>
-    <div style="display: table-cell;">
+    <div style="display: table-cell; vertical-align: top; padding-top: 0;">
       {{> situationItemPrediction situation=situation}}
     </div>
   </div>
@@ -125,57 +125,38 @@
 
 <template name="situationItemLabelEdit">
   <p>Label</p>
+  <div class="human-labeling">
   {{#if (hasLabel situation)}}
     {{#if (isLabelTrue situation)}}
       <label class="checkcontainer">
-        True
         <input type="radio" value="true" checked name="{{situation.alias}}">
-        <span class="radiobtn"></span>
+        <span>True</span>
       </label>
       <label class="checkcontainer">
-        N/A
-        <input type="radio" value="true" disabled name="{{situation.alias}}">
-        <span class="radiobtn"></span>
-      </label>
-      <label class="checkcontainer">
-        False
         <input type="radio" value="false" name="{{situation.alias}}">
-        <span class="radiobtn"></span>
+        <span>False</span>
       </label>
     {{else}}
       <label class="checkcontainer">
-        True
         <input type="radio" value="true" name="{{situation.alias}}">
-        <span class="radiobtn"></span>
+        <span>True</span>
       </label>
       <label class="checkcontainer">
-        N/A
-        <input type="radio" value="true" disabled name="{{situation.alias}}">
-        <span class="radiobtn"></span>
-      </label>
-      <label class="checkcontainer">
-        False
         <input type="radio" value="false" checked name="{{situation.alias}}">
-        <span class="radiobtn"></span>
+        <span>False</span>
       </label>
     {{/if}}
   {{else}}
     <label class="checkcontainer">
-      True
       <input type="radio" value="true" name="{{situation.alias}}">
-      <span class="radiobtn"></span>
+      <span>True</span>
     </label>
     <label class="checkcontainer">
-      N/A
-      <input type="radio" value="true" disabled checked name="{{situation.alias}}">
-      <span class="radiobtn"></span>
-    </label>
-    <label class="checkcontainer">
-      False
       <input type="radio" value="false" name="{{situation.alias}}">
-      <span class="radiobtn"></span>
+      <span>False</span>
     </label>
   {{/if}}
+  </div>
 </template>
 
 <template name="situationItemPrediction">
