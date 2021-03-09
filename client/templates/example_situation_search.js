@@ -30,14 +30,14 @@ const getYelpPlaceInstancesForCurrentCategories = (detectorId) => {
   }
 }
 
-const getSelectPlaceKey = () => {
+const getSelectPlaceTag = () => {
   return document.getElementById('selectPlaceToAnalyze').value;
 };
 
 const getYelpPlaceInstancesPerPlaceTag = (detectorId) => {
   let searchByPlaceCategory = {
     term: '',
-    categories: getSelectPlaceKey(),
+    categories: getSelectPlaceTag(),
     location: document.getElementById('cityname').value
   }
   console.log(JSON.stringify(searchByPlaceCategory));
@@ -65,21 +65,19 @@ Template.exampleSituationSearch.events({
 
       // detector is finally saved! don't keep checking, and now simulate the detector
       computation.stop();
+      Session.set('placeTagToAnalyze', getSelectPlaceTag()) // form input can get lost
       getYelpPlaceInstancesPerPlaceTag(Session.get('detectorId'));
-
     });
   },
 });
 
 Template.exampleSituationSearch.helpers({
   'exampleSituations'() {
-    // TODO: Subscription not fast enough
-    // Meteor.subscribe('ExampleSituations.HumanReadable', topK);
     let examples = ExampleSituations.find({
-      // FIXME(rlouie): Can't seem to filter by currently selected categories
-      // categoriesKey: getSelectPlaceKey()
+      categoriesKey: Session.get('placeTagToAnalyze')
     }, {
-      sort: {timeInserted: -1}
+      // show places that have most number of categories, posing the greatest risk for breaking mental model of a category
+      sort: { numCategories: -1 }
     }).fetch();
     return examples;
   },
