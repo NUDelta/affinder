@@ -260,10 +260,11 @@ body {
 	display: grid;
 	grid-gap: 5px;
 	grid-template-columns: 1fr 6fr;
-	grid-template-rows: 400px auto;
+	/* related to blockly-div and feature-list */
+	grid-template-rows: 450px auto;
 	grid-template-areas:
 	"sidebar topcontent"
-	"sidebar bottomcontent";
+	"bottomcontent bottomcontent";
 	background-color: #fff;
 	color: #444;
 }
@@ -278,6 +279,11 @@ body {
 
 .blockly-div {
 	height: 330px;
+}
+
+.feature-list {
+	height: 340px; /* ugh this is hardcoded, related to the 380px height of the parent div*/
+	overflow: scroll;
 }
 
 .box {
@@ -301,7 +307,7 @@ body {
 }
 
 .panel-heading {
-	font-size: 12pt;
+	font-size: 9pt;
 }
 .list-group {
 	font-size: 10pt;

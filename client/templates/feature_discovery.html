@@ -12,11 +12,11 @@
     <div>
       <div class="panel panel-default">
         <div class="panel-heading">
-          Place Categories mentioning "{{searchInputText}}"
+          place tags mentioning "{{searchInputText}}"
           <!-- <button id="convert-button" type="button" class="btn btn-xs btn-primary">Combine Categories</button> -->
           <!--{{precision currentQueryId}}-->
         </div>
-        <ul class="list-group">
+        <ul class="list-group feature-list">
           {{#if yelpLoading}}
             <li class="list-group-item">{{> loadingSpinner}}</li>
           {{else}}

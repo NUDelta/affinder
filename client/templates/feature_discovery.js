@@ -39,7 +39,7 @@ Template.searchBar.events({
     // hide the abstraction prompt text, show the abstraction prompt button
     if (Session.get('searchInputText') !== "") {
       document.getElementById('abstraction-prompt').style.display = "none";
-      document.getElementById('show-abstraction-prompt').style.display = "block";
+      document.getElementById('show-abstraction-prompt').className = "btn btn-info active"
     }
   }
 });
