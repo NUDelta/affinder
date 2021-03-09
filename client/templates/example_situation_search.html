@@ -1,11 +1,12 @@
 <template name="exampleSituationSearch">
-  <div>Situation Search</div>
+  <div>View Example Places</div>
   {{#if Template.subscriptionsReady}}
     <form id="situationSearch">
+      {{> selectPlaceDropdown}}
       <div class="input-group">
         <input name="search" id="cityname" type="text" class="form-control" placeholder="Type a city name..." required="true">
         <span class="input-group-btn">
-          <button class="btn btn-default" type="submit">Simulate Concept Expression</button>
+          <button class="btn btn-default" type="submit">View Yelp places</button>
         </span>
       </div>
     </form>
@@ -17,6 +18,17 @@
       {{/each}}
     </ul>
   {{/if}}
+</template>
+
+<template name="selectPlaceDropdown">
+  <div class="form-group">
+    <select name="selectPlaceKey" class="form-control" id="selectPlaceToAnalyze">
+      <option default>Select a place tag...</option>
+      {{#each placetag in placeTagList}}
+        <option value="{{placetag}}">{{placetag}}</option>
+      {{/each}}
+    </select>
+  </div>
 </template>
 
 <template name="exampleSituationIssues">

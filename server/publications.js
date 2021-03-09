@@ -31,6 +31,7 @@ Meteor.publish('Detectors', function() {
 
 const situationHumanReadableFields = {
   "_id": true,
+  "categoriesKey": true,
   "timeInserted": true,
   "alias": true,
   "detectorId": true,
@@ -59,4 +60,22 @@ Meteor.publish('ExampleSituations.HumanReadable.for.detectorId', function(detect
   return ExampleSituations.find({'detectorId': detectorId}, {
     fields: situationHumanReadableFields
   });
+});
+Meteor.publish('ExampleSituations.HumanReadable.for.detectorId.and.categoriesKey', function(detectorId, categoriesKey) {
+  check(detectorId, String);
+  check(categoriesKey, String);
+  if (categoriesKey) {
+    return ExampleSituations.find({
+      'detectorId': detectorId,
+      'categoriesKey': categoriesKey
+    }, {
+      fields: situationHumanReadableFields
+    });
+  } else {
+    return ExampleSituations.find({
+      'detectorId': detectorId,
+    }, {
+      fields: situationHumanReadableFields
+    });
+  }
 });

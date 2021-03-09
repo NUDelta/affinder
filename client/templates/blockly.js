@@ -23,10 +23,9 @@ Template.blockly.rendered = function() {
     document.getElementById('compiledBlockly').value = code;
     compiledBlocklyDep.changed();
 
-    let splitJS = splitVarDeclarationAndRules(code);
-
-    let context = {'japanese': true, 'thursday': true};
-    mockTestDetector(context, splitJS[0], splitJS[1]);
+    // let splitJS = splitVarDeclarationAndRules(code);
+    // let context = {'japanese': true, 'thursday': true};
+    // mockTestDetector(context, splitJS[0], splitJS[1]);
   });
 };
 
@@ -36,6 +35,23 @@ export const splitVarDeclarationAndRules = function(code) {
   let varDecl = lines.slice(0, threshold);
   let rules = lines.splice(threshold + 1).filter(e => e != "");
   return [varDecl, rules];
+};
+
+/* must read the full set of context features in the blockly workspace */
+export const setOfContextFeaturesInBlockly = () => {
+  let [variables, rules] = splitVarDeclarationAndRules($('#compiledBlockly').val());
+
+  // TODO(rlouie): will this break if we create intermediate concepts, where variables are not place category aliases?
+  let placecategories = variables.map(var_placecat => vardecl2placecategory(var_placecat));
+  return placecategories;
+}
+
+export const vardecl2placecategory = (var_placecat) => {
+  // "var beaches;"
+  let placecat = var_placecat.split(' ')[1];
+  // "beaches;" or "beaches"
+  placecat = placecat.slice(-1) == ';' ? placecat.slice(0,-1) : placecat;
+  return placecat;
 };
 
 export const mockTestDetector = function (userAffordances, varDecl, rules) {

@@ -1,6 +1,6 @@
 import {Tracker} from 'meteor/tracker'
 import {ExampleSituations} from "../../lib/collections/collections";
-import {compiledBlocklyDep, splitVarDeclarationAndRules} from "./blockly";
+import {compiledBlocklyDep, splitVarDeclarationAndRules, setOfContextFeaturesInBlockly} from "./blockly";
 import {applyDetector, extractAffordances} from "../../lib/detectors/detectors";
 
 Template.exampleSituationSearch.onCreated(function() {
@@ -16,19 +16,7 @@ const getYelpPlaceInstancesForCurrentCategories = (detectorId) => {
   //     It would be unaware of "negatives", where we might identify false negatives
   // (2) letting user search by term for location (city, search region)
 
-  let [variables, rules] = splitVarDeclarationAndRules($('#compiledBlockly').val());
-
-  const vardecl2placecategory = (var_placecat) => {
-    // "var beaches;"
-    let placecat = var_placecat.split(' ')[1];
-    // "beaches;" or "beaches"
-    placecat = placecat.slice(-1) == ';' ? placecat.slice(0,-1) : placecat;
-    return placecat;
-  };
-
-  // TODO(rlouie): will this break if we create intermediate concepts, where variables are not place category aliases?
-  let placecategories = variables.map(var_placecat => vardecl2placecategory(var_placecat));
-
+  let placecategories = setOfContextFeaturesInBlockly();
   if (placecategories.length == 0) {
     alert('Update your context expression to include some place categories');
   } else {
@@ -40,6 +28,20 @@ const getYelpPlaceInstancesForCurrentCategories = (detectorId) => {
     console.log(JSON.stringify(searchByPlaceCategory));
     Meteor.call('yelpFusionBusinessSearch', searchByPlaceCategory, detectorId);
   }
+}
+
+const getSelectPlaceKey = () => {
+  return document.getElementById('selectPlaceToAnalyze').value;
+};
+
+const getYelpPlaceInstancesPerPlaceTag = (detectorId) => {
+  let searchByPlaceCategory = {
+    term: '',
+    categories: getSelectPlaceKey(),
+    location: document.getElementById('cityname').value
+  }
+  console.log(JSON.stringify(searchByPlaceCategory));
+  Meteor.call('yelpFusionBusinessSearch', searchByPlaceCategory, detectorId);
 }
 
 Template.exampleSituationSearch.events({
@@ -63,7 +65,7 @@ Template.exampleSituationSearch.events({
 
       // detector is finally saved! don't keep checking, and now simulate the detector
       computation.stop();
-      getYelpPlaceInstancesForCurrentCategories(Session.get('detectorId'));
+      getYelpPlaceInstancesPerPlaceTag(Session.get('detectorId'));
 
     });
   },
@@ -73,8 +75,12 @@ Template.exampleSituationSearch.helpers({
   'exampleSituations'() {
     // TODO: Subscription not fast enough
     // Meteor.subscribe('ExampleSituations.HumanReadable', topK);
-
-    let examples = ExampleSituations.find({}, {sort: {timeInserted: 1}}).fetch();
+    let examples = ExampleSituations.find({
+      // FIXME(rlouie): Can't seem to filter by currently selected categories
+      // categoriesKey: getSelectPlaceKey()
+    }, {
+      sort: {timeInserted: -1}
+    }).fetch();
     return examples;
   },
   'situationArgs'(situation) {
@@ -85,6 +91,13 @@ Template.exampleSituationSearch.helpers({
     }
   }
 });
+
+Template.selectPlaceDropdown.helpers({
+  'placeTagList'() {
+    compiledBlocklyDep.depend();
+    return setOfContextFeaturesInBlockly();
+  }
+})
 
 Template.exampleSituationIssues.onCreated(function() {
   this.autorun(() => {

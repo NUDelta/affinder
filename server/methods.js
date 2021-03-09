@@ -61,7 +61,8 @@ Meteor.methods({
         if (!oneExample) {
           let document = Object.assign(business, {
             'timeInserted': Date.now(),
-            'detectorId': detectorId
+            'detectorId': detectorId,
+            'categoriesKey': searchParams.categories
           });
           ExampleSituations.insert(document);
 
