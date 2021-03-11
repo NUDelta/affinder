@@ -1,6 +1,7 @@
+import Blockly from 'blockly';
 import {applyDetector} from "../../lib/detectors/detectors";
 
-export let WORKSPACE = "";
+export let WORKSPACE;
 
 export const compiledBlocklyDep = new Tracker.Dependency;
 Template.blockly.rendered = function() {
@@ -16,7 +17,6 @@ Template.blockly.rendered = function() {
           minScale: 0.3,
           scaleSpeed: 1.2},
      trashcan: true});
-
 
   WORKSPACE.addChangeListener(function (event) {
     let code = Blockly.JavaScript.workspaceToCode(WORKSPACE);
@@ -67,7 +67,6 @@ export const mockTestDetector = function (userAffordances, varDecl, rules) {
 
 export const defaultToolbox = function () {
   let toolbox = {};
-  toolbox["placeCategories"] = defaultToolboxPlaceCategories();
   toolbox["weather"] = defaultToolboxWeather();
   toolbox["time"] = defaultToolboxTimeOfDay() + defaultToolboxTimeOfWeek() + defaultToolboxTimeZone();
   toolbox["operators"] = defaultToolboxOperators();
@@ -91,6 +90,13 @@ export const stringifyToolboxTree = function(toolboxTree) {
   string += "</xml>";
   return string;
 };
+
+export const wrapBlocksInXml = function(blocks) {
+  let string = '<xml style="display: none">';
+  string += blocks
+  string += '</xml>';
+  return string;
+}
 
 export const wrapBlocksInCategory = function(name, blocks) {
   let category = '<category name="' + name + '">';
@@ -144,13 +150,6 @@ export const createMultiVarOrBlock = function(abc) {
       createOrBlock(createVariable(abc[0]), createVariable(abc[1])),
       createMultiVarOrBlock(abc.slice(2, abc.length)));
   }
-};
-
-const defaultToolboxPlaceCategories = function() {
-  return wrapBlocksInCategory("Place Categories",
-    createMultiVarOrBlock(["japanese", "chinese", "korean"]) +
-    createMultiVarOrBlock(["beaches", "lakes"])
-    );
 };
 
 const defaultToolboxWeather = function() {

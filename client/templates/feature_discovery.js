@@ -1,3 +1,4 @@
+import Blockly from 'blockly';
 import {Queries, Detectors} from "../../lib/collections/collections";
 import {
   WORKSPACE,
@@ -5,6 +6,7 @@ import {
   createVariable,
   defaultToolbox,
   stringifyToolboxTree,
+  wrapBlocksInXml,
   wrapBlocksInCategory
 } from "./blockly";
 
@@ -128,11 +130,12 @@ Template.featureDiscovery.events({
   'click .btn-add-cat': function(e) {
     const cat2add = e.target.closest('li').getAttribute('placeCategory');
 
-    let newTree = defaultToolbox();
     let detectorDescription = formatDetectorVarNames(cat2add);
-    newTree["discoveries"] = wrapBlocksInCategory(detectorDescription,
-      createVariable(detectorDescription));
-    WORKSPACE.updateToolbox(stringifyToolboxTree(newTree));
+    let block = createVariable(detectorDescription);
+    let blocks = Blockly.Xml.textToDom(wrapBlocksInXml(block));
+    if (blocks.firstElementChild) {
+      Blockly.Xml.appendDomToWorkspace(blocks, WORKSPACE);
+    }
   },
 
   'click .btn-use-block': function(e) {
