@@ -23,11 +23,59 @@ Template.blockly.rendered = function() {
     document.getElementById('compiledBlockly').value = code;
     compiledBlocklyDep.changed();
 
-    // let splitJS = splitVarDeclarationAndRules(code);
-    // let context = {'japanese': true, 'thursday': true};
-    // mockTestDetector(context, splitJS[0], splitJS[1]);
+    if (event.element == "comment") {
+      // oldValue == null means the comment was just created programmatically
+      // thus we are interested in only when user manually changes the comment
+      if (event.oldValue != null) {
+        strSplit = event.newValue.split('\n\n');
+
+        // answered the first prompt, have not added the second prompt.
+        if (strSplit.length == 2) {
+          let abstractConcept = ReflectAndExpand.parseReflect(event.newValue)
+          let block = WORKSPACE.getBlockById(event.blockId);
+          ReflectAndExpand.activateExpander(block, event.newValue);
+        }
+      }
+    }
   });
 };
+
+export class ReflectAndExpand {
+  static showReflectPrompt(block) {
+    blockName = ReflectAndExpand.parseBlockName(block);
+    block.setCommentText(ReflectAndExpand.reflectPromptText()); // create a creative text dialogue within a comment
+    block.comment.setBubbleSize(300, 300); // wider and taller so we can create a reflection and expansion prompt
+  }
+  static reflectPromptText(blockName) {
+    return `Why is "${blockName}" appropriate for the experience? \n\n (press TAB) > `
+  }
+  static parseBlockName(block) {
+    if (block.getField('VAR')) {
+      blockName = block.getField('VAR').textContent_.data
+      return blockName;
+    }
+  }
+  static parseReflect(commentText) {
+    let [prompt, abstractConcept] = commentText.split('>');
+    return abstractConcept;
+  }
+  static activateExpander(block, commentText) {
+    abstractConcept = ReflectAndExpand.parseReflect(commentText);
+    block.setCommentText(commentText + ReflectAndExpand.expandPromptText(abstractConcept));
+    ReflectAndExpand.createConceptVariable(abstractConcept);
+  }
+  static expandPromptText(abstractConcept) {
+    return `\n\nGreat! Creating concept variable for "${abstractConcept}".\nNow, search using this. Rephrase as 1-2 terms as needed.\n`
+  }
+  static createConceptVariable(abstractConcept) {
+    let conceptVariable = wrapBlocksInXml(createSetVariable(abstractConcept));
+    let conceptVariableXml = Blockly.Xml.textToDom(conceptVariable)
+    if (conceptVariableXml.firstElementChild) {
+      Blockly.Xml.appendDomToWorkspace(conceptVariableXml, WORKSPACE);
+    }
+  }
+
+}
 
 export const splitVarDeclarationAndRules = function(code) {
   let lines = code.split('\n');
@@ -105,7 +153,17 @@ export const wrapBlocksInCategory = function(name, blocks) {
   return category;
 };
 
-export const createVariable = function(name) {
+export const createSetVariable = function(name) {
+  let variable = `
+  <block type="variables_set">
+    <field name="VAR">`;
+  variable += name;
+  variable += `</field>
+  </block>`;
+  return variable;
+};
+
+export const createGetVariable = function(name) {
   let variable = `
   <block type="variables_get">
     <field name="VAR">`;
@@ -141,13 +199,13 @@ export const createAndBlock = function(a, b) {
 
 export const createMultiVarOrBlock = function(abc) {
   if (abc.length === 1) {
-    return createVariable(abc[0]);
+    return createGetVariable(abc[0]);
   }
   else if (abc.length === 2) {
-    return createOrBlock(createVariable(abc[0]), createVariable(abc[1]));
+    return createOrBlock(createGetVariable(abc[0]), createGetVariable(abc[1]));
   } else {
     return createOrBlock(
-      createOrBlock(createVariable(abc[0]), createVariable(abc[1])),
+      createOrBlock(createGetVariable(abc[0]), createGetVariable(abc[1])),
       createMultiVarOrBlock(abc.slice(2, abc.length)));
   }
 };
@@ -262,13 +320,13 @@ const defaultToolboxTimeOfWeek = function() {
     return wrapBlocksInCategory("Time of Week",
       createMultiVarOrBlock(["monday", "tuesday", "wednesday", "thursday", "friday"]) +
       createMultiVarOrBlock(["saturday", "sunday"]) +
-      createVariable("monday") +
-      createVariable("tuesday")+
-      createVariable("wednesday")+
-      createVariable("thursday")+
-      createVariable("friday")+
-      createVariable("saturday")+
-      createVariable("sunday"));
+      createGetVariable("monday") +
+      createGetVariable("tuesday")+
+      createGetVariable("wednesday")+
+      createGetVariable("thursday")+
+      createGetVariable("friday")+
+      createGetVariable("saturday")+
+      createGetVariable("sunday"));
 };
 
 const defaultToolboxTimeZone = function() {

@@ -1,5 +1,5 @@
 import {Detectors} from "../../lib/collections/collections";
-import {splitVarDeclarationAndRules} from "./blockly";
+import {splitVarDeclarationAndRules, ReflectAndExpand, WORKSPACE} from "./blockly";
 
 Template.detectorInputOutput.onCreated(function() {
   this.subscribe('Detectors');
@@ -23,6 +23,16 @@ Template.detectorInputOutput.events({
     } else {
       x.style.display = "none";
     }
+
+    let blocks = WORKSPACE.getAllBlocks(false);
+    for (let i = 0, block; block = blocks[i]; i++) {
+      blockName = ReflectAndExpand.parseBlockName(block);
+      if (blockName) {
+        block.setCommentText(ReflectAndExpand.reflectPromptText(blockName));
+        block.comment.setBubbleSize(300, 300); // large enough for reflect prompt, reflection, and expansion prompt
+      }
+    }
+
   },
   'submit form': function(e) {
     e.preventDefault();

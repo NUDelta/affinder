@@ -3,7 +3,7 @@ import {Queries, Detectors} from "../../lib/collections/collections";
 import {
   WORKSPACE,
   createMultiVarOrBlock,
-  createVariable,
+  createGetVariable,
   defaultToolbox,
   stringifyToolboxTree,
   wrapBlocksInXml,
@@ -131,7 +131,7 @@ Template.featureDiscovery.events({
     const cat2add = e.target.closest('li').getAttribute('placeCategory');
 
     let detectorDescription = formatDetectorVarNames(cat2add);
-    let block = createVariable(detectorDescription);
+    let block = createGetVariable(detectorDescription);
     let blocks = Blockly.Xml.textToDom(wrapBlocksInXml(block));
     if (blocks.firstElementChild) {
       Blockly.Xml.appendDomToWorkspace(blocks, WORKSPACE);
@@ -145,7 +145,7 @@ Template.featureDiscovery.events({
     let detectorDescription = $(e.target).parent().attr('detectorDescription');
     detectorDescription = formatDetectorVarNames(detectorDescription);
     newTree["discoveries"] = wrapBlocksInCategory(detectorDescription,
-      createVariable(detectorDescription));
+      createGetVariable(detectorDescription));
     WORKSPACE.updateToolbox(stringifyToolboxTree(newTree));
   },
 
