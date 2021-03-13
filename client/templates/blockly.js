@@ -78,20 +78,41 @@ export class ReflectAndExpand {
 }
 
 export const splitVarDeclarationAndRules = function(code) {
-  let lines = code.split('\n');
-  let threshold = lines.findIndex(e => e == "");
-  let varDecl = lines.slice(0, threshold);
-  let rules = lines.splice(threshold + 1).filter(e => e != "");
+  let lines_w_comment = code.split('\n');
+  let lines = filterFunctionalLines(lines_w_comment);
+  let rules = lines.slice(1, lines.length);
+  // let singleLineVarDecl = lines[0];
+  let varDecl = lines[0];
   return [varDecl, rules];
 };
 
+const filterFunctionalLines = (lines_w_comment) => {
+  // filter to functional code lines
+  let lines = lines_w_comment.filter((line) => {
+    return ((line.slice(0,2) != "//" ) && // remove comments
+            (line != "")) // remove new lines
+  });
+  return lines
+}
+
 /* must read the full set of context features in the blockly workspace */
 export const setOfContextFeaturesInBlockly = () => {
-  let [variables, rules] = splitVarDeclarationAndRules($('#compiledBlockly').val());
+  let [varDecl, rules] = splitVarDeclarationAndRules($('#compiledBlockly').val());
 
-  // TODO(rlouie): will this break if we create intermediate concepts, where variables are not place category aliases?
-  let placecategories = variables.map(var_placecat => vardecl2placecategory(var_placecat));
-  return placecategories;
+  console.log("variables: ", varDecl);
+  console.log("rules: ", rules);
+  if (varDecl === undefined) {
+    return [];
+  }
+
+  if (typeof(varDecl, String) && (varDecl.length > 0)) {
+    let variableNames = varDecl.slice(
+        4, // skip "var "
+        varDecl.length - 1 // skip ending ";"
+      ).split(',');
+    return variableNames;
+  }
+  return [];
 }
 
 export const vardecl2placecategory = (var_placecat) => {
