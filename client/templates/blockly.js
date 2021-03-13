@@ -95,22 +95,67 @@ const filterFunctionalLines = (lines_w_comment) => {
   return lines
 }
 
-/* must read the full set of context features in the blockly workspace */
-export const setOfContextFeaturesInBlockly = () => {
-  let [varDecl, rules] = splitVarDeclarationAndRules($('#compiledBlockly').val());
-
-  console.log("variables: ", varDecl);
+function getConceptVariables(rules) {
   console.log("rules: ", rules);
+  if (!Array.isArray(rules)) {
+    console.log("rules is not an array");
+    return [];
+  }
+
+  if (rules.length < 1) {
+    console.log("rules is empty array");
+    return [];
+  }
+
+  let conceptVariableNames = [];
+  rules.forEach(function(rule) {
+    let split_rule = rule.split("=");
+
+    // a concept variable rule looks like
+    // "concept_variable = feature1 || feature2"
+    // it follows this format
+    if (split_rule.length == 2) {
+      let conceptVariable = split_rule[0].trim();
+      conceptVariableNames.push(conceptVariable);
+    }
+  });
+  return conceptVariableNames;
+}
+
+/* must read the full set of context features in the blockly workspace */
+export const setOfContextFeaturesInBlockly = (varDecl, rules) => {
+  let variableNames = setOfVariableNames(varDecl);
+  console.log("variableNames: ", variableNames);
+
+  let conceptVariableNames = getConceptVariables(rules);
+  console.log("concept variables: ", conceptVariableNames);
+
+  let contextFeatures = variableNames.filter((variable) => {
+    return !conceptVariableNames.includes(variable)
+  });
+
+  console.log("contextFeatures: ", contextFeatures);
+  return contextFeatures;
+}
+
+export const setOfVariableNames = (varDecl) => {
+  console.log("varDecl: ", varDecl);
   if (varDecl === undefined) {
     return [];
   }
 
   if (typeof(varDecl, String) && (varDecl.length > 0)) {
-    let variableNames = varDecl.slice(
+    let varDeclClean = varDecl.slice(
         4, // skip "var "
         varDecl.length - 1 // skip ending ";"
-      ).split(',');
-    return variableNames;
+      );
+    let variablesSplit = varDeclClean.split(', ');
+    console.log('variablesSplit: ', variablesSplit);
+    return variablesSplit;
+    // if (variablesSplit.length == 1) {
+      // return variablesSplit;
+    // }
+    // return variablesSplit.map(variable => { variable.trim() });
   }
   return [];
 }

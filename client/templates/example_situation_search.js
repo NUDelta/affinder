@@ -16,7 +16,8 @@ const getYelpPlaceInstancesForCurrentCategories = (detectorId) => {
   //     It would be unaware of "negatives", where we might identify false negatives
   // (2) letting user search by term for location (city, search region)
 
-  let placecategories = setOfContextFeaturesInBlockly();
+  let [varDecl, rules] = splitVarDeclarationAndRules($('#compiledBlockly').val());
+  let placecategories = setOfContextFeaturesInBlockly(varDecl, rules);
   if (placecategories.length == 0) {
     alert('Update your context expression to include some place categories');
   } else {
@@ -93,7 +94,9 @@ Template.exampleSituationSearch.helpers({
 Template.selectPlaceDropdown.helpers({
   'placeTagList'() {
     compiledBlocklyDep.depend();
-    return setOfContextFeaturesInBlockly();
+
+    let [varDecl, rules] = splitVarDeclarationAndRules($('#compiledBlockly').val());
+    return setOfContextFeaturesInBlockly(varDecl, rules);
   }
 })
 
