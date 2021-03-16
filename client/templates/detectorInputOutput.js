@@ -5,6 +5,27 @@ Template.detectorInputOutput.onCreated(function() {
   this.subscribe('Detectors');
 });
 
+Template.detectorInputOutput.onRendered(function() {
+  Tracker.autorun((computation) => {
+    // the current detector has not been saved into the database
+    if (!Session.get('detectorId')) {
+      let detectorDescription = $('input[name=detectorname]').val()
+      if (detectorDescription) {
+        // they forgot to save, so just save their current detector for them
+        $('#saveDetectorForm').trigger('submit');
+      } else {
+        detectorDescription = prompt('Name your high-level situation detector:');
+        $('input[name=detectorname]').val(detectorDescription);
+        $('#saveDetectorForm').trigger('submit');
+      }
+      return;
+    }
+
+    // detector is finally saved! don't keep checking
+    computation.stop();
+  });
+});
+
 Template.detectorInputOutput.helpers({
   'searchInputText': function() {
     return Session.get('searchInputText');

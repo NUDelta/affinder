@@ -32,7 +32,9 @@ const getYelpPlaceInstancesForCurrentCategories = (detectorId) => {
 }
 
 const getSelectPlaceTag = () => {
-  return document.getElementById('selectPlaceToAnalyze').value;
+  let placeTag = document.getElementById('selectPlaceToAnalyze').value;
+  console.log("placeTag selection: ", placeTag);
+  return placeTag;
 };
 
 const getYelpPlaceInstancesPerPlaceTag = (detectorId) => {
@@ -48,27 +50,8 @@ const getYelpPlaceInstancesPerPlaceTag = (detectorId) => {
 Template.exampleSituationSearch.events({
   'submit form#situationSearch': function(e, target) {
     e.preventDefault();
-
-    Tracker.autorun((computation) => {
-      // the current detector has not been saved into the database
-      if (!Session.get('detectorId')) {
-        let detectorDescription = $('input[name=detectorname]').val()
-        if (detectorDescription) {
-          // they forgot to save, so just save their current detector for them
-          $('#saveDetectorForm').trigger('submit');
-        } else {
-          detectorDescription = prompt('Provide a detector description before simulating this detector');
-          $('input[name=detectorname]').val(detectorDescription);
-          $('#saveDetectorForm').trigger('submit');
-        }
-        return;
-      }
-
-      // detector is finally saved! don't keep checking, and now simulate the detector
-      computation.stop();
-      Session.set('placeTagToAnalyze', getSelectPlaceTag()) // form input can get lost
-      getYelpPlaceInstancesPerPlaceTag(Session.get('detectorId'));
-    });
+    Session.set('placeTagToAnalyze', getSelectPlaceTag()) // form input can get lost
+    getYelpPlaceInstancesPerPlaceTag(Session.get('detectorId'));
   },
 });
 

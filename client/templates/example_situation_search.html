@@ -22,8 +22,8 @@
 
 <template name="selectPlaceDropdown">
   <div class="form-group">
-    <select name="selectPlaceKey" class="form-control" id="selectPlaceToAnalyze">
-      <option default>Select a place tag...</option>
+    <select name="selectPlaceKey" class="form-control" id="selectPlaceToAnalyze" form="situationSearch" required="true">
+      <option default value="">Select a place tag...</option>
       {{#each placetag in placeTagList}}
         <option value="{{placetag}}">{{placetag}}</option>
       {{/each}}
