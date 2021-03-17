@@ -15,21 +15,20 @@ Template.simulateAndLabelConceptExpression.onCreated(function() {
     this.subscribe('ExampleSituations.HumanReadable.for.detectorId', Session.get('detectorId'));
   });
 
-  // perform inference automatically
-  this.autorun(() => {
-    compiledBlocklyDep.depend();
-    const detectorId = Session.get('detectorId');
-    if (!detectorId) {
-      return;
-    }
-    const conceptVariableName = getSelectConceptVariableName();
-    if (!conceptVariableName || !getSelectConceptVariableFeatures() ) {
-      return;
-    }
-    ExampleSituations.find({}).forEach((situation) => {
+  const exampleSituationsCursor = ExampleSituations.find({});
+  const exampleSituationsHandle = exampleSituationsCursor.observe({
+    added(situation) {
+      const detectorId = Session.get('detectorId');
+      if (!detectorId) {
+        return;
+      }
+      const conceptVariableName = Session.get('selectedConceptVariableName');
+      if (!conceptVariableName || !Session.get('selectedConceptVariableFeatures')) {
+        return;
+      }
       let prediction = true;
-      // let [variables, rules] = splitVarDeclarationAndRules($('#compiledBlockly').val());
       // const affordances = extractAffordances(situation);
+      // let [variables, rules] = splitVarDeclarationAndRules($('#compiledBlockly').val());
       // let prediction = applyDetector(affordances, variables, rules);
       // prediction = prediction ? 'true' : 'false';
       const selectFields = {
@@ -42,7 +41,7 @@ Template.simulateAndLabelConceptExpression.onCreated(function() {
         'prediction': prediction
       }
       Meteor.call('updateExampleSituationPrediction', selectFields, newPrediction)
-    });
+    }
   });
 });
 
@@ -153,16 +152,15 @@ const getYelpPlaceInstancesPerConceptVariable = (detectorId) => {
 Template.simulateAndLabelConceptExpression.events({
   'submit form#simulateConcepts': function(e, target) {
     e.preventDefault();
-
+    Session.set('selectedConceptVariableName', getSelectConceptVariableName());
+    Session.set('selectedConceptVariableFeatures', getSelectConceptVariableFeatures());
     getYelpPlaceInstancesPerConceptVariable(Session.get('detectorId'));
   },
 });
 
 Template.simulateAndLabelConceptExpression.helpers({
   'detectedSituations'() {
-    // let conceptVariableName = getSelectConceptVariable();
-    let conceptVariableName = getSelectConceptVariableName();
-    console.log('zzzzzzzzzz: ', conceptVariableName);
+    let conceptVariableName = Session.get('selectedConceptVariableName');
     let examples = ExampleSituations.find({
       [`predictions.${conceptVariableName}`]: true
     }, {
@@ -238,14 +236,14 @@ Template.situationItemImageNameCats.helpers({
 
 Template.situationItemLabelEdit.helpers({
   'hasLabel'(situation) {
-    let conceptVariableName = getSelectConceptVariableName();
+    let conceptVariableName = Session.get('selectedConceptVariableName');
     if (!conceptVariableName) {
       return;
     }
     return situation.labels[conceptVariableName] !== undefined;
   },
   'isLabelTrue'(situation) {
-    let conceptVariableName = getSelectConceptVariableName();
+    let conceptVariableName = Session.get('selectedConceptVariableName');
     if (!conceptVariableName) {
       return;
     }
@@ -261,8 +259,12 @@ Template.situationItemLabelEdit.events({
       'detectorId': Session.get('detectorId'),
     };
     let label = $(`input[type='radio'][name=${target.data.situation.alias}]:checked`).val();
+    let conceptVariableName = Session.get('selectedConceptVariableName');
+    if (!conceptVariableName) {
+      return;
+    }
     const labelObj = {
-      'conceptVariable': getSelectConceptVariableName(),
+      'conceptVariable': conceptVariableName,
       'label': label
     };
     Meteor.call('updateExampleSituationLabel', selectFields, labelObj);
@@ -271,7 +273,7 @@ Template.situationItemLabelEdit.events({
 
 Template.situationItemLabelView.helpers({
   situationLabel(situation) {
-    let conceptVariableName = getSelectConceptVariableName();
+    let conceptVariableName = Session.get('selectedConceptVariableName');
     return situation.labels[conceptVariableName] ? 'true' : 'false';
   }
 });
