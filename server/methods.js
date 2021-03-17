@@ -82,22 +82,25 @@ Meteor.methods({
       'detectorId': String,
       'alias': String
     });
-    check(label, String);
+    check(label, {
+      'conceptVariable': String,
+      'label': String
+    });
 
     let booleanLabel;
-    if (label == 'true') {
+    if (label.label == 'true') {
       booleanLabel = true;
-    } else if (label == 'false') {
+    } else if (label.label == 'false') {
       booleanLabel = false;
     }
     if (booleanLabel !== null) {
       ExampleSituations.upsert(selectFields, {
         $set: {
-          'label': booleanLabel
+          [`labels.${label.conceptVariable}`]: booleanLabel
         }
       });
     } else {
-      console.error(`Was not passed a true or false string, instead got ${label}`);
+      console.error(`Was not passed a true or false string, instead got ${label.label}`);
     }
   },
 
@@ -107,22 +110,14 @@ Meteor.methods({
       'detectorId': String,
       'alias': String
     });
-    check(prediction, String);
-
-    let booleanPrediction;
-    if (prediction == 'true') {
-      booleanPrediction = true;
-    } else if (prediction == 'false') {
-      booleanPrediction = false;
-    }
-    if (booleanPrediction !== null) {
-      ExampleSituations.upsert(selectFields, {
-        $set: {
-          'prediction': booleanPrediction
-        }
-      });
-    } else {
-      console.error(`Was not passed a true or false string, instead got ${prediction}`);
-    }
+    check(prediction, {
+      'conceptVariable': String,
+      'prediction': Boolean
+    });
+    ExampleSituations.upsert(selectFields, {
+      $set: {
+        [`predictions.${prediction.conceptVariable}`]: prediction.prediction
+      }
+    });
   }
 });

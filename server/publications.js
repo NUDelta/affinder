@@ -40,8 +40,9 @@ const situationHumanReadableFields = {
   "url": true,
   "coordinates": true,
   "categories": true,
-  "label": true,
-  "prediction": true
+  "numCategories": true,
+  "labels": true,
+  "predictions": true
 };
 Meteor.publish('ExampleSituations.HumanReadable.topK', function(topK) {
   check(topK, Number);

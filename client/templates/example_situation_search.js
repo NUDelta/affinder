@@ -18,21 +18,30 @@ Template.simulateAndLabelConceptExpression.onCreated(function() {
   // perform inference automatically
   this.autorun(() => {
     compiledBlocklyDep.depend();
+    const detectorId = Session.get('detectorId');
+    if (!detectorId) {
+      return;
+    }
+    const conceptVariableName = getSelectConceptVariableName();
+    if (!conceptVariableName || !getSelectConceptVariableFeatures() ) {
+      return;
+    }
     ExampleSituations.find({}).forEach((situation) => {
-      const detectorId = Session.get('detectorId');
-      if (!detectorId) {
-        return "n/a";
-      }
-      const affordances = extractAffordances(situation);
-      let [variables, rules] = splitVarDeclarationAndRules($('#compiledBlockly').val());
-      let prediction = applyDetector(affordances, variables, rules);
-      prediction = prediction ? 'true' : 'false';
+      let prediction = true;
+      // let [variables, rules] = splitVarDeclarationAndRules($('#compiledBlockly').val());
+      // const affordances = extractAffordances(situation);
+      // let prediction = applyDetector(affordances, variables, rules);
+      // prediction = prediction ? 'true' : 'false';
       const selectFields = {
         '_id': situation['_id'],
         'alias': situation['alias'],
         'detectorId': detectorId
       };
-      Meteor.call('updateExampleSituationPrediction', selectFields, prediction)
+      const newPrediction = {
+        'conceptVariable': conceptVariableName,
+        'prediction': prediction
+      }
+      Meteor.call('updateExampleSituationPrediction', selectFields, newPrediction)
     });
   });
 });
@@ -111,14 +120,21 @@ Template.selectPlaceDropdown.helpers({
   }
 })
 
-const getSelectConceptVariable = () => {
-  let conceptVariableContextFeatures = document.getElementById('selectConceptVariableToAnalyze').value;
-  console.log("conceptVariable context features: ", conceptVariableContextFeatures);
-  return conceptVariableContextFeatures;
+const getSelectConceptVariableFeatures = () => {
+  return JSON.parse(document.getElementById('selectConceptVariableToAnalyze').value);
 };
 
+const getSelectConceptVariableName = () => {
+  const e = document.getElementById('selectConceptVariableToAnalyze');
+  if (!e) {
+    console.log('concept variable selector does not exist yet')
+    return;
+  }
+  return e.selectedOptions[0].text;
+}
+
 const getYelpPlaceInstancesPerConceptVariable = (detectorId) => {
-  let conceptFeatures = JSON.parse(getSelectConceptVariable());
+  let conceptFeatures = getSelectConceptVariableFeatures();
   if (!Array.isArray(conceptFeatures)) {
     console.log('in function getYelpPlaceInstancesPerConceptVariable: \n context features is not an array')
     return;
@@ -138,15 +154,17 @@ Template.simulateAndLabelConceptExpression.events({
   'submit form#simulateConcepts': function(e, target) {
     e.preventDefault();
 
-    Session.set('selectConceptVariableToAnalyze', getSelectConceptVariable()) // form input can get lost
     getYelpPlaceInstancesPerConceptVariable(Session.get('detectorId'));
   },
 });
 
 Template.simulateAndLabelConceptExpression.helpers({
   'detectedSituations'() {
+    // let conceptVariableName = getSelectConceptVariable();
+    let conceptVariableName = getSelectConceptVariableName();
+    console.log('zzzzzzzzzz: ', conceptVariableName);
     let examples = ExampleSituations.find({
-      'prediction': true
+      [`predictions.${conceptVariableName}`]: true
     }, {
       // show places that have most number of categories, posing the greatest risk for breaking mental model of a category
       sort: { numCategories: -1 }
@@ -190,9 +208,13 @@ Template.exampleSituationIssues.onCreated(function() {
 
 Template.exampleSituationIssues.helpers({
   'falsePositives'() {
+    let conceptVariable = getSelectConceptVariable();
+    if (!conceptVariable) {
+      return;
+    }
     return ExampleSituations.find({
-      'label': false,
-      'prediction': true
+      [`labels.${conceptVariable}`]: false,
+      [`predictions.${conceptVariable}`]: true
     }).fetch();
   },
   'situationArgs'(situation) {
@@ -216,10 +238,18 @@ Template.situationItemImageNameCats.helpers({
 
 Template.situationItemLabelEdit.helpers({
   'hasLabel'(situation) {
-    return situation.label !== undefined;
+    let conceptVariableName = getSelectConceptVariableName();
+    if (!conceptVariableName) {
+      return;
+    }
+    return situation.labels[conceptVariableName] !== undefined;
   },
   'isLabelTrue'(situation) {
-    return situation.label === true;
+    let conceptVariableName = getSelectConceptVariableName();
+    if (!conceptVariableName) {
+      return;
+    }
+    return situation.labels[conceptVariableName] === true;
   }
 });
 
@@ -231,15 +261,18 @@ Template.situationItemLabelEdit.events({
       'detectorId': Session.get('detectorId'),
     };
     let label = $(`input[type='radio'][name=${target.data.situation.alias}]:checked`).val();
-    console.log(JSON.stringify(selectFields));
-    console.log(label);
-    Meteor.call('updateExampleSituationLabel', selectFields, label);
+    const labelObj = {
+      'conceptVariable': getSelectConceptVariableName(),
+      'label': label
+    };
+    Meteor.call('updateExampleSituationLabel', selectFields, labelObj);
   }
 });
 
 Template.situationItemLabelView.helpers({
   situationLabel(situation) {
-    return situation.label ? 'true' : 'false';
+    let conceptVariableName = getSelectConceptVariableName();
+    return situation.labels[conceptVariableName] ? 'true' : 'false';
   }
 });
 
