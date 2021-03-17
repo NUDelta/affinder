@@ -3,7 +3,13 @@ import {ExampleSituations} from "../../lib/collections/collections";
 import {compiledBlocklyDep, splitVarDeclarationAndRules, setOfContextFeaturesInBlockly} from "./blockly";
 import {applyDetector, extractAffordances} from "../../lib/detectors/detectors";
 
-Template.exampleSituationSearch.onCreated(function() {
+Template.viewExamplePlaces.onCreated(function() {
+  this.autorun(() => {
+    this.subscribe('ExampleSituations.HumanReadable.for.detectorId', Session.get('detectorId'));
+  });
+});
+
+Template.simulateAndLabelConceptExpression.onCreated(function() {
   this.autorun(() => {
     this.subscribe('ExampleSituations.HumanReadable.for.detectorId', Session.get('detectorId'));
   });
@@ -47,15 +53,15 @@ const getYelpPlaceInstancesPerPlaceTag = (detectorId) => {
   Meteor.call('yelpFusionBusinessSearch', searchByPlaceCategory, detectorId);
 }
 
-Template.exampleSituationSearch.events({
-  'submit form#situationSearch': function(e, target) {
+Template.viewExamplePlaces.events({
+  'submit form#viewExamplePlaces': function(e, target) {
     e.preventDefault();
     Session.set('placeTagToAnalyze', getSelectPlaceTag()) // form input can get lost
     getYelpPlaceInstancesPerPlaceTag(Session.get('detectorId'));
   },
 });
 
-Template.exampleSituationSearch.helpers({
+Template.viewExamplePlaces.helpers({
   'exampleSituations'() {
     let examples = ExampleSituations.find({
       categoriesKey: Session.get('placeTagToAnalyze')
@@ -105,7 +111,7 @@ Template.exampleSituationIssues.helpers({
   }
 });
 
-Template.situationItem.helpers({
+Template.situationItemImageNameCats.helpers({
   'situationCategoriesReadable'(situation) {
     return situation.categories.map(obj => obj["title"] );
   },
@@ -113,17 +119,7 @@ Template.situationItem.helpers({
   'situationCategoriesAlias'(situation) {
     return situation.categories.map(obj => obj["alias"] );
   }
-});
-
-Template.situationIssueItem.helpers({
-  'situationCategoriesReadable'(situation) {
-    return situation.categories.map(obj => obj["title"] );
-  },
-
-  'situationCategoriesAlias'(situation) {
-    return situation.categories.map(obj => obj["alias"] );
-  }
-});
+})
 
 Template.situationItemLabelEdit.helpers({
   'hasLabel'(situation) {

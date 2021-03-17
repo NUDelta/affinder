@@ -250,8 +250,8 @@ body {
 .bottomcontent {
 	grid-area: bottomcontent;
 	display: grid;
-	grid-template-columns: 1fr 4fr;
-	grid-template-areas: "listview mapview";
+	grid-template-columns: 2fr 3fr 3fr;
+	grid-template-areas: "exampleplaces simulateconcept issuelist";
 	background-color: #fff;
 	color: #444;
 }
@@ -269,12 +269,16 @@ body {
 	color: #444;
 }
 
-.example-situation-listview {
-	grid-area: listview;
+.view-example-places {
+	grid-area: exampleplaces;
 }
 
-.example-situation-mapview {
-	grid-area: mapview;
+.simulate-concept-expression {
+	grid-area: simulateconcept
+}
+
+.concept-issue-list {
+	grid-area: issuelist;
 }
 
 .blockly-div {
