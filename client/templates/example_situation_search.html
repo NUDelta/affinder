@@ -44,7 +44,7 @@
       </div>
     </form>
     <ul class="list-group">
-      {{#each situation in exampleSituations}}
+      {{#each situation in detectedSituations}}
         <li class="list-group-item">
           {{> situationAnnotateItem (situationArgs situation)}}
         </li>
@@ -57,9 +57,9 @@
   <div class="form-group">
     <select name="selectConceptVariableKey" class="form-control" id="selectConceptVariableToAnalyze" form="conceptSimulate" required="true">
       <option default value="">Select a concept variable...</option>
-      <!-- {{#each placetag in placeTagList}} -->
-        <!-- <option value="{{placetag}}">{{placetag}}</option> -->
-      <!-- {{/each}} -->
+      {{#each concept in conceptVariableList }}
+        <option value="{{concept.features}}">{{concept.name}}</option>
+      {{/each}}
     </select>
   </div>
 </template>
@@ -116,9 +116,9 @@
     <div style="display: table-cell;">
       {{> situationItemLabelEdit situation=situation}}
     </div>
-    <div style="display: table-cell;">
+    <!-- <div style="display: table-cell;">
       {{> situationItemPrediction situation=situation}}
-    </div>
+    </div> -->
   </div>
 </template>
 
@@ -183,7 +183,7 @@
   {{#if Template.subscriptionsReady}}
     <p>Prediction</p>
     <label>
-      <button class="btn btn-small">{{applyDetectorToSituation situation}}</button>
+      <button class="btn btn-small">{{situation.prediction}}</button>
     </label>
   {{/if}}
 </template>

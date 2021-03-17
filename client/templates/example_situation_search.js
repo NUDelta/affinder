@@ -1,6 +1,7 @@
 import {Tracker} from 'meteor/tracker'
 import {ExampleSituations} from "../../lib/collections/collections";
-import {compiledBlocklyDep, splitVarDeclarationAndRules, setOfContextFeaturesInBlockly} from "./blockly";
+import {compiledBlocklyDep, splitVarDeclarationAndRules, setOfContextFeaturesInBlockly,
+  getConceptVariables, setOfVariableNames, conceptRulesToContextFeatures} from "./blockly";
 import {applyDetector, extractAffordances} from "../../lib/detectors/detectors";
 
 Template.viewExamplePlaces.onCreated(function() {
@@ -12,6 +13,27 @@ Template.viewExamplePlaces.onCreated(function() {
 Template.simulateAndLabelConceptExpression.onCreated(function() {
   this.autorun(() => {
     this.subscribe('ExampleSituations.HumanReadable.for.detectorId', Session.get('detectorId'));
+  });
+
+  // perform inference automatically
+  this.autorun(() => {
+    compiledBlocklyDep.depend();
+    ExampleSituations.find({}).forEach((situation) => {
+      const detectorId = Session.get('detectorId');
+      if (!detectorId) {
+        return "n/a";
+      }
+      const affordances = extractAffordances(situation);
+      let [variables, rules] = splitVarDeclarationAndRules($('#compiledBlockly').val());
+      let prediction = applyDetector(affordances, variables, rules);
+      prediction = prediction ? 'true' : 'false';
+      const selectFields = {
+        '_id': situation['_id'],
+        'alias': situation['alias'],
+        'detectorId': detectorId
+      };
+      Meteor.call('updateExampleSituationPrediction', selectFields, prediction)
+    });
   });
 });
 
@@ -84,10 +106,81 @@ Template.selectPlaceDropdown.helpers({
   'placeTagList'() {
     compiledBlocklyDep.depend();
 
-    let [varDecl, rules] = splitVarDeclarationAndRules($('#compiledBlockly').val());
+    let [varDecl, rules] = splitVarDeclarationAndRules(document.getElementById('compiledBlockly').value);
     return setOfContextFeaturesInBlockly(varDecl, rules);
   }
 })
+
+const getSelectConceptVariable = () => {
+  let conceptVariableContextFeatures = document.getElementById('selectConceptVariableToAnalyze').value;
+  console.log("conceptVariable context features: ", conceptVariableContextFeatures);
+  return conceptVariableContextFeatures;
+};
+
+const getYelpPlaceInstancesPerConceptVariable = (detectorId) => {
+  let conceptFeatures = JSON.parse(getSelectConceptVariable());
+  if (!Array.isArray(conceptFeatures)) {
+    console.log('in function getYelpPlaceInstancesPerConceptVariable: \n context features is not an array')
+    return;
+  }
+  for (i = 0; i < conceptFeatures.length; i++) {
+    console.log('category to search: ', conceptFeatures[i])
+    let searchByPlaceCategory = {
+      term: '',
+      categories: conceptFeatures[i],
+      location: document.getElementById('cityname_sim').value
+    }
+    Meteor.call('yelpFusionBusinessSearch', searchByPlaceCategory, detectorId);
+  }
+}
+
+Template.simulateAndLabelConceptExpression.events({
+  'submit form#simulateConcepts': function(e, target) {
+    e.preventDefault();
+
+    Session.set('selectConceptVariableToAnalyze', getSelectConceptVariable()) // form input can get lost
+    getYelpPlaceInstancesPerConceptVariable(Session.get('detectorId'));
+  },
+});
+
+Template.simulateAndLabelConceptExpression.helpers({
+  'detectedSituations'() {
+    let examples = ExampleSituations.find({
+      'prediction': true
+    }, {
+      // show places that have most number of categories, posing the greatest risk for breaking mental model of a category
+      sort: { numCategories: -1 }
+    }).fetch();
+    return examples;
+  },
+  'situationArgs'(situation) {
+    // const instance = Template.instance();
+    return {
+      situation,
+      placeCategories: situation.categories.map(obj => obj["alias"]),
+    }
+  }
+});
+
+Template.selectConceptVariableDropdown.helpers({
+  'conceptVariableList'() {
+    compiledBlocklyDep.depend();
+
+    let [varDecl, rules] = splitVarDeclarationAndRules(document.getElementById('compiledBlockly').value);
+    let variableNames = setOfVariableNames(varDecl);
+    let [conceptVariableNames, conceptRules] = getConceptVariables(rules);
+    let concepts = [];
+    for (i = 0; i < conceptVariableNames.length; i++) {
+      let concept_contextfeatures = conceptRulesToContextFeatures(variableNames, conceptRules[i]);
+      console.log("concept_contextfeatures: ", concept_contextfeatures);
+      concepts.push({
+        name: conceptVariableNames[i],
+        features: JSON.stringify(concept_contextfeatures)
+      });
+    }
+    return concepts;
+  }
+});
 
 Template.exampleSituationIssues.onCreated(function() {
   this.autorun(() => {
@@ -152,27 +245,4 @@ Template.situationItemLabelView.helpers({
 
 Template.situationItemPrediction.onCreated(function() {
   this.subscribe('ExampleSituation.HumanReadable.for.detectorId', Session.get('detectorId'));
-});
-
-Template.situationItemPrediction.helpers({
-  'applyDetectorToSituation'(situation) {
-    compiledBlocklyDep.depend();
-    const detectorId = Session.get('detectorId');
-    if (!detectorId) {
-      return "n/a";
-    }
-
-    const affordances = extractAffordances(situation);
-    let [variables, rules] = splitVarDeclarationAndRules($('#compiledBlockly').val());
-    let prediction = applyDetector(affordances, variables, rules);
-    prediction = prediction ? 'true' : 'false';
-
-    const selectFields = {
-      '_id': situation['_id'],
-      'alias': situation['alias'],
-      'detectorId': detectorId
-    };
-    Meteor.call('updateExampleSituationPrediction', selectFields, prediction);
-    return prediction;
-  }
 });

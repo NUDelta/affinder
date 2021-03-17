@@ -95,19 +95,20 @@ const filterFunctionalLines = (lines_w_comment) => {
   return lines
 }
 
-function getConceptVariables(rules) {
+export const getConceptVariables = (rules) => {
   console.log("rules: ", rules);
   if (!Array.isArray(rules)) {
     console.log("rules is not an array");
-    return [];
+    return [[], []];
   }
 
   if (rules.length < 1) {
     console.log("rules is empty array");
-    return [];
+    return [[], []];
   }
 
   let conceptVariableNames = [];
+  let conceptVariableRules = [];
   rules.forEach(function(rule) {
     let split_rule = rule.split("=");
 
@@ -115,11 +116,28 @@ function getConceptVariables(rules) {
     // "concept_variable = feature1 || feature2"
     // it follows this format
     if (split_rule.length == 2) {
-      let conceptVariable = split_rule[0].trim();
-      conceptVariableNames.push(conceptVariable);
+      let conceptVariableName = split_rule[0].trim();
+      let conceptRule = split_rule[1];
+      conceptVariableNames.push(conceptVariableName);
+      conceptVariableRules.push(conceptRule);
     }
   });
-  return conceptVariableNames;
+  return [conceptVariableNames, conceptVariableRules];
+}
+
+/**
+ *
+ * @param {*} variableNames List of Strings
+ *   obtained from a call like `variableNames = setOfVariableNames(varDecl);`
+ * @param {*} rule String
+ *     "concept_variable = feature1 || feature2"
+ *     "feature1 || (feature2 && feature3)"
+ *     "(feature1 || (feature2 && !(feature3)))"
+ * @returns {*} context_features List of Strings
+ *
+ */
+export const conceptRulesToContextFeatures = (variableNames, rule) => {
+  return variableNames.filter((name) => { return rule.includes(name) });
 }
 
 /* must read the full set of context features in the blockly workspace */
@@ -127,7 +145,7 @@ export const setOfContextFeaturesInBlockly = (varDecl, rules) => {
   let variableNames = setOfVariableNames(varDecl);
   console.log("variableNames: ", variableNames);
 
-  let conceptVariableNames = getConceptVariables(rules);
+  let [conceptVariableNames, conceptVariableRules] = getConceptVariables(rules);
   console.log("concept variables: ", conceptVariableNames);
 
   let contextFeatures = variableNames.filter((variable) => {
