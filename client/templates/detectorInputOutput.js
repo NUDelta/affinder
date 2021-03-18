@@ -1,5 +1,6 @@
 import {Detectors} from "../../lib/collections/collections";
-import {splitVarDeclarationAndRules, ReflectAndExpand, WORKSPACE} from "./blockly";
+import {ReflectAndExpand, WORKSPACE} from "./blockly";
+import {splitVarDeclarationAndRules} from "../../lib/detectors/detectors";
 
 Template.detectorInputOutput.onCreated(function() {
   this.subscribe('Detectors');

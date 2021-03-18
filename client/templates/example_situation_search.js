@@ -1,8 +1,8 @@
 import {Tracker} from 'meteor/tracker'
 import {ExampleSituations} from "../../lib/collections/collections";
-import {compiledBlocklyDep, splitVarDeclarationAndRules, setOfContextFeaturesInBlockly,
-  getConceptVariables, setOfVariableNames, conceptRulesToContextFeatures} from "./blockly";
-import {applyDetector, extractAffordances} from "../../lib/detectors/detectors";
+import {compiledBlocklyDep} from "./blockly";
+import {applyDetector, extractAffordances, isolateConceptVariableDetector, splitVarDeclarationAndRules, setOfContextFeaturesInBlockly,
+  getConceptVariables, setOfVariableNames, variablesInRule, dependentContextFeatures} from "../../lib/detectors/detectors";
 
 Template.viewExamplePlaces.onCreated(function() {
   this.autorun(() => {
@@ -130,11 +130,10 @@ Template.simulateAndLabelConceptExpression.onCreated(function() {
       if (!conceptVariableName || !Session.get('selectedConceptVariableFeatures')) {
         return;
       }
-      let prediction = true;
-      // const affordances = extractAffordances(situation);
-      // let [variables, rules] = splitVarDeclarationAndRules($('#compiledBlockly').val());
-      // let prediction = applyDetector(affordances, variables, rules);
-      // prediction = prediction ? 'true' : 'false';
+      let [varDecl, rules] = splitVarDeclarationAndRules($('#compiledBlockly').val());
+      let [isolatedVarDecl, isolatedRules] = isolateConceptVariableDetector(varDecl, rules, conceptVariableName);
+      const affordances = extractAffordances(situation);
+      const prediction = applyDetector(affordances, isolatedVarDecl, isolatedRules);
       const selectFields = {
         '_id': situation['_id'],
         'alias': situation['alias'],
@@ -187,7 +186,7 @@ Template.selectConceptVariableDropdown.helpers({
     let [conceptVariableNames, conceptRules] = getConceptVariables(rules);
     let concepts = [];
     for (i = 0; i < conceptVariableNames.length; i++) {
-      let concept_contextfeatures = conceptRulesToContextFeatures(variableNames, conceptRules[i]);
+      let concept_contextfeatures = dependentContextFeatures(varDecl, rules, conceptVariableNames[i]);
       console.log("concept_contextfeatures: ", concept_contextfeatures);
       concepts.push({
         name: conceptVariableNames[i],
