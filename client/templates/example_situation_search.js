@@ -10,41 +10,6 @@ Template.viewExamplePlaces.onCreated(function() {
   });
 });
 
-Template.simulateAndLabelConceptExpression.onCreated(function() {
-  this.autorun(() => {
-    this.subscribe('ExampleSituations.HumanReadable.for.detectorId', Session.get('detectorId'));
-  });
-
-  const exampleSituationsCursor = ExampleSituations.find({});
-  const exampleSituationsHandle = exampleSituationsCursor.observe({
-    added(situation) {
-      const detectorId = Session.get('detectorId');
-      if (!detectorId) {
-        return;
-      }
-      const conceptVariableName = Session.get('selectedConceptVariableName');
-      if (!conceptVariableName || !Session.get('selectedConceptVariableFeatures')) {
-        return;
-      }
-      let prediction = true;
-      // const affordances = extractAffordances(situation);
-      // let [variables, rules] = splitVarDeclarationAndRules($('#compiledBlockly').val());
-      // let prediction = applyDetector(affordances, variables, rules);
-      // prediction = prediction ? 'true' : 'false';
-      const selectFields = {
-        '_id': situation['_id'],
-        'alias': situation['alias'],
-        'detectorId': detectorId
-      };
-      const newPrediction = {
-        'conceptVariable': conceptVariableName,
-        'prediction': prediction
-      }
-      Meteor.call('updateExampleSituationPrediction', selectFields, newPrediction)
-    }
-  });
-});
-
 const getYelpPlaceInstancesForCurrentCategories = (detectorId) => {
   // TODO(rlouie): simulate the detector by
   // (1) automatically searching the place categories for location (city, search region).
@@ -149,6 +114,41 @@ const getYelpPlaceInstancesPerConceptVariable = (detectorId) => {
   }
 }
 
+Template.simulateAndLabelConceptExpression.onCreated(function() {
+  this.autorun(() => {
+    this.subscribe('ExampleSituations.HumanReadable.for.detectorId', Session.get('detectorId'));
+  });
+
+  const exampleSituationsCursor = ExampleSituations.find({});
+  const exampleSituationsHandle = exampleSituationsCursor.observe({
+    added(situation) {
+      const detectorId = Session.get('detectorId');
+      if (!detectorId) {
+        return;
+      }
+      const conceptVariableName = Session.get('selectedConceptVariableName');
+      if (!conceptVariableName || !Session.get('selectedConceptVariableFeatures')) {
+        return;
+      }
+      let prediction = true;
+      // const affordances = extractAffordances(situation);
+      // let [variables, rules] = splitVarDeclarationAndRules($('#compiledBlockly').val());
+      // let prediction = applyDetector(affordances, variables, rules);
+      // prediction = prediction ? 'true' : 'false';
+      const selectFields = {
+        '_id': situation['_id'],
+        'alias': situation['alias'],
+        'detectorId': detectorId
+      };
+      const newPrediction = {
+        'conceptVariable': conceptVariableName,
+        'prediction': prediction
+      }
+      Meteor.call('updateExampleSituationPrediction', selectFields, newPrediction)
+    }
+  });
+});
+
 Template.simulateAndLabelConceptExpression.events({
   'submit form#simulateConcepts': function(e, target) {
     e.preventDefault();
@@ -206,13 +206,13 @@ Template.exampleSituationIssues.onCreated(function() {
 
 Template.exampleSituationIssues.helpers({
   'falsePositives'() {
-    let conceptVariable = getSelectConceptVariable();
-    if (!conceptVariable) {
+    let conceptVariableName = Session.get('selectedConceptVariableName');
+    if (!conceptVariableName) {
       return;
     }
     return ExampleSituations.find({
-      [`labels.${conceptVariable}`]: false,
-      [`predictions.${conceptVariable}`]: true
+      [`labels.${conceptVariableName}`]: false,
+      [`predictions.${conceptVariableName}`]: true
     }).fetch();
   },
   'situationArgs'(situation) {
@@ -240,12 +240,18 @@ Template.situationItemLabelEdit.helpers({
     if (!conceptVariableName) {
       return;
     }
+    if (!situation.labels) {
+      return false;
+    }
     return situation.labels[conceptVariableName] !== undefined;
   },
   'isLabelTrue'(situation) {
     let conceptVariableName = Session.get('selectedConceptVariableName');
     if (!conceptVariableName) {
       return;
+    }
+    if (!situation.labels) {
+      return false;
     }
     return situation.labels[conceptVariableName] === true;
   }
@@ -274,10 +280,23 @@ Template.situationItemLabelEdit.events({
 Template.situationItemLabelView.helpers({
   situationLabel(situation) {
     let conceptVariableName = Session.get('selectedConceptVariableName');
+    if (!situation.labels) {
+      return;
+    }
     return situation.labels[conceptVariableName] ? 'true' : 'false';
   }
 });
 
 Template.situationItemPrediction.onCreated(function() {
   this.subscribe('ExampleSituation.HumanReadable.for.detectorId', Session.get('detectorId'));
+});
+
+Template.situationItemPrediction.helpers({
+  situationPrediction(situation) {
+    let conceptVariableName = Session.get('selectedConceptVariableName');
+    if (!situation.labels) {
+      return;
+    }
+    return situation.predictions[conceptVariableName];
+  }
 });
