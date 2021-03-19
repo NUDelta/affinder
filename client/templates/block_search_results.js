@@ -16,10 +16,10 @@ Template.simpleTextSearchResults.helpers({
     // Instead of resorting to a Meteor method we can hack around it by relying on an extra
     // ad-hoc collection containing the sorted ids ...
     const key = JSON.stringify(Session.get("searchInputText"));
-    const result = Detectors.SimpleTextSearchResults.findOne(key);
+    const result = LowLevelDetectors.SimpleTextSearchResults.findOne(key);
     if (result) {
       const idsInSortOrder = result.results.filter(id => queryId !== id);
-      const blocksInSortedOrder = idsInSortOrder.map(id => Detectors.findOne(id));
+      const blocksInSortedOrder = idsInSortOrder.map(id => LowLevelDetectors.findOne(id));
       return blocksInSortedOrder;
     }
   }

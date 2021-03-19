@@ -1,4 +1,4 @@
-import {Queries, Detectors, ExampleSituations} from "../lib/collections/collections";
+import {Queries, Detectors, ExampleSituations, LowLevelDetectors} from "../lib/collections/collections";
 
 Meteor.publish('Queries', function() {
   // TODO(rlouie): limit to just the summary contents
@@ -11,7 +11,7 @@ Meteor.publish('Workspace', function() {
 
 Meteor.publish("simpleTextSearch", function(searchValue) {
   check(searchValue, String);
-  const res = Detectors.find(
+  const res = LowLevelDetectors.find(
     {$text: {$search: searchValue} }
   );
 
@@ -19,10 +19,14 @@ Meteor.publish("simpleTextSearch", function(searchValue) {
   // without which we would have trouble recreating the search results on the client
   const key = JSON.stringify(searchValue);
   const resultIds = res.map(e => e._id);
-  Detectors.SimpleTextSearchResults.upsert(key, {results: resultIds});
+  LowLevelDetectors.SimpleTextSearchResults.upsert(key, {results: resultIds});
 
   // publish the results to the client side
-  return Detectors.SimpleTextSearchResults.find(key);
+  return LowLevelDetectors.SimpleTextSearchResults.find(key);
+});
+
+Meteor.publish('LowLevelDetectors', function() {
+  return LowLevelDetectors.find();
 });
 
 Meteor.publish('Detectors', function() {

@@ -1,4 +1,4 @@
-import {Detectors, ExampleSituations} from "../lib/collections/collections";
+import {LowLevelDetectors, ExampleSituations} from "../lib/collections/collections";
 import {CONFIG} from "../lib/config";
 
 // elementary contexts
@@ -7,13 +7,13 @@ let yelpCategories = ["Shopping", "Shopping Centers", "Food", "Soul Food", "Conv
 let weatherFeatures = ["thunderstorm", "drizzle", "rain", "snow", "fog", "smoke", "haze", "clear", "clouds", "windy", "hot", "cold"];
 let timeFeatures = ["sunrise", "sunset", "sunset_time_minutes", "daytime", "nighttime", "hour", "minute", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday", "america_los_angeles", "america_denver", "america_chicago", "america_new_york"];
 
-if (Detectors.find().count() === 0) {
-  yelpCategories.forEach(cat => Detectors.insert({description: cat}));
-  weatherFeatures.forEach(feat => Detectors.insert({description: feat}));
-  timeFeatures.forEach(feat => Detectors.insert({description: feat}));
+if (LowLevelDetectors.find().count() === 0) {
+  yelpCategories.forEach(cat => LowLevelDetectors.insert({description: cat}));
+  // weatherFeatures.forEach(feat => Detectors.insert({description: feat}));
+  // timeFeatures.forEach(feat => Detectors.insert({description: feat}));
 }
 
-Detectors.rawCollection().createIndex({"description": "text"});
+LowLevelDetectors.rawCollection().createIndex({"description": "text"});
 
 if (CONFIG.RESET) {
   ExampleSituations.remove({});

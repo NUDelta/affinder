@@ -1,6 +1,6 @@
 import { Router } from 'meteor/iron:router';
 import Blockly from 'blockly';
-import {Queries, Detectors} from "../../lib/collections/collections";
+import {Queries, LowLevelDetectors} from "../../lib/collections/collections";
 import {
   WORKSPACE,
   createMultiVarOrBlock,
@@ -69,6 +69,7 @@ function resolveAllAndExcludedCats(allCats, excludeCats) {
 
 Template.featureDiscovery.onCreated(function() {
   this.subscribe('Queries');
+  this.subscribe('LowLevelDetectors');
 });
 
 Template.featureDiscovery.helpers({
@@ -115,10 +116,12 @@ Template.featureDiscovery.helpers({
       // Instead of resorting to a Meteor method we can hack around it by relying on an extra
       // ad-hoc collection containing the sorted ids ...
       const key = JSON.stringify(Session.get("searchInputText"));
-      const result = Detectors.SimpleTextSearchResults.findOne(key);
+      const result = LowLevelDetectors.SimpleTextSearchResults.findOne(key);
+      console.log(result);
       if (result) {
         const idsInSortOrder = result.results;
-        const blocksInSortedOrder = idsInSortOrder.map(id => Detectors.findOne(id));
+        const blocksInSortedOrder = idsInSortOrder.map(id => LowLevelDetectors.findOne({"_id": id}));
+        console.log(blocksInSortedOrder);
         return blocksInSortedOrder;
       }
     }
@@ -132,7 +135,7 @@ Template.featureWeightItem.helpers({
 });
 
 if (Meteor.isServer) {
-  Detectors._ensureIndex({
+  LowLevelDetectors._ensureIndex({
     "description": "text"
   });
 }
