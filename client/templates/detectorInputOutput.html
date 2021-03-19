@@ -3,11 +3,14 @@
     <form id="saveDetectorForm">
       <div class="row">
         <div class="col-lg-6">
-          <div class="input-group">
-            <span class="input-group-btn">
-              <button id="show-abstraction-prompt" class="btn btn-primary"><href>Reflect and Expand Concepts</href></button>
-            </span>
-          </div>
+          {{#if baseline}}
+          {{else}}
+            <div class="input-group">
+              <span class="input-group-btn">
+                <button id="show-abstraction-prompt" class="btn btn-primary"><href>Reflect and Expand Concepts</href></button>
+              </span>
+            </div>
+          {{/if}}
         </div>
         <div class="col-lg-6">
           <div class="input-group">

@@ -31,6 +31,11 @@ Template.detectorInputOutput.helpers({
   'searchInputText': function() {
     return Session.get('searchInputText');
   },
+
+  baseline(){
+    const baseline = Router.current().params.query.variant == 'B';
+    return baseline;
+  }
 });
 
 Template.detectorInputOutput.events({

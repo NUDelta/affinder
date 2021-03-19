@@ -36,12 +36,15 @@
       <div class="view-example-places">
         {{> viewExamplePlaces}}
       </div>
-      <div class="simulate-concept-expression">
-        {{> simulateAndLabelConceptExpression}}
-      </div>
-      <div class="concept-issues">
-        {{> exampleSituationIssues}}
-      </div>
+      {{#if baseline}}
+      {{else}}
+        <div class="simulate-concept-expression">
+          {{> simulateAndLabelConceptExpression}}
+        </div>
+        <div class="concept-issues">
+          {{> exampleSituationIssues}}
+        </div>
+      {{/if}}
     </div>
   </div>
 </template>
