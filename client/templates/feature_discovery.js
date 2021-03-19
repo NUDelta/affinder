@@ -1,3 +1,4 @@
+import { Router } from 'meteor/iron:router';
 import Blockly from 'blockly';
 import {Queries, Detectors} from "../../lib/collections/collections";
 import {
@@ -15,28 +16,31 @@ Template.searchBar.onCreated(function() {
 });
 
 Template.searchBar.events({
-  'submit form#blockSearch': function(e) {
+  'submit form#searchBar': function(e) {
     e.preventDefault();
 
     const queryText = $(e.target).find('[name=search]').val();
 
-    // Directed Search
     Session.set("searchInputText", queryText);
 
-    // Stretch Search
-    const queryId = Queries.insert({ query: queryText, categories: [], excluded_categories: []});
-    Session.set('yelpLoading', true);
-    Session.set('currentQueryId', queryId);
-    Meteor.call('updateYelpPlaceCategories',
-      {
-        _id: queryId,
-        query: queryText
-      }, function (error, data) {
-        Session.set('yelpLoading', false);
-        if (error) {
-          return alert(error.reason)
-        }
-      });
+    const baseline = Router.current().params.query.variant == 'B';
+    if (!baseline) {
+      console.log('unlimited vocab search');
+      // Stretch Search
+      const queryId = Queries.insert({ query: queryText, categories: [], excluded_categories: []});
+      Session.set('yelpLoading', true);
+      Session.set('currentQueryId', queryId);
+      Meteor.call('updateYelpPlaceCategories',
+        {
+          _id: queryId,
+          query: queryText
+        }, function (error, data) {
+          Session.set('yelpLoading', false);
+          if (error) {
+            return alert(error.reason)
+          }
+        });
+    }
   }
 });
 
@@ -68,6 +72,10 @@ Template.featureDiscovery.onCreated(function() {
 });
 
 Template.featureDiscovery.helpers({
+  'baseline': function() {
+    const baseline = Router.current().params.query.variant == 'B';
+    return baseline;
+  },
   'yelpLoading': function() {
     return Session.get('yelpLoading');
   },
@@ -98,6 +106,23 @@ Template.featureDiscovery.helpers({
     let obj = Queries.findOne(queryId);
     return (obj.categories.length - obj.excluded_categories.length) / obj.categories.length
   },
+
+  'simpleTextSearchResults': function() {
+    if (Session.get("searchInputText")) {
+      Meteor.subscribe("simpleTextSearch", Session.get("searchInputText"));
+
+      // We cannot re-use the query as MiniMongo does not support the $text operator!
+      // Instead of resorting to a Meteor method we can hack around it by relying on an extra
+      // ad-hoc collection containing the sorted ids ...
+      const key = JSON.stringify(Session.get("searchInputText"));
+      const result = Detectors.SimpleTextSearchResults.findOne(key);
+      if (result) {
+        const idsInSortOrder = result.results;
+        const blocksInSortedOrder = idsInSortOrder.map(id => Detectors.findOne(id));
+        return blocksInSortedOrder;
+      }
+    }
+  }
 });
 
 Template.featureWeightItem.helpers({
