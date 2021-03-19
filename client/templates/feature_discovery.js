@@ -37,11 +37,6 @@ Template.searchBar.events({
           return alert(error.reason)
         }
       });
-
-    // hide the abstraction prompt text, show the abstraction prompt button
-    if (Session.get('searchInputText') !== "") {
-      document.getElementById('show-abstraction-prompt').className = "btn btn-info active"
-    }
   }
 });
 

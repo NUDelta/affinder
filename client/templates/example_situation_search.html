@@ -10,7 +10,7 @@
         </span>
       </div>
     </form>
-    <ul class="list-group">
+    <ul class="list-group view-example-places-list">
       {{#each situation in exampleSituations}}
         <li class="list-group-item">
           {{> situationItem (situationArgs situation)}}
@@ -36,14 +36,14 @@
   {{#if Template.subscriptionsReady}}
     <form id="simulateConcepts">
       {{> selectConceptVariableDropdown}}
-      <div class="input-group">
+      <div class="input-group citystuff">
         <input name="search_sim" id="cityname_sim" type="text" class="form-control" placeholder="Type a city name..." required="true">
         <span class="input-group-btn">
-          <button class="btn btn-default" type="submit">Simulate on Yelp Data</button>
+          <button class="btn btn-warning" type="submit">Simulate on Yelp</button>
         </span>
       </div>
     </form>
-    <ul class="list-group">
+    <ul class="list-group simulate-concept-expression-list">
       {{#each situation in detectedSituations}}
         <li class="list-group-item">
           {{> situationAnnotateItem (situationArgs situation)}}
@@ -67,7 +67,7 @@
 <template name="exampleSituationIssues">
   <div>Issues</div>
   {{#if Template.subscriptionsReady}}
-    <ul class="list-group">
+    <ul class="list-group concept-issues-list">
       {{#each situation in falsePositives}}
         <li class="list-group-item">
           {{> situationIssueItem (situationArgs situation)}}

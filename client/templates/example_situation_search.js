@@ -122,31 +122,38 @@ Template.simulateAndLabelConceptExpression.onCreated(function() {
   const exampleSituationsCursor = ExampleSituations.find({});
   const exampleSituationsHandle = exampleSituationsCursor.observe({
     added(situation) {
-      const detectorId = Session.get('detectorId');
-      if (!detectorId) {
-        return;
-      }
-      const conceptVariableName = Session.get('selectedConceptVariableName');
-      if (!conceptVariableName || !Session.get('selectedConceptVariableFeatures')) {
-        return;
-      }
-      let [varDecl, rules] = splitVarDeclarationAndRules($('#compiledBlockly').val());
-      let [isolatedVarDecl, isolatedRules] = isolateConceptVariableDetector(varDecl, rules, conceptVariableName);
-      const affordances = extractAffordances(situation);
-      const prediction = applyDetector(affordances, isolatedVarDecl, isolatedRules);
-      const selectFields = {
-        '_id': situation['_id'],
-        'alias': situation['alias'],
-        'detectorId': detectorId
-      };
-      const newPrediction = {
-        'conceptVariable': conceptVariableName,
-        'prediction': prediction
-      }
-      Meteor.call('updateExampleSituationPrediction', selectFields, newPrediction)
+      runPrediction(situation);
+    },
+    changed(situation) {
+      runPrediction(situation);
     }
   });
 });
+
+const runPrediction = (situation) => {
+  const detectorId = Session.get('detectorId');
+  if (!detectorId) {
+    return;
+  }
+  const conceptVariableName = Session.get('selectedConceptVariableName');
+  if (!conceptVariableName || !Session.get('selectedConceptVariableFeatures')) {
+    return;
+  }
+  let [varDecl, rules] = splitVarDeclarationAndRules($('#compiledBlockly').val());
+  let [isolatedVarDecl, isolatedRules] = isolateConceptVariableDetector(varDecl, rules, conceptVariableName);
+  const affordances = extractAffordances(situation);
+  const prediction = applyDetector(affordances, isolatedVarDecl, isolatedRules);
+  const selectFields = {
+    '_id': situation['_id'],
+    'alias': situation['alias'],
+    'detectorId': detectorId
+  };
+  const newPrediction = {
+    'conceptVariable': conceptVariableName,
+    'prediction': prediction
+  }
+  Meteor.call('updateExampleSituationPrediction', selectFields, newPrediction)
+}
 
 Template.simulateAndLabelConceptExpression.events({
   'submit form#simulateConcepts': function(e, target) {

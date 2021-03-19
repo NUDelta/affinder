@@ -69,6 +69,10 @@ Meteor.methods({
 
           const prettyJson = JSON.stringify(document, null, 4);
           console.log(prettyJson);
+        } else {
+          ExampleSituations.update(uniqueIdentifiers, {
+            $set: { timeInserted: Date.now() }
+          });
         }
       });
     }).catch(e => {

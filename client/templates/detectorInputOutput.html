@@ -1,22 +1,28 @@
 <template name="detectorInputOutput">
   <div>
     <form id="saveDetectorForm">
-      <div class="input-group">
-        <span class="input-group-btn">
-          <button id="show-abstraction-prompt" class="btn disabled"><href>help me reflect about related cases</href></button>
-        </span>
-      </div>
-      <div class="input-group">
-        <!-- wouldn't it be cool to have an autoresize text area, so people could organize their different concepts on each line?  -->
-        <!-- https://www.impressivewebs.com/textarea-auto-resize/ -->
-        <input name="detectorname" type="text" class="form-control" placeholder="Describe your detector..." required="true">
-        <span class="input-group-btn">
-          {{#if Template.subscriptionsReady}}
-            <button class="btn btn-default" id="checksave" type="submit">Save!</button>
-          {{else}}
-            <button class="btn btn-default" id="checksave" disabled type="submit">Connecting...</button>
-          {{/if}}
-        </span>
+      <div class="row">
+        <div class="col-lg-6">
+          <div class="input-group">
+            <span class="input-group-btn">
+              <button id="show-abstraction-prompt" class="btn btn-primary"><href>Reflect and Expand Concepts</href></button>
+            </span>
+          </div>
+        </div>
+        <div class="col-lg-6">
+          <div class="input-group">
+            <!-- wouldn't it be cool to have an autoresize text area, so people could organize their different concepts on each line?  -->
+            <!-- https://www.impressivewebs.com/textarea-auto-resize/ -->
+            <input name="detectorname" type="text" class="form-control" placeholder="Describe your detector..." required="true">
+            <span class="input-group-btn">
+              {{#if Template.subscriptionsReady}}
+                <button class="btn btn-default" id="checksave" type="submit">Save!</button>
+              {{else}}
+                <button class="btn btn-default" id="checksave" disabled type="submit">Connecting...</button>
+              {{/if}}
+            </span>
+          </div>
+        </div>
       </div>
     </form>
   </div>

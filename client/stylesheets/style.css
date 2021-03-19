@@ -250,6 +250,7 @@ body {
 .bottomcontent {
 	grid-area: bottomcontent;
 	display: grid;
+	grid-gap: 5px;
 	grid-template-columns: 2fr 3fr 3fr;
 	grid-template-areas: "exampleplaces simulateconcept issuelist";
 	background-color: #fff;
@@ -261,7 +262,7 @@ body {
 	grid-gap: 5px;
 	grid-template-columns: 1fr 6fr;
 	/* related to blockly-div and feature-list */
-	grid-template-rows: 450px auto;
+	grid-template-rows: 50vh auto;
 	grid-template-areas:
 	"sidebar topcontent"
 	"bottomcontent bottomcontent";
@@ -273,20 +274,34 @@ body {
 	grid-area: exampleplaces;
 }
 
-.simulate-concept-expression {
-	grid-area: simulateconcept
+.view-example-places-list {
+	height: 40vh;
+	overflow: scroll;
 }
 
-.concept-issue-list {
+.simulate-concept-expression {
+	grid-area: simulateconcept;
+}
+
+.simulate-concept-expression-list {
+	height: 40vh;
+	overflow: scroll;
+}
+
+.concept-issues {
 	grid-area: issuelist;
+}
+.concept-issues-list {
+	height: 50vh;
+	overflow: scroll;
 }
 
 .blockly-div {
-	height: 330px;
+	height: 45vh;
 }
 
 .feature-list {
-	height: 340px; /* ugh this is hardcoded, related to the 380px height of the parent div*/
+	height: 45vh;
 	overflow: scroll;
 }
 
