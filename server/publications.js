@@ -11,9 +11,16 @@ Meteor.publish('Workspace', function() {
 
 Meteor.publish("simpleTextSearch", function(searchValue) {
   check(searchValue, String);
+
+  // $regex search works well on singlewords, like Yelp category aliasas
   const res = LowLevelDetectors.find(
-    {$text: {$search: searchValue} }
-  );
+    { description: { $regex : searchValue } }
+  )
+
+  // $text search works well on word or phrase matches, like Yelp category titles
+  // const res = LowLevelDetectors.find(
+  //   {$text: {$search: searchValue} }
+  // );
 
   // This is a hack to work around the lack of $text support on the client side Minimongo lib
   // without which we would have trouble recreating the search results on the client
