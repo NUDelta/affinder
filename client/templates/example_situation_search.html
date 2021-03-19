@@ -95,10 +95,16 @@
     </div>
     <div class="place-categories">
       {{#each category in (situationCategoriesAlias situation)}}
-        <span><a href="#">
-          {{category}},
-        </a></span>
-        {{name}}
+        {{#if baseline}}
+          <span><a href="#">
+            {{category}},
+          </a></span>
+        {{else}}
+          <span><a class="context-feature-link" alias="{{category}}" href="#">
+            {{category}},
+          </a></span>
+        {{/if}}
+        <!-- {{name}} -->
       {{/each}}
     </div>
   </div>

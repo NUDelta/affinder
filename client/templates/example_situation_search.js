@@ -1,6 +1,7 @@
 import {Tracker} from 'meteor/tracker'
 import {ExampleSituations} from "../../lib/collections/collections";
-import {compiledBlocklyDep} from "./blockly";
+import {WORKSPACE, compiledBlocklyDep, wrapBlocksInXml, createGetVariable} from "./blockly";
+import Blockly from 'blockly';
 import {applyDetector, extractAffordances, isolateConceptVariableDetector, splitVarDeclarationAndRules, setOfContextFeaturesInBlockly,
   getConceptVariables, setOfVariableNames, variablesInRule, dependentContextFeatures} from "../../lib/detectors/detectors";
 
@@ -227,7 +228,25 @@ Template.exampleSituationIssues.helpers({
   }
 });
 
+Template.situationItemImageNameCats.events({
+  'click .context-feature-link': function(e, target) {
+    e.preventDefault();
+
+    const contextFeature = e.target.innerText.match(/(\w+)/g)[0];
+
+    let conceptVariable = wrapBlocksInXml(createGetVariable(contextFeature));
+    let conceptVariableXml = Blockly.Xml.textToDom(conceptVariable)
+    if (conceptVariableXml.firstElementChild) {
+      Blockly.Xml.appendDomToWorkspace(conceptVariableXml, WORKSPACE);
+    }
+  }
+});
+
 Template.situationItemImageNameCats.helpers({
+  'baseline'(){
+    const baseline = Router.current().params.query.variant == 'B';
+    return baseline;
+  },
   'situationCategoriesReadable'(situation) {
     return situation.categories.map(obj => obj["title"] );
   },
