@@ -60,9 +60,6 @@ Template.viewExamplePlaces.helpers({
   'exampleSituations'() {
     let examples = ExampleSituations.find({
       categoriesKey: Session.get('placeTagToAnalyze')
-    }, {
-      // show places that have most number of categories, posing the greatest risk for breaking mental model of a category
-      sort: { numCategories: -1 }
     }).fetch();
     return examples;
   },
