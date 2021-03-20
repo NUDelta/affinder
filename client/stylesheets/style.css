@@ -323,6 +323,12 @@ body {
 	padding: 5px;
 }
 
+/* https://blocklycodelabs.dev/codelabs/custom-toolbox/index.html?index=..%2F..index#2 */
+/* Makes our label white. */
+.blocklyTreeLabel {
+  color: black;
+}
+
 /* BEGIN example situation search */
 .human-labeling {
 	/* margin:4px; */
