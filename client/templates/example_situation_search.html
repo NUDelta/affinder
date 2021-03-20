@@ -65,12 +65,13 @@
 </template>
 
 <template name="repairShop">
+  <div>Repair Shop</div>
   <button id="resimulate" type="button" class="btn btn-warning">Re-simulate on Labeled Places</button>
   {{> exampleSituationIssues}}
 </template>
 
 <template name="exampleSituationIssues">
-  <div>Open Issues</div>
+  <div><em>Issues</em></div>
   {{#if Template.subscriptionsReady}}
     <ul class="list-group concept-issues-list">
       {{#each situation in falsePositives}}
@@ -80,7 +81,7 @@
       {{/each}}
     </ul>
   {{/if}}
-  <div>Resolved Issues</div>
+  <div><em>Resolved</em></div>
   {{#if Template.subscriptionsReady}}
     <ul class="list-group concept-issues-list">
       {{#each situation in trueNegatives}}
