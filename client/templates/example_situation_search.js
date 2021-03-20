@@ -206,6 +206,21 @@ Template.selectConceptVariableDropdown.helpers({
   }
 });
 
+Template.repairShop.events({
+  'click button#resimulate'(e, target) {
+    let conceptVariableName = Session.get('selectedConceptVariableName');
+    if (!conceptVariableName) {
+      return;
+    }
+    let labeledPlaces = ExampleSituations.find({
+      [`labels.${conceptVariableName}`]: {$exists: true }
+    });
+    labeledPlaces.forEach((situation) => {
+      runPrediction(situation);
+    });
+  }
+})
+
 Template.exampleSituationIssues.onCreated(function() {
   this.autorun(() => {
     this.subscribe('ExampleSituations.HumanReadable.for.detectorId', Session.get('detectorId'));
@@ -221,6 +236,16 @@ Template.exampleSituationIssues.helpers({
     return ExampleSituations.find({
       [`labels.${conceptVariableName}`]: false,
       [`predictions.${conceptVariableName}`]: true
+    }).fetch();
+  },
+  'trueNegatives'() {
+    let conceptVariableName = Session.get('selectedConceptVariableName');
+    if (!conceptVariableName) {
+      return;
+    }
+    return ExampleSituations.find({
+      [`labels.${conceptVariableName}`]: false,
+      [`predictions.${conceptVariableName}`]: false
     }).fetch();
   },
   'situationArgs'(situation) {

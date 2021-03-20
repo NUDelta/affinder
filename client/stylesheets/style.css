@@ -252,7 +252,7 @@ body {
 	display: grid;
 	grid-gap: 5px;
 	grid-template-columns: 2fr 3fr 3fr;
-	grid-template-areas: "exampleplaces simulateconcept issuelist";
+	grid-template-areas: "exampleplaces simulateconcept repairshop";
 	background-color: #fff;
 	color: #444;
 }
@@ -275,7 +275,7 @@ body {
 }
 
 .view-example-places-list {
-	height: 40vh;
+	height: 55vh;
 	overflow: scroll;
 }
 
@@ -284,15 +284,26 @@ body {
 }
 
 .simulate-concept-expression-list {
-	height: 40vh;
+	height: 55vh;
 	overflow: scroll;
 }
 
-.concept-issues {
-	grid-area: issuelist;
+.repair-shop {
+	grid-area: repairshop;
 }
+
+.false-positive {
+	border-color:hsla(0, 88%, 41%, 0.564);
+	border-width: medium;
+}
+
+.true-negative {
+	border-color: seagreen;
+	border-width: medium;
+}
+
 .concept-issues-list {
-	height: 50vh;
+	height: 30vh;
 	overflow: scroll;
 }
 
