@@ -53,6 +53,7 @@ Template.viewExamplePlaces.events({
   'submit form#viewExamplePlaces': function(e, target) {
     e.preventDefault();
     Session.set('placeTagToAnalyze', getSelectPlaceTag()) // form input can get lost
+    Session.set('locationToViewExamplePlaces', document.getElementById('cityname').value);
     getYelpPlaceInstancesPerPlaceTag(Session.get('detectorId'));
   },
 });
@@ -60,7 +61,8 @@ Template.viewExamplePlaces.events({
 Template.viewExamplePlaces.helpers({
   'exampleSituations'() {
     let examples = ExampleSituations.find({
-      categoriesKey: Session.get('placeTagToAnalyze')
+      categoriesKey: Session.get('placeTagToAnalyze'),
+      locationKey: Session.get('locationToViewExamplePlaces')
     }).fetch();
     return examples;
   },
@@ -158,6 +160,7 @@ Template.simulateAndLabelConceptExpression.events({
     e.preventDefault();
     Session.set('selectedConceptVariableName', getSelectConceptVariableName());
     Session.set('selectedConceptVariableFeatures', getSelectConceptVariableFeatures());
+    Session.set('locationToSimulateConceptExpression', document.getElementById('cityname_sim').value)
     getYelpPlaceInstancesPerConceptVariable(Session.get('detectorId'));
   },
 });
@@ -166,7 +169,8 @@ Template.simulateAndLabelConceptExpression.helpers({
   'detectedSituations'() {
     let conceptVariableName = Session.get('selectedConceptVariableName');
     let examples = ExampleSituations.find({
-      [`predictions.${conceptVariableName}`]: true
+      [`predictions.${conceptVariableName}`]: true,
+      locationKey: Session.get('locationToSimulateConceptExpression')
     }, {
       // show places that have most number of categories, posing the greatest risk for breaking mental model of a category
       sort: { numCategories: -1 }
