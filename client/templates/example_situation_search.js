@@ -59,12 +59,22 @@ Template.viewExamplePlaces.events({
 });
 
 Template.viewExamplePlaces.helpers({
+  'placeTagToAnalyze'() {
+    return Session.get('placeTagToAnalyze');
+  },
   'exampleSituations'() {
     let examples = ExampleSituations.find({
       categoriesKey: Session.get('placeTagToAnalyze'),
       locationKey: Session.get('locationToViewExamplePlaces')
     }).fetch();
     return examples;
+  },
+  'lengthOfViewExamplePlaces'() {
+    let examples = ExampleSituations.find({
+      categoriesKey: Session.get('placeTagToAnalyze'),
+      locationKey: Session.get('locationToViewExamplePlaces')
+    }).fetch();
+    return examples.length;
   },
   'situationArgs'(situation) {
     // const instance = Template.instance();
@@ -177,12 +187,35 @@ Template.simulateAndLabelConceptExpression.helpers({
     }).fetch();
     return examples;
   },
+  'lengthSimConceptList'() {
+    let conceptVariableName = Session.get('selectedConceptVariableName');
+    let examples = ExampleSituations.find({
+      [`predictions.${conceptVariableName}`]: true,
+      locationKey: Session.get('locationToSimulateConceptExpression')
+    }).fetch();
+    return examples.length;
+  },
   'situationArgs'(situation) {
     // const instance = Template.instance();
     return {
       situation,
       placeCategories: situation.categories.map(obj => obj["alias"]),
     }
+  },
+  'hasConcept'() {
+    const conceptVariableName = Session.get('selectedConceptVariableName');
+    return Boolean(conceptVariableName);
+  },
+  'conceptVariableHumanReadable'() {
+    const conceptVariableName = Session.get('selectedConceptVariableName');
+    if (!conceptVariableName) {
+      return;
+    }
+    return conceptVariableName.replace(/_/g," ");
+  },
+  'highLevelSituation'() {
+    let detectorDescription = $('input[name=detectorname]').val()
+    return detectorDescription;
   }
 });
 

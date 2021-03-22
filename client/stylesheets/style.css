@@ -109,29 +109,6 @@ body {
 	margin-top: 7px
 }
 
-.comments {
-	list-style-type: none;
-	margin: 0
-}
-
-.comments li h4 {
-	font-size: 16px;
-	margin: 0
-}
-
-.comments li h4 .date {
-	font-size: 12px;
-	font-weight: normal
-}
-
-.comments li h4 a {
-	font-size: 12px
-}
-
-.comments li p:last-child {
-	margin-bottom: 0
-}
-
 .dropdown-menu span {
 	display: block;
 	padding: 3px 20px;
@@ -251,7 +228,7 @@ body {
 	grid-area: bottomcontent;
 	display: grid;
 	grid-gap: 5px;
-	grid-template-columns: 2fr 3fr 3fr;
+	grid-template-columns: 5fr 6fr 6fr;
 	grid-template-areas: "exampleplaces simulateconcept repairshop";
 	background-color: #fff;
 	color: #444;
@@ -312,7 +289,7 @@ body {
 }
 
 .feature-list {
-	height: 45vh;
+	height: 46vh;
 	overflow: scroll;
 }
 

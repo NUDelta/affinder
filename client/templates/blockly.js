@@ -46,8 +46,8 @@ export class ReflectAndExpand {
     block.setCommentText(ReflectAndExpand.reflectPromptText()); // create a creative text dialogue within a comment
     block.comment.setBubbleSize(300, 300); // wider and taller so we can create a reflection and expansion prompt
   }
-  static reflectPromptText(blockName) {
-    return `Why is "${blockName}" appropriate for the experience? \n\n (press TAB) > `
+  static reflectPromptText(blockName, situation) {
+    return `Why is "${blockName}" appropriate for the experience "${situation}"? \n\n (press TAB) > `
   }
   static parseBlockName(block) {
     if (block.getField('VAR')) {
@@ -56,7 +56,8 @@ export class ReflectAndExpand {
     }
   }
   static parseReflect(commentText) {
-    let [prompt, abstractConcept] = commentText.split('>');
+    let [prompt, endText] = commentText.split('>');
+    let abstractConcept = endText.trim().split('\n')[0];
     return abstractConcept;
   }
   static activateExpander(block, commentText) {

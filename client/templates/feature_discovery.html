@@ -21,6 +21,11 @@
             <li class="list-group-item">{{> loadingSpinner}}</li>
           {{else}}
             {{#if baseline}}
+              {{#if searchInputText}}
+                {{#unless simpleTextSearchResults}}
+                  <li class="list-group-item">No results found</li>
+                {{/unless}}
+              {{/if}}
               {{#each (simpleTextSearchResults)}}
                 {{> simpleTextSearchItem}}
               {{/each}}

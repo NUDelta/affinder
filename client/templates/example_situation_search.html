@@ -1,14 +1,19 @@
 <template name="viewExamplePlaces">
-  <div>View Example Places</div>
+  <h4>View Example Places</h4>
   {{#if Template.subscriptionsReady}}
     <form id="viewExamplePlaces">
       {{> selectPlaceDropdown}}
       <div class="input-group">
         <input name="search" id="cityname" type="text" class="form-control" placeholder="Type a city name..." required="true">
         <span class="input-group-btn">
-          <button class="btn btn-default" type="submit">View Yelp places</button>
+          <button class="btn btn-default" type="submit">
+            <span class="glyphicon glyphicon-search"></span> Example Places
+          </button>
         </span>
       </div>
+      {{#if placeTagToAnalyze}}
+        <div>{{lengthOfViewExamplePlaces}} results found</div>
+      {{/if}}
     </form>
     <ul class="list-group view-example-places-list">
       {{#each situation in exampleSituations}}
@@ -32,16 +37,22 @@
 </template>
 
 <template name="simulateAndLabelConceptExpression">
-  <div>Simulate Concept Expression</div>
+  <h4>Assess Accuracy of Concept Variables</h4>
   {{#if Template.subscriptionsReady}}
     <form id="simulateConcepts">
       {{> selectConceptVariableDropdown}}
       <div class="input-group citystuff">
         <input name="search_sim" id="cityname_sim" type="text" class="form-control" placeholder="Type a city name..." required="true">
         <span class="input-group-btn">
-          <button class="btn btn-warning" type="submit">Simulate on Yelp</button>
+          <button class="btn btn-warning" type="submit">
+            Simulate Concept
+          </button>
         </span>
       </div>
+      {{#if hasConcept}}
+        <h5><em>Do these places accurately represent "{{conceptVariableHumanReadable}}", thus good for "{{highLevelSituation}}"?</em></h5>
+      {{/if}}
+      <div id="length-sim-concept-list">{{lengthSimConceptList}} results found</div>
     </form>
     <ul class="list-group simulate-concept-expression-list">
       {{#each situation in detectedSituations}}
@@ -65,13 +76,12 @@
 </template>
 
 <template name="repairShop">
-  <div>Repair Shop</div>
-  <button id="resimulate" type="button" class="btn btn-warning">Re-simulate on Labeled Places</button>
+  <h4>Repair Shop</h4>
   {{> exampleSituationIssues}}
 </template>
 
 <template name="exampleSituationIssues">
-  <div><em>Issues</em></div>
+  <h5><em>Issue List</em></h5>
   {{#if Template.subscriptionsReady}}
     <ul class="list-group concept-issues-list">
       {{#each situation in falsePositives}}
@@ -81,7 +91,7 @@
       {{/each}}
     </ul>
   {{/if}}
-  <div><em>Resolved</em></div>
+  <h5><em>Resolved Cases</em></h5>
   {{#if Template.subscriptionsReady}}
     <ul class="list-group concept-issues-list">
       {{#each situation in trueNegatives}}
@@ -168,30 +178,30 @@
     {{#if (isLabelTrue situation)}}
       <label class="checkcontainer">
         <input type="radio" value="true" checked name="{{situation.alias}}">
-        <span>True</span>
+        <span>Yes</span>
       </label>
       <label class="checkcontainer">
         <input type="radio" value="false" name="{{situation.alias}}">
-        <span>False</span>
+        <span>No</span>
       </label>
     {{else}}
       <label class="checkcontainer">
         <input type="radio" value="true" name="{{situation.alias}}">
-        <span>True</span>
+        <span>Yes</span>
       </label>
       <label class="checkcontainer">
         <input type="radio" value="false" checked name="{{situation.alias}}">
-        <span>False</span>
+        <span>No</span>
       </label>
     {{/if}}
   {{else}}
     <label class="checkcontainer">
       <input type="radio" value="true" name="{{situation.alias}}">
-      <span>True</span>
+      <span>Yes</span>
     </label>
     <label class="checkcontainer">
       <input type="radio" value="false" name="{{situation.alias}}">
-      <span>False</span>
+      <span>No</span>
     </label>
   {{/if}}
   </div>

@@ -44,7 +44,8 @@ Template.detectorInputOutput.events({
     for (let i = 0, block; block = blocks[i]; i++) {
       blockName = ReflectAndExpand.parseBlockName(block);
       if (blockName) {
-        block.setCommentText(ReflectAndExpand.reflectPromptText(blockName));
+        let detectorDescription = $('input[name=detectorname]').val()
+        block.setCommentText(ReflectAndExpand.reflectPromptText(blockName, detectorDescription));
         block.comment.setBubbleSize(300, 300); // large enough for reflect prompt, reflection, and expansion prompt
       }
     }
