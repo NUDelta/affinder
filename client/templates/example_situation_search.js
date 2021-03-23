@@ -152,7 +152,7 @@ const runPrediction = (situation) => {
   let [varDecl, rules] = splitVarDeclarationAndRules($('#compiledBlockly').val());
   let [isolatedVarDecl, isolatedRules] = isolateConceptVariableDetector(varDecl, rules, conceptVariableName);
   const affordances = extractAffordances(situation);
-  const prediction = applyDetector(affordances, isolatedVarDecl, isolatedRules);
+  const prediction = Boolean(applyDetector(affordances, isolatedVarDecl, isolatedRules));
   const selectFields = {
     '_id': situation['_id'],
     'alias': situation['alias'],
@@ -168,10 +168,17 @@ const runPrediction = (situation) => {
 Template.simulateAndLabelConceptExpression.events({
   'submit form#simulateConcepts': function(e, target) {
     e.preventDefault();
-    Session.set('selectedConceptVariableName', getSelectConceptVariableName());
+    const conceptVariableName = getSelectConceptVariableName();
+    Session.set('selectedConceptVariableName', conceptVariableName);
     Session.set('selectedConceptVariableFeatures', getSelectConceptVariableFeatures());
     Session.set('locationToSimulateConceptExpression', document.getElementById('cityname_sim').value)
     getYelpPlaceInstancesPerConceptVariable(Session.get('detectorId'));
+    let labeledPlaces = ExampleSituations.find({
+      [`labels.${conceptVariableName}`]: {$exists: true }
+    });
+    labeledPlaces.forEach((situation) => {
+      runPrediction(situation);
+    });
   },
 });
 
@@ -238,21 +245,6 @@ Template.selectConceptVariableDropdown.helpers({
     return concepts;
   }
 });
-
-Template.repairShop.events({
-  'click button#resimulate'(e, target) {
-    let conceptVariableName = Session.get('selectedConceptVariableName');
-    if (!conceptVariableName) {
-      return;
-    }
-    let labeledPlaces = ExampleSituations.find({
-      [`labels.${conceptVariableName}`]: {$exists: true }
-    });
-    labeledPlaces.forEach((situation) => {
-      runPrediction(situation);
-    });
-  }
-})
 
 Template.exampleSituationIssues.onCreated(function() {
   this.autorun(() => {
