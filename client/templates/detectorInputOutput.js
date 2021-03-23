@@ -1,5 +1,5 @@
 import {Detectors} from "../../lib/collections/collections";
-import {ReflectAndExpand, WORKSPACE} from "./blockly";
+import {addReflectionPromptToBlocks} from "./blockly";
 import {splitVarDeclarationAndRules} from "../../lib/detectors/detectors";
 
 Template.detectorInputOutput.onCreated(function() {
@@ -39,18 +39,9 @@ Template.detectorInputOutput.helpers({
 });
 
 Template.detectorInputOutput.events({
-  'click #show-abstraction-prompt': function(e) {
-    let blocks = WORKSPACE.getAllBlocks(false);
-    for (let i = 0, block; block = blocks[i]; i++) {
-      blockName = ReflectAndExpand.parseBlockName(block);
-      if (blockName) {
-        let detectorDescription = $('input[name=detectorname]').val()
-        block.setCommentText(ReflectAndExpand.reflectPromptText(blockName, detectorDescription));
-        block.comment.setBubbleSize(300, 300); // large enough for reflect prompt, reflection, and expansion prompt
-      }
-    }
-
-  },
+  // 'click #show-abstraction-prompt': function(e) {
+  //   addReflectionPromptToBlocks();
+  // },
   'submit form': function(e) {
     e.preventDefault();
     let code = $('#compiledBlockly').val();

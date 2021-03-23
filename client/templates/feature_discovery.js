@@ -3,6 +3,7 @@ import Blockly from 'blockly';
 import {Queries, LowLevelDetectors} from "../../lib/collections/collections";
 import {
   WORKSPACE,
+  addReflectionPromptToBlocks,
   createMultiVarOrBlock,
   createGetVariable,
   defaultToolbox,
@@ -157,6 +158,10 @@ Template.featureDiscovery.events({
     let blocks = Blockly.Xml.textToDom(wrapBlocksInXml(block));
     if (blocks.firstElementChild) {
       Blockly.Xml.appendDomToWorkspace(blocks, WORKSPACE);
+    }
+    const baseline = Router.current().params.query.variant == 'B';
+    if (!baseline) {
+      addReflectionPromptToBlocks();
     }
   },
 

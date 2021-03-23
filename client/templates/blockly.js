@@ -43,7 +43,8 @@ Template.blockly.rendered = function() {
 export class ReflectAndExpand {
   static showReflectPrompt(block) {
     blockName = ReflectAndExpand.parseBlockName(block);
-    block.setCommentText(ReflectAndExpand.reflectPromptText()); // create a creative text dialogue within a comment
+    let detectorDescription = $('input[name=detectorname]').val()
+    block.setCommentText(ReflectAndExpand.reflectPromptText(blockName, detectorDescription));
     block.comment.setBubbleSize(300, 300); // wider and taller so we can create a reflection and expansion prompt
   }
   static reflectPromptText(blockName, situation) {
@@ -75,7 +76,15 @@ export class ReflectAndExpand {
       Blockly.Xml.appendDomToWorkspace(conceptVariableXml, WORKSPACE);
     }
   }
+}
 
+export const addReflectionPromptToBlocks = () => {
+  let blocks = WORKSPACE.getAllBlocks(false);
+  for (let i = 0, block; block = blocks[i]; i++) {
+    if (!block.getCommentText()) {
+      ReflectAndExpand.showReflectPrompt(block);
+    }
+  }
 }
 
 export const mockTestDetector = function (userAffordances, varDecl, rules) {
