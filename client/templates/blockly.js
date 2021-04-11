@@ -43,9 +43,11 @@ Template.blockly.rendered = function() {
 export class ReflectAndExpand {
   static showReflectPrompt(block) {
     blockName = ReflectAndExpand.parseBlockName(block);
-    let detectorDescription = $('input[name=detectorname]').val()
-    block.setCommentText(ReflectAndExpand.reflectPromptText(blockName, detectorDescription));
-    block.comment.setBubbleSize(300, 300); // wider and taller so we can create a reflection and expansion prompt
+    if (blockName) {
+      let detectorDescription = $('input[name=detectorname]').val()
+      block.setCommentText(ReflectAndExpand.reflectPromptText(blockName, detectorDescription));
+      block.comment.setBubbleSize(300, 300); // wider and taller so we can create a reflection and expansion prompt
+    }
   }
   static reflectPromptText(blockName, situation) {
     return `Why is "${blockName}" appropriate for the experience "${situation}"? \n\n (press TAB) > `
