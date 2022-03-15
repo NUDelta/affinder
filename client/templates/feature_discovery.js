@@ -141,7 +141,7 @@ if (Meteor.isServer) {
   });
 }
 Template.featureDiscovery.events({
-  // depreciated - may need to replace with a pinning model before combining 
+  // depreciated - may need to replace with a pinning model before combining
   'click .btn-remove-cat': function(e) {
     const cat2rm = e.target.closest('li').getAttribute('placeCategory');
 
@@ -197,6 +197,6 @@ Template.featureDiscovery.events({
   // }
 });
 
-function formatDetectorVarNames(elem) {
+export const formatDetectorVarNames = (elem) => {
   return elem.replace("&", "&amp;").toLowerCase();
 }

@@ -1,4 +1,5 @@
-import {Queries, Detectors, ExampleSituations, LowLevelDetectors} from "../lib/collections/collections";
+import {Queries, Detectors, ExampleSituations,
+  LowLevelDetectors, Cooccurances} from "../lib/collections/collections";
 
 Meteor.publish('Queries', function() {
   // TODO(rlouie): limit to just the summary contents
@@ -92,3 +93,7 @@ Meteor.publish('ExampleSituations.HumanReadable.for.detectorId.and.categoriesKey
     });
   }
 });
+
+Meteor.publish('Cooccurances', () => {
+  return Cooccurances.find({});
+})

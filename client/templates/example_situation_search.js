@@ -34,7 +34,7 @@ const getYelpPlaceInstancesForCurrentCategories = (detectorId) => {
   }
 }
 
-const getSelectPlaceTag = () => {
+export const getSelectPlaceTag = () => {
   let placeTag = document.getElementById('selectPlaceToAnalyze').value;
   console.log("placeTag selection: ", placeTag);
   return placeTag;

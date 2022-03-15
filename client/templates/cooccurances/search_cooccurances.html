@@ -1,0 +1,31 @@
+<template name="searchCooccurances">
+  <h4>Explore Cooccuring Place Tags</h4>
+  {{#if Template.subscriptionsReady}}
+    <form id="cooccurances">
+      {{> selectPlaceDropdown}}
+      <div class="input-group">
+        <span class="input-group-btn">
+          <button class="btn btn-default" type="submit">
+            <span class="glyphicon glyphicon-search"></span>Co-occuring Yelp Categories
+          </button>
+        </span>
+      </div>
+    </form>
+    <div class="panel panel-default">
+      <!-- <div class="panel-heading">Results</div> -->
+      <ul class="list-group">
+        {{#each (cooccuringCategories)}}
+          <li class="list-group-item" placeCategory="{{this.feature}}">
+            <div>
+              {{this.feature}}
+              <button type="button" class="btn-add-cat btn btn-primary btn-xs pull-right btn-panel-item">
+                <span class="glyphicon glyphicon-plus"  aria-hidden="true"></span>
+              </button>
+              <!-- {{ shortenDecimal this.}} -->
+            </div>
+          </li>
+        {{/each}}
+      </ul>
+    </div>
+  {{/if}}
+</template>

@@ -3,8 +3,10 @@ import { Meteor } from 'meteor/meteor';
 const yelp = require('yelp-fusion');
 
 import { exec } from 'child_process';
-import {ExampleSituations, Queries} from "../lib/collections/collections";
+import {Cooccurances, ExampleSituations, Queries} from "../lib/collections/collections";
 import {AUTH} from "../lib/config";
+
+const request = require('request');
 
 Meteor.methods({
 
@@ -15,7 +17,6 @@ Meteor.methods({
     });
 
     let queryString = queryAttributes.query;
-    let request = require('request');
     let url = 'http://localhost:8000/categories/' + queryString;
     request(url, Meteor.bindEnvironment(function (error, response, body) {
       if (!error && response.statusCode == 200) {
@@ -34,6 +35,32 @@ Meteor.methods({
         }
       } else {
         console.warn("Yelp Category Search is not returning 200 status code");
+      }
+    }));
+  },
+
+  searchCooccurances: function(params) {
+    check(params, {
+      category: String,
+    })
+    // check Cache
+    const category = params.category;
+    let cachedRes = Cooccurances.findOne({'category': category})
+    if (cachedRes) {
+      return cachedRes;
+    }
+    let url = 'http://localhost:8001/cooccurances/' + category;
+    request(url, Meteor.bindEnvironment(function (error, response, body) {
+      if (!error && response.statusCode == 200) {
+        let res = JSON.parse(body);
+        let arrayOfObjects = res.map(tup => {
+          return {'feature': tup[0], 'frequency': tup[1]}
+        });
+        console.log(arrayOfObjects);
+        Cooccurances.insert({
+          'category': category,
+          'cooccurances': arrayOfObjects
+        });
       }
     }));
   },
