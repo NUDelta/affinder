@@ -54,6 +54,7 @@ const situationHumanReadableFields = {
   "coordinates": true,
   "categories": true,
   "numCategories": true,
+  "reviewCount": true,
   "labels": true,
   "predictions": true
 };

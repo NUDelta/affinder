@@ -91,7 +91,8 @@ Meteor.methods({
             'detectorId': detectorId,
             'categoriesKey': searchParams.categories,
             'locationKey': searchParams.location,
-            'numCategories': business['categories'].length
+            'numCategories': business['categories'].length,
+            'reviewCount': business['review_count']
           });
           ExampleSituations.insert(document);
 

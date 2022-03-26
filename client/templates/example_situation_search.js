@@ -77,6 +77,15 @@ Template.viewExamplePlaces.helpers({
     }).fetch();
     return examples.length;
   },
+  'totalReviewCount'() {
+    let examples = ExampleSituations.find({
+      categoriesKey: Session.get('placeTagToAnalyze'),
+      locationKey: Session.get('locationToViewExamplePlaces')
+    }).fetch();
+    return examples
+      .map(e => e.reviewCount)
+      .reduce((a, b) => a + b);
+  },
   'situationArgs'(situation) {
     // const instance = Template.instance();
     return {
@@ -202,6 +211,16 @@ Template.simulateAndLabelConceptExpression.helpers({
       locationKey: Session.get('locationToSimulateConceptExpression')
     }).fetch();
     return examples.length;
+  },
+  'totalReviewCount'() {
+    let conceptVariableName = Session.get('selectedConceptVariableName');
+    let examples = ExampleSituations.find({
+      [`predictions.${conceptVariableName}`]: true,
+      locationKey: Session.get('locationToSimulateConceptExpression')
+    }).fetch();
+    return examples
+      .map(e => e.reviewCount)
+      .reduce((a, b) => a + b);
   },
   'situationArgs'(situation) {
     // const instance = Template.instance();

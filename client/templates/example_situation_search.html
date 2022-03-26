@@ -50,9 +50,14 @@
         </span>
       </div>
       {{#if hasConcept}}
-        <h5><em>Do these places accurately represent "{{conceptVariableHumanReadable}}", thus good for "{{highLevelSituation}}"?</em></h5>
+        {{#if lengthSimConceptList}}
+          <h5><em>Do these places accurately represent "{{conceptVariableHumanReadable}}", thus good for "{{highLevelSituation}}"?</em></h5>
+          <ul class="list-group list-group-horizontal">
+            <li id="length-sim-concept-list" class="list-group-item">{{lengthSimConceptList}} results found</li>
+            <li class="list-group-item">{{totalReviewCount}} total reviews (proxy for visitation frequency)</li>
+          </ul>
+        {{/if}}
       {{/if}}
-      <div id="length-sim-concept-list">{{lengthSimConceptList}} results found</div>
     </form>
     <ul class="list-group simulate-concept-expression-list">
       {{#each situation in detectedSituations}}
@@ -109,7 +114,7 @@
       <img
           src={{situation.image_url}}
           width="90" height="90"
-          style="object-fit: cover; border-radius: 4px; vertical-align: middle;"
+          style="object-fit: cover; border-radius: 4px; vertical-align: top;"
       />
     </div>
   </div>
@@ -131,6 +136,9 @@
           </a></span>
         {{/if}}
       {{/each}}
+    </div>
+    <div class="review-count">
+      {{situation.reviewCount}} reviews
     </div>
   </div>
 </template>
