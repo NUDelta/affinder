@@ -239,9 +239,10 @@ body {
 	grid-gap: 5px;
 	grid-template-columns: 1fr 6fr;
 	/* related to blockly-div and feature-list */
-	grid-template-rows: 50vh auto;
+	grid-template-rows: auto 50vh auto;
 	grid-template-areas:
 	"sidebar topcontent"
+	"sidebar workspace"
 	"bottomcontent bottomcontent";
 	background-color: #fff;
 	color: #444;
@@ -289,7 +290,7 @@ body {
 }
 
 .feature-list {
-	height: 46vh;
+	height: 63vh;
 	overflow: scroll;
 }
 
