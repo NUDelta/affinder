@@ -9,6 +9,7 @@
     "meteor-node-stubs": "~0.2.4",
     "request": "^2.83.0",
     "simpl-schema": "^1.5.5",
-    "simple-schema": "^1.1.0"
+    "simple-schema": "^1.1.0",
+    "yelp-fusion": "^3.0.0"
   }
 }

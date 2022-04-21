@@ -1,28 +1,47 @@
-import {Queries, Detectors} from "../../lib/collections/collections";
+import { Router } from 'meteor/iron:router';
+import Blockly from 'blockly';
+import {Queries, LowLevelDetectors} from "../../lib/collections/collections";
+import {
+  WORKSPACE,
+  addReflectionPromptToBlocks,
+  createMultiVarOrBlock,
+  createGetVariable,
+  defaultToolbox,
+  stringifyToolboxTree,
+  wrapBlocksInXml,
+  wrapBlocksInCategory
+} from "./blockly";
+
+Template.searchBar.onCreated(function() {
+  this.subscribe('Queries');
+});
 
 Template.searchBar.events({
-  'submit form#blockSearch': function(e) {
+  'submit form#searchBar': function(e) {
     e.preventDefault();
 
     const queryText = $(e.target).find('[name=search]').val();
 
-    // Directed Search
     Session.set("searchInputText", queryText);
 
-    // Stretch Search
-    const queryId = Queries.insert({ query: queryText, categories: [], excluded_categories: []});
-    Session.set('yelpLoading', true);
-    Session.set('currentQueryId', queryId);
-    Meteor.call('updateYelpPlaceCategories',
-      {
-        _id: queryId,
-        query: queryText
-      }, function (error, data) {
-        Session.set('yelpLoading', false);
-        if (error) {
-          return alert(error.reason)
-        }
-      });
+    const baseline = Router.current().params.query.variant == 'B';
+    if (!baseline) {
+      console.log('unlimited vocab search');
+      // Stretch Search
+      const queryId = Queries.insert({ query: queryText, categories: [], excluded_categories: []});
+      Session.set('yelpLoading', true);
+      Session.set('currentQueryId', queryId);
+      Meteor.call('updateYelpPlaceCategories',
+        {
+          _id: queryId,
+          query: queryText
+        }, function (error, data) {
+          Session.set('yelpLoading', false);
+          if (error) {
+            return alert(error.reason)
+          }
+        });
+    }
   }
 });
 
@@ -31,6 +50,9 @@ function resolveAllAndExcludedCats(allCats, excludeCats) {
     if (item instanceof Array) {
       // item: [category-name, tfidf-weight]
       return item[0];  // grab only category-name
+    } else if (item instanceof Object) {
+      // item: {feature: category-name, weight: tfidif-weight}
+      return item.feature;
     } else {
       // item: category-name
       return item;
@@ -46,7 +68,16 @@ function resolveAllAndExcludedCats(allCats, excludeCats) {
   }
 }
 
+Template.featureDiscovery.onCreated(function() {
+  this.subscribe('Queries');
+  this.subscribe('LowLevelDetectors');
+});
+
 Template.featureDiscovery.helpers({
+  'baseline': function() {
+    const baseline = Router.current().params.query.variant == 'B';
+    return baseline;
+  },
   'yelpLoading': function() {
     return Session.get('yelpLoading');
   },
@@ -61,23 +92,56 @@ Template.featureDiscovery.helpers({
 
   'includedCategories': function(queryId) {
     if (queryId) {
-      obj = Queries.findOne(queryId);
+      let obj = Queries.findOne(queryId);
       return resolveAllAndExcludedCats(obj.categories, obj.excluded_categories);
     }
   },
 
+  'includedFeaturesWeights': function(queryId) {
+    if (queryId) {
+      let obj = Queries.findOne(queryId);
+      return obj.categories;
+    }
+  },
+
   'precision': function(queryId) {
-    obj = Queries.findOne(queryId);
+    let obj = Queries.findOne(queryId);
     return (obj.categories.length - obj.excluded_categories.length) / obj.categories.length
   },
+
+  'simpleTextSearchResults': function() {
+    if (Session.get("searchInputText")) {
+      Meteor.subscribe("simpleTextSearch", Session.get("searchInputText"));
+
+      // We cannot re-use the query as MiniMongo does not support the $text operator!
+      // Instead of resorting to a Meteor method we can hack around it by relying on an extra
+      // ad-hoc collection containing the sorted ids ...
+      const key = JSON.stringify(Session.get("searchInputText"));
+      const result = LowLevelDetectors.SimpleTextSearchResults.findOne(key);
+      console.log(result);
+      if (result) {
+        const idsInSortOrder = result.results;
+        const blocksInSortedOrder = idsInSortOrder.map(id => LowLevelDetectors.findOne({"_id": id}));
+        console.log(blocksInSortedOrder);
+        return blocksInSortedOrder;
+      }
+    }
+  }
+});
+
+Template.featureWeightItem.helpers({
+  'shortenDecimal': function(number) {
+    return number.toPrecision(2);
+  }
 });
 
 if (Meteor.isServer) {
-  Detectors._ensureIndex({
+  LowLevelDetectors._ensureIndex({
     "description": "text"
   });
 }
 Template.featureDiscovery.events({
+  // depreciated - may need to replace with a pinning model before combining 
   'click .btn-remove-cat': function(e) {
     const cat2rm = e.target.closest('li').getAttribute('placeCategory');
 
@@ -89,34 +153,48 @@ Template.featureDiscovery.events({
   'click .btn-add-cat': function(e) {
     const cat2add = e.target.closest('li').getAttribute('placeCategory');
 
-    newTree = defaultToolbox();
-    detectorDescription = formatDetectorVarNames(cat2add);
-    newTree["discoveries"] = wrapBlocksInCategory(detectorDescription,
-      createVariable(detectorDescription));
-    WORKSPACE.updateToolbox(stringifyToolboxTree(newTree));
+    let detectorDescription = formatDetectorVarNames(cat2add);
+    let block = createGetVariable(detectorDescription);
+    let blocks = Blockly.Xml.textToDom(wrapBlocksInXml(block));
+    if (blocks.firstElementChild) {
+      Blockly.Xml.appendDomToWorkspace(blocks, WORKSPACE);
+    }
+    const baseline = Router.current().params.query.variant == 'B';
+    if (!baseline) {
+      addReflectionPromptToBlocks();
+    }
   },
 
   'click .btn-use-block': function(e) {
-    newTree = defaultToolbox();
+    let newTree = defaultToolbox();
     // TODO(rlouie): turn detector rules into blocks again if not elementary
     // let detectorId = $(e.target).parent().attr('detectorId');
     let detectorDescription = $(e.target).parent().attr('detectorDescription');
     detectorDescription = formatDetectorVarNames(detectorDescription);
     newTree["discoveries"] = wrapBlocksInCategory(detectorDescription,
-      createVariable(detectorDescription));
+      createGetVariable(detectorDescription));
     WORKSPACE.updateToolbox(stringifyToolboxTree(newTree));
   },
 
+  // depreciated - may need to replace with a pinning model before combining
   'click #convert-button': function(e) {
-    newTree = defaultToolbox();
-    obj = Queries.findOne(Session.get("currentQueryId"));
-    cats = resolveAllAndExcludedCats(obj.categories, obj.excluded_categories);
+    let newTree = defaultToolbox();
+    let obj = Queries.findOne(Session.get("currentQueryId"));
+    let cats = resolveAllAndExcludedCats(obj.categories, obj.excluded_categories);
     cats = cats.map(function(elem) { return formatDetectorVarNames(elem); });
     newTree["placeCategories"] = wrapBlocksInCategory("Categories describing '" + obj.query +"'",
-      createMultiVarAndOrBlock(cats));
+      createMultiVarOrBlock(cats));
     WORKSPACE.updateToolbox(stringifyToolboxTree(newTree));
-  }
+  },
 
+  // 'click #show-abstraction-prompt': function(e) {
+  //   let x = document.getElementById('abstraction-prompt');
+  //   if (x.style.display === "none") {
+  //     x.style.display = "block";
+  //   } else {
+  //     x.style.display = "none";
+  //   }
+  // }
 });
 
 function formatDetectorVarNames(elem) {

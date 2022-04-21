@@ -1,7 +1,11 @@
-WORKSPACE = "";
+import Blockly from 'blockly';
+import {applyDetector} from "../../lib/detectors/detectors";
 
+export let WORKSPACE;
+
+export const compiledBlocklyDep = new Tracker.Dependency;
 Template.blockly.rendered = function() {
-  var toolBoxTree = defaultToolbox();
+  let toolBoxTree = defaultToolbox();
 
   WORKSPACE = Blockly.inject('blocklyDiv',
     {toolbox: stringifyToolboxTree(toolBoxTree),
@@ -15,48 +19,89 @@ Template.blockly.rendered = function() {
      trashcan: true});
 
   WORKSPACE.addChangeListener(function (event) {
-    var code = Blockly.JavaScript.workspaceToCode(WORKSPACE);
+    let code = Blockly.JavaScript.workspaceToCode(WORKSPACE);
     document.getElementById('compiledBlockly').value = code;
+    compiledBlocklyDep.changed();
 
-    var splitJS = splitVarDeclarationAndRules(code);
+    if (event.element == "comment") {
+      // oldValue == null means the comment was just created programmatically
+      // thus we are interested in only when user manually changes the comment
+      if (event.oldValue != null) {
+        strSplit = event.newValue.split('\n\n');
 
-    context = {'japanese': true, 'thursday': true};
-    mockTestDetector(context, splitJS[0], splitJS[1]);
+        // answered the first prompt, have not added the second prompt.
+        if (strSplit.length == 2) {
+          let abstractConcept = ReflectAndExpand.parseReflect(event.newValue)
+          let block = WORKSPACE.getBlockById(event.blockId);
+          ReflectAndExpand.activateExpander(block, event.newValue);
+        }
+      }
+    }
   });
 };
 
-splitVarDeclarationAndRules = function(code) {
-  var lines = code.split('\n');
-  var threshold = lines.findIndex(e => e == "");
-  var varDecl = lines.slice(0, threshold);
-  var rules = lines.splice(threshold + 1).filter(e => e != "");
-  return [varDecl, rules];
-};
-
-mockTestDetector = function (elementaryContext, varDecl, rules) {
-  // elementaryContext: key value pairs of (elementaryContext: values)
-  // varDecl: list of strings of JS var declaration
-  // rules: list of strings of JS context rules
-  var contextAsJS = keyvalues2vardecl(elementaryContext);
-  console.log(contextAsJS);
-  editedCode = varDecl.concat(contextAsJS).concat(rules).join('\n');
-  console.log(editedCode);
-  console.log(eval(editedCode));
-};
-
-keyvalues2vardecl = function(obj) {
-  vardecl = [];
-  for (var key in obj) {
-    if (obj.hasOwnProperty(key)) {
-      vardecl.push("var " + key + " = " + obj[key] + ";")      
+export class ReflectAndExpand {
+  static showReflectPrompt(block) {
+    blockName = ReflectAndExpand.parseBlockName(block);
+    if (blockName) {
+      let detectorDescription = $('input[name=detectorname]').val()
+      block.setCommentText(ReflectAndExpand.reflectPromptText(blockName, detectorDescription));
+      block.comment.setBubbleSize(300, 300); // wider and taller so we can create a reflection and expansion prompt
     }
   }
-  return vardecl;
+  static reflectPromptText(blockName, situation) {
+    return `Why is "${blockName}" appropriate for the experience "${situation}"? \n\n (press TAB) > `
+  }
+  static parseBlockName(block) {
+    if (block.getField('VAR')) {
+      blockName = block.getField('VAR').textContent_.data
+      return blockName;
+    }
+  }
+  static parseReflect(commentText) {
+    let [prompt, endText] = commentText.split('>');
+    let abstractConcept = endText.trim().split('\n')[0];
+    return abstractConcept;
+  }
+  static activateExpander(block, commentText) {
+    abstractConcept = ReflectAndExpand.parseReflect(commentText);
+    block.setCommentText(commentText + ReflectAndExpand.expandPromptText(abstractConcept));
+    ReflectAndExpand.createConceptVariable(abstractConcept);
+  }
+  static expandPromptText(abstractConcept) {
+    return `\n\nGreat! Creating concept variable for "${abstractConcept}".\nNow, search using this. Rephrase as 1-2 terms as needed.\n`
+  }
+  static createConceptVariable(abstractConcept) {
+    let conceptVariable = wrapBlocksInXml(createSetVariable(abstractConcept));
+    let conceptVariableXml = Blockly.Xml.textToDom(conceptVariable)
+    if (conceptVariableXml.firstElementChild) {
+      Blockly.Xml.appendDomToWorkspace(conceptVariableXml, WORKSPACE);
+    }
+  }
+}
+
+export const addReflectionPromptToBlocks = () => {
+  let blocks = WORKSPACE.getAllBlocks(false);
+  for (let i = 0, block; block = blocks[i]; i++) {
+    if (!block.getCommentText()) {
+      ReflectAndExpand.showReflectPrompt(block);
+    }
+  }
+}
+
+export const mockTestDetector = function (userAffordances, varDecl, rules) {
+  // userAffordances: key value pairs of (elementaryContext: values)
+  // varDecl: list of strings of JS let declaration
+  // rules: list of strings of JS context rules
+  let prediction = applyDetector(userAffordances, varDecl, rules);
+  console.log(`userAffordances: ${JSON.stringify(userAffordances)}`);
+  console.log(`varDecl: ${JSON.stringify(varDecl)}`);
+  console.log(`rules: ${JSON.stringify(rules)}`);
+  console.log(`prediction: ${prediction}`);
 };
 
-defaultToolbox = function () {
-  var toolbox = {};
-  toolbox["placeCategories"] = defaultToolboxPlaceCategories();
+export const defaultToolbox = function () {
+  let toolbox = {};
   toolbox["weather"] = defaultToolboxWeather();
   toolbox["time"] = defaultToolboxTimeOfDay() + defaultToolboxTimeOfWeek() + defaultToolboxTimeZone();
   toolbox["operators"] = defaultToolboxOperators();
@@ -64,8 +109,8 @@ defaultToolbox = function () {
   return toolbox;
 };
 
-stringifyToolboxTree = function(toolboxTree) {
-  var string = '<xml id="toolbox" style="display: none">'
+export const stringifyToolboxTree = function(toolboxTree) {
+  let string = '<xml id="toolbox" style="display: none">'
   if (toolboxTree.hasOwnProperty("discoveries")) {
     string += toolboxTree["discoveries"];
     string += '<sep gap="48"></sep>';
@@ -81,15 +126,32 @@ stringifyToolboxTree = function(toolboxTree) {
   return string;
 };
 
-wrapBlocksInCategory = function(name, blocks) {
-  category = '<category name="' + name + '">';
+export const wrapBlocksInXml = function(blocks) {
+  let string = '<xml style="display: none">';
+  string += blocks
+  string += '</xml>';
+  return string;
+}
+
+export const wrapBlocksInCategory = function(name, blocks) {
+  let category = '<category name="' + name + '">';
   category += blocks;
   category += '</category>';
   return category;
 };
 
-createVariable = function(name) {
-  variable = `
+export const createSetVariable = function(name) {
+  let variable = `
+  <block type="variables_set">
+    <field name="VAR">`;
+  variable += name;
+  variable += `</field>
+  </block>`;
+  return variable;
+};
+
+export const createGetVariable = function(name) {
+  let variable = `
   <block type="variables_get">
     <field name="VAR">`;
   variable += name;
@@ -98,41 +160,44 @@ createVariable = function(name) {
   return variable;
 };
 
-createAndOrBlock = function(a, b) {
-  block = `
-  <block type="logic_operation">
-    <field name="OP">OR</field>
-    <value name="A">`;
-  block += a;
-  block += `</value>
-        <value name="B">`;
-  block += b;
-  block += `</value>
-    </block>`;
-  return block;
+export const createLogicOperationBlock = function(operation, a, b) {
+  if ((operation == 'AND') || (operation == 'OR')) {
+    let block = `
+    <block type="logic_operation">
+      <field name="OP">${operation}</field>
+      <value name="A">`;
+    block += a;
+    block += `</value>
+          <value name="B">`;
+    block += b;
+    block += `</value>
+      </block>`;
+    return block;
+  }
+}
+
+export const createOrBlock = function(a, b) {
+  return createLogicOperationBlock('OR', a, b);
 };
 
-createMultiVarAndOrBlock = function(abc) {
+export const createAndBlock = function(a, b) {
+  return createLogicOperationBlock('AND', a, b);
+}
+
+export const createMultiVarOrBlock = function(abc) {
   if (abc.length === 1) {
-    return createVariable(abc[0]);
+    return createGetVariable(abc[0]);
   }
   else if (abc.length === 2) {
-    return createAndOrBlock(createVariable(abc[0]), createVariable(abc[1]));
+    return createOrBlock(createGetVariable(abc[0]), createGetVariable(abc[1]));
   } else {
-    return createAndOrBlock(
-      createAndOrBlock(createVariable(abc[0]), createVariable(abc[1])),
-      createMultiVarAndOrBlock(abc.slice(2, abc.length)));
+    return createOrBlock(
+      createOrBlock(createGetVariable(abc[0]), createGetVariable(abc[1])),
+      createMultiVarOrBlock(abc.slice(2, abc.length)));
   }
 };
 
-defaultToolboxPlaceCategories = function() {
-  return wrapBlocksInCategory("Place Categories",
-    createMultiVarAndOrBlock(["japanese", "chinese", "korean"]) +
-    createMultiVarAndOrBlock(["beach", "lakes"])
-    );
-};
-
-defaultToolboxWeather = function() {
+const defaultToolboxWeather = function() {
   return `
   <category name="Weather" color="210">
     <!-- from https://openweathermap.org/weather-conditions -->
@@ -176,7 +241,7 @@ defaultToolboxWeather = function() {
   `;
 };
 
-defaultToolboxTimeOfDay = function() {
+const defaultToolboxTimeOfDay = function() {
     return `
   <category name="Time of Day">
     <!-- x < hour < y -->
@@ -238,20 +303,20 @@ defaultToolboxTimeOfDay = function() {
   `;
 };
 
-defaultToolboxTimeOfWeek = function() {
+const defaultToolboxTimeOfWeek = function() {
     return wrapBlocksInCategory("Time of Week",
-      createMultiVarAndOrBlock(["monday", "tuesday", "wednesday", "thursday", "friday"]) +
-      createMultiVarAndOrBlock(["saturday", "sunday"]) +
-      createVariable("monday") +
-      createVariable("tuesday")+
-      createVariable("wednesday")+
-      createVariable("thursday")+
-      createVariable("friday")+
-      createVariable("saturday")+
-      createVariable("sunday"));
+      createMultiVarOrBlock(["monday", "tuesday", "wednesday", "thursday", "friday"]) +
+      createMultiVarOrBlock(["saturday", "sunday"]) +
+      createGetVariable("monday") +
+      createGetVariable("tuesday")+
+      createGetVariable("wednesday")+
+      createGetVariable("thursday")+
+      createGetVariable("friday")+
+      createGetVariable("saturday")+
+      createGetVariable("sunday"));
 };
 
-defaultToolboxTimeZone = function() {
+const defaultToolboxTimeZone = function() {
   return `
   <category name="Time Zone">
     <block type="variables_get">
@@ -270,17 +335,18 @@ defaultToolboxTimeZone = function() {
   `;
 };
 
-defaultToolboxOperators = function() {
+const defaultToolboxOperators = function() {
   return wrapBlocksInCategory("and, or, not, =",
-    createAndOrBlock("", "") +
+    createAndBlock("", "") +
+    createOrBlock("", "") +
     '<block type="logic_negate"></block>' +
     '<block type="logic_compare"></block>' +
-    createAndOrBlock(createAndOrBlock("",""), "") +
-    createAndOrBlock(createAndOrBlock("",""),
-                     createAndOrBlock("","")));
+    createOrBlock(createOrBlock("",""), "") +
+    createOrBlock(createOrBlock("",""),
+                     createOrBlock("","")));
 };
 
-defaultToolboxVariables = function() {
+const defaultToolboxVariables = function() {
   return `
   <category name="Variables" custom="VARIABLE"></category>
   `

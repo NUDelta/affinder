@@ -1,0 +1,36 @@
+<template name="detectorInputOutput">
+  <div>
+    <form id="saveDetectorForm">
+      <div class="row">
+        <!-- <div class="col-lg-6">
+          {{#if baseline}}
+          {{else}}
+            <div class="input-group">
+              <span class="input-group-btn">
+                <button id="show-abstraction-prompt" class="btn btn-info btn-lg">
+                  <href><span class="glyphicon glyphicon-question-sign"></span> Help Me Reflect and Expand Concepts <span class="glyphicon glyphicon-question-sign"></span></href>
+                </button>
+              </span>
+            </div>
+          {{/if}}
+        </div> -->
+        <div class="col-lg-6">
+          <div class="input-group">
+            <!-- wouldn't it be cool to have an autoresize text area, so people could organize their different concepts on each line?  -->
+            <!-- https://www.impressivewebs.com/textarea-auto-resize/ -->
+            <input name="detectorname" type="text" class="form-control" placeholder="Describe your detector..." required="true">
+            <span class="input-group-btn">
+              {{#if Template.subscriptionsReady}}
+                <button class="btn btn-default" id="checksave" type="submit">Save!</button>
+              {{else}}
+                <button class="btn btn-default" id="checksave" disabled type="submit">Connecting...</button>
+              {{/if}}
+            </span>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+  <textarea id="compiledBlockly" style="display: none;"></textarea>
+  <textarea id="importExport" style="display: none;"></textarea>
+</template>

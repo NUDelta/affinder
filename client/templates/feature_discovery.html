@@ -1,49 +1,91 @@
 <template name="featureDiscovery">
-  <div class="panel panel-default">
-    {{> searchBar}}
-  </div>
-  <div>
-    <div class="panel panel-default">
-      <div class="panel-heading">
-        Yelp Categories you can find "{{searchInputText}}"
-        <button id="convert-button" type="button" class="btn btn-small btn-primary">Combine Categories</button>
-        <!--{{precision currentQueryId}}-->
-      </div>
-      <ul class="list-group">
-        {{#if yelpLoading}}
-          <li class="list-group-item">{{> loadingSpinner}}</li>
-        {{else}}
-          {{#each (includedCategories currentQueryId)}}
-            {{> stretchSearchResultItem}}
-          {{/each}}
-        {{/if}}
-      </ul>
+  {{#if Template.subscriptionsReady}}
+    <div>
+      {{> searchBar}}
     </div>
-  </div>
-
+    <!-- <div>
+      <button id="show-abstraction-prompt" class="btn btn-sm btn-info" style="display: none;"><href>help me reflect about related cases</href></button>
+      <div id="abstraction-prompt" style="display: none">
+        Why is "{{searchInputText}}" appropriate for the experience or activity?
+      </div>
+    </div> -->
+    <div>
+      <div class="panel panel-default feature-list">
+        <div class="panel-heading">
+          place tags mentioning "{{searchInputText}}"
+          <!-- <button id="convert-button" type="button" class="btn btn-xs btn-primary">Combine Categories</button> -->
+          <!--{{precision currentQueryId}}-->
+        </div>
+        <ul class="list-group">
+          {{#if yelpLoading}}
+            <li class="list-group-item">{{> loadingSpinner}}</li>
+          {{else}}
+            {{#if baseline}}
+              {{#if searchInputText}}
+                {{#unless simpleTextSearchResults}}
+                  <li class="list-group-item">No results found</li>
+                {{/unless}}
+              {{/if}}
+              {{#each (simpleTextSearchResults)}}
+                {{> simpleTextSearchItem}}
+              {{/each}}
+            {{else}}
+              <!-- {{#each (includedCategories currentQueryId)}} -->
+              {{#each (includedFeaturesWeights currentQueryId)}}
+                {{> featureWeightItem }}
+              {{/each}}
+            {{/if}}
+          {{/if}}
+        </ul>
+      </div>
+    </div>
+  {{/if}}
 </template>
 
 <template name="searchBar">
-  <form id="blockSearch">
-    <div class="input-group">
-      <input name="search" type="text" class="form-control" placeholder="Search for...">
-      <span class="input-group-btn">
-        <button class="btn btn-default" type="submit">Go!</button>
-        <button name="info" class="btn btn-default" type="button" aria-label="Help me use discover">
-          <span class="glyphicon glyphicon-question-sign"  aria-hidden="true"></span>
-        </button>
-      </span>
-    </div>
-  </form>
+  {{#if Template.subscriptionsReady}}
+    <form id="searchBar">
+      <div class="input-group">
+        <input name="search" type="text" class="form-control" placeholder="Search for...">
+        <span class="input-group-btn">
+          <button class="btn btn-default" type="submit">Go!</button>
+        </span>
+      </div>
+    </form>
+  {{/if}}
 </template>
 
+<template name="simpleTextSearchItem">
+  <li href="#" class="list-group-item" placeCategory="{{description}}">
+    <div>
+      {{description}}
+      <button type="button" class="btn-add-cat btn btn-primary btn-xs pull-right btn-panel-item">
+        <span class="glyphicon glyphicon-plus"  aria-hidden="true"></span>
+      </button>
+    </div>
+  </li>
+</template>
+
+<template name="featureWeightItem">
+  <li href="#" class="list-group-item" placeCategory="{{this.feature}}">
+    <div>
+      {{this.feature}}
+      <button type="button" class="btn-add-cat btn btn-primary btn-xs pull-right btn-panel-item">
+        <span class="glyphicon glyphicon-plus"  aria-hidden="true"></span>
+      </button>
+      {{ shortenDecimal this.weight }}
+    </div>
+  </li>
+</template>
+
+<!-- depreciated, now that we need features + weights  -->
 <template name="stretchSearchResultItem">
   <li href="#" class="list-group-item" placeCategory="{{this}}">
     {{this}}
-    <button type="button" class="btn-remove-cat btn btn-warning btn-sm pull-right btn-panel-item">
+    <button type="button" class="btn-remove-cat btn btn-warning btn-xs pull-right btn-panel-item">
       <span class="glyphicon glyphicon-trash"  aria-hidden="true"></span>
     </button>
-    <button type="button" class="btn-add-cat btn btn-primary btn-sm pull-right btn-panel-item">
+    <button type="button" class="btn-add-cat btn btn-primary btn-xs pull-right btn-panel-item">
       <span class="glyphicon glyphicon-plus"  aria-hidden="true"></span>
     </button>
   </li>

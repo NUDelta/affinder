@@ -1,8 +1,14 @@
 <template name="blockly">
   <div id="blocklyDiv" class="blockly-div"></div>
-
-  <div class="form-group">
-    <label for="compiledBlockly">Blockly to Code</label>
-    <textarea class="form-control" id="compiledBlockly" rows="10"></textarea>
-  </div>
+  <xml xmlns="https://developers.google.com/blockly/xml" id="workspace-blocks" style="display: none">
+    <block type="variables_get">
+      <field name="VAR">thunderstorm</field>
+    </block>
+    <block type="variables_get">
+      <field name="VAR">drizzle</field>
+    </block>
+    <block type="variables_get">
+      <field name="VAR">rain</field>
+    </block>
+  </xml>
 </template>

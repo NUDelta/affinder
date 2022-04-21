@@ -109,29 +109,6 @@ body {
 	margin-top: 7px
 }
 
-.comments {
-	list-style-type: none;
-	margin: 0
-}
-
-.comments li h4 {
-	font-size: 16px;
-	margin: 0
-}
-
-.comments li h4 .date {
-	font-size: 12px;
-	font-weight: normal
-}
-
-.comments li h4 a {
-	font-size: 12px
-}
-
-.comments li p:last-child {
-	margin-bottom: 0
-}
-
 .dropdown-menu span {
 	display: block;
 	padding: 3px 20px;
@@ -249,39 +226,129 @@ body {
 
 .bottomcontent {
 	grid-area: bottomcontent;
-}
-
-.wrapper {
 	display: grid;
-	grid-gap: 10px;
-	grid-template-columns: 320px 1580px;
-	grid-template-rows: 1fr 1fr;
-	grid-template-areas:
-	"sidebar topcontent"
-	"sidebar  topcontent";
+	grid-gap: 5px;
+	grid-template-columns: 5fr 6fr 6fr;
+	grid-template-areas: "exampleplaces simulateconcept repairshop";
 	background-color: #fff;
 	color: #444;
 }
 
+.wrapper {
+	display: grid;
+	grid-gap: 5px;
+	grid-template-columns: 1fr 6fr;
+	/* related to blockly-div and feature-list */
+	grid-template-rows: 50vh auto;
+	grid-template-areas:
+	"sidebar topcontent"
+	"bottomcontent bottomcontent";
+	background-color: #fff;
+	color: #444;
+}
+
+.view-example-places {
+	grid-area: exampleplaces;
+}
+
+.view-example-places-list {
+	height: 55vh;
+	overflow: scroll;
+}
+
+.simulate-concept-expression {
+	grid-area: simulateconcept;
+}
+
+.simulate-concept-expression-list {
+	height: 55vh;
+	overflow: scroll;
+}
+
+.repair-shop {
+	grid-area: repairshop;
+}
+
+.false-positive {
+	border-color:hsla(0, 88%, 41%, 0.564);
+	border-width: medium;
+}
+
+.true-negative {
+	border-color: seagreen;
+	border-width: medium;
+}
+
+.concept-issues-list {
+	height: 30vh;
+	overflow: scroll;
+}
+
 .blockly-div {
-	height: 1000px;
-	width:1560px;
+	height: 45vh;
+}
+
+.feature-list {
+	height: 46vh;
+	overflow: scroll;
 }
 
 .box {
 	background-color: #444;
 	color: #fff;
-	border-radius: 5px;
-	padding: 10px;
-	font-size: 150%;
+	border-radius: 3px;
+	padding: 5px;
 }
+
+/* https://blocklycodelabs.dev/codelabs/custom-toolbox/index.html?index=..%2F..index#2 */
+/* Makes our label white. */
+.blocklyTreeLabel {
+  color: black;
+}
+
+/* BEGIN example situation search */
+.human-labeling {
+	/* margin:4px; */
+	float:left;
+	width: 18ch
+}
+
+.human-labeling label {
+	float:left;
+	width:7ch;
+	margin:4px;
+	background-color:#EFEFEF;
+	border-radius:4px;
+	border:1px solid #D0D0D0;
+	overflow:auto;
+}
+
+.human-labeling label span {
+	text-align:center;
+	/* font-size: 32px; */
+	padding:13px 0px;
+	display:block;
+}
+
+.human-labeling label input {
+	position:absolute;
+	opacity:0.011;
+	z-index:100;
+	/* top:-20px; */
+}
+
+.human-labeling input:checked + span {
+	background-color:#404040;
+	color:#F7F7F7;
+}
+/* END example situation search */
 
 .remove-category .btn-panel-item {
 	padding: 0px 6px;
 }
 
 .panel-heading {
-	font-size: 12pt;
+	font-size: 9pt;
 }
 .list-group {
 	font-size: 10pt;
