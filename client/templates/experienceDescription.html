@@ -1,7 +1,12 @@
 <template name="experienceDescription">
   <div>
     <label style="font-size: 15px">Describe the actual shared experience and activity. Essentially, how are people interacting across different contexts?</label>
-    <textarea style="height: 5vh; width: 100%; font-size: 15px; color: black"></textarea>
+    <textarea id="oce-description" style="height: 5vh; width: 100%; font-size: 15px; color: black"></textarea>
+  </div>
+  <div>
+    {{#each verb in parsedVerbs}}
+      {{verb}}
+    {{/each}}
   </div>
   <div>
     <label style="font-size: 15px">Describe aspects of the interaction</label>

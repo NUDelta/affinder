@@ -19,8 +19,10 @@ Template.searchCooccurances.onCreated(function() {
 Template.searchCooccurances.helpers({
   'cooccuringCategories'() {
     const category = Session.get('placeTagToAnalyze');
-    const res = Cooccurances.findOne({category: category})
-    return res.cooccurances;
+    if (category) {
+      const res = Cooccurances.findOne({category: category})
+      return res.cooccurances;
+    }
   },
 })
 
