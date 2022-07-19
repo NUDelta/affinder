@@ -16,7 +16,7 @@ Meteor.methods({
 
     let queryString = queryAttributes.query;
     let request = require('request');
-    let url = 'http://localhost:8000/categories/' + queryString;
+    let url = process.env.AFFINDER_SEARCH_URL + '/categories/' + queryString;
     request(url, Meteor.bindEnvironment(function (error, response, body) {
       if (!error && response.statusCode == 200) {
         let res = JSON.parse(body);
