@@ -1,5 +1,9 @@
 # affinder
 
+An visual-programming environment for defining concepts of situations that afford activities using context-features.
+
+Try the web demo [here](https://affinder.herokuapp.com)
+
 ## An Example Concept Expression that Affinder helps developers construct 
 
 Desired Concept to Express: "Open space for play", maybe such as place to toss a frisbee.
@@ -15,6 +19,7 @@ Intermed. Concept: Start with parks (open grassy fields)
 ## Running
 Affinder depends on [`affinder-search`](https://github.com/youralien/affinder-search) to be running. Make sure [`updateYelpCategories`](https://github.com/NUDelta/affinder/blob/master/server/methods.js) is pointing to a running instance of affinder-search's search_yelp_categories_server.py
 
+The URL of the Affinder-Search server can be set with the environment variable `AFFINDER_SEARCH_URL`
 
 To connect to `ce-platform`, we run affinder by connecting to the `ce-platform` database, i.e.
 
