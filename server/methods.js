@@ -4,7 +4,8 @@ const yelp = require('yelp-fusion');
 
 import { exec } from 'child_process';
 import {ExampleSituations, Queries} from "../lib/collections/collections";
-import {AUTH} from "../lib/config";
+import {AUTH, CONFIG} from "../lib/config";
+const request = require('request');
 
 Meteor.methods({
 
@@ -15,8 +16,7 @@ Meteor.methods({
     });
 
     let queryString = queryAttributes.query;
-    let request = require('request');
-    let url = process.env.AFFINDER_SEARCH_URL + '/categories/' + queryString;
+    let url = CONFIG.AFFINDER_SEARCH_URL + '/categories/' + queryString;
     request(url, Meteor.bindEnvironment(function (error, response, body) {
       if (!error && response.statusCode == 200) {
         let res = JSON.parse(body);
