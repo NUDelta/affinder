@@ -11,10 +11,25 @@
       <a class="navbar-brand" href="{{pathFor 'workspace'}}">Affinder</a>
     </div>
     <div class="collapse navbar-collapse" id="navigation">
-      <ul class="nav navbar-nav navbar-left">
+      <!-- <ul class="nav navbar-nav navbar-left">
         <li><a href="{{pathFor 'querySummaryList'}}">Past Queries</a></li>
         <li><a href="{{pathFor 'exampleSituations'}}">Example Situation Prompts</a></li>
-      </ul>
+      </ul> -->
+      <!-- https://stackoverflow.com/questions/23662150/bootstrap-3-dropdown-select -->
+      <form class="navbar-form navbar-left">
+        <div class="form-group">
+          <!-- <p class="navbar-text">City</p> -->
+          <label class="control-label col-sm-offset-2 col-sm-2" for="cityForSimulation">City</label>
+          <!-- <label class="col-sm-offset-2 col-sm-2 navbar-text" for="cityForSimulation">City</label> -->
+          <div class="col-sm-6 col-md-4">
+            <select id="cityForSimulation" class="form-control">
+              <option>Chicago</option>
+              <option>Los Angeles</option>
+              <option>Phoenix</option>
+            </select>
+          </div>
+        </div>
+      </form>
     </div>
   </nav>
 </template>

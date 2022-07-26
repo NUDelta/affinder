@@ -12,8 +12,18 @@ import {
   wrapBlocksInCategory
 } from "./blockly";
 
+const yelp2foursquare = require('../../public/yelp2foursquare.json');
+const checkin_by_category_losangeles = require('../../public/checkins_losangeles_by_category.json');
+const checkin_by_category_chicago = require('../../public/checkins_chicago_by_category.json');
+const checkin_by_category_phoenix = require('../../public/checkins_phoenix_by_category.json');
+let checkin_by_category_city = {
+  'Chicago': checkin_by_category_chicago,
+  'Los Angeles': checkin_by_category_losangeles,
+  'Phoenix': checkin_by_category_phoenix,
+};
+
 Template.searchBar.onCreated(function() {
-  this.subscribe('Queries');
+  this.subscribe('Queries')
 });
 
 Template.searchBar.events({
@@ -90,6 +100,10 @@ Template.featureDiscovery.helpers({
     return Session.get('searchInputText');
   },
 
+  'cityForSimulation': function() {
+    return Session.get('cityForSimulation');
+  },
+
   'includedCategories': function(queryId) {
     if (queryId) {
       let obj = Queries.findOne(queryId);
@@ -101,6 +115,29 @@ Template.featureDiscovery.helpers({
     if (queryId) {
       let obj = Queries.findOne(queryId);
       return obj.categories;
+    }
+  },
+
+  'includedFeaturesAndVisitations': function(queryId) {
+    city = Session.get('cityForSimulation')
+    checkin_by_category = checkin_by_category_city[city];
+
+    console.log(`checkin_by_category yelp: trains, foursquare: ${yelp2foursquare['trains']}, checkins: ${checkin_by_category[yelp2foursquare['trains']]}`)
+
+    if (queryId) {
+      let obj = Queries.findOne(queryId);
+      // Only take yelp categories which have Foursquare checkin data mapped to them
+      let yelpFeaturesWithFSQMapping = obj.categories.filter(item => {
+        fsq_feature = yelp2foursquare[item.feature]
+        return checkin_by_category[fsq_feature]
+      });
+      // Now, add an absolute number of checkins data attribute
+      yelpFeaturesWithFSQMapping.forEach(item => {
+        fsq_feature = yelp2foursquare[item.feature];
+        item['checkins'] = checkin_by_category[fsq_feature];
+      });
+      // Return context-features in descending order by number of checkins
+      return yelpFeaturesWithFSQMapping.sort((a, b) => b.checkins-a.checkins);
     }
   },
 

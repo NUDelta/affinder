@@ -31,8 +31,10 @@
               {{/each}}
             {{else}}
               <!-- {{#each (includedCategories currentQueryId)}} -->
-              {{#each (includedFeaturesWeights currentQueryId)}}
-                {{> featureWeightItem }}
+              <!-- {{#each (includedFeaturesWeights currentQueryId)}} -->
+              <!-- {{#each (includedFeaturesAndVisitations currentQueryId locationForCheckins)}} -->
+              {{#each (includedFeaturesAndVisitations currentQueryId)}}
+                {{> featureCheckinsItem }}
               {{/each}}
             {{/if}}
           {{/if}}
@@ -74,6 +76,18 @@
         <span class="glyphicon glyphicon-plus"  aria-hidden="true"></span>
       </button>
       {{ shortenDecimal this.weight }}
+    </div>
+  </li>
+</template>
+
+<template name="featureCheckinsItem">
+  <li href="#" class="list-group-item" placeCategory="{{this.feature}}">
+    <div>
+      {{this.feature}}
+      <button type="button" class="btn-add-cat btn btn-primary btn-xs pull-right btn-panel-item">
+        <span class="glyphicon glyphicon-plus"  aria-hidden="true"></span>
+      </button>
+      {{ this.checkins }}
     </div>
   </li>
 </template>
