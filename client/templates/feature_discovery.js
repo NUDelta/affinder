@@ -36,7 +36,7 @@ Template.searchBar.events({
 
     const baseline = Router.current().params.query.variant == 'B';
     if (!baseline) {
-      console.log('unlimited vocab search');
+      // console.log('unlimited vocab search');
       // Stretch Search
       const queryId = Queries.insert({ query: queryText, categories: [], excluded_categories: []});
       Session.set('yelpLoading', true);
@@ -124,8 +124,6 @@ Template.featureDiscovery.helpers({
       return;
     }
     checkin_by_category = checkin_by_category_city[city];
-
-    console.log(`checkin_by_category yelp: trains, foursquare: ${yelp2foursquare['trains']}, checkins: ${checkin_by_category[yelp2foursquare['trains']]}`)
 
     if (queryId) {
       let obj = Queries.findOne(queryId);

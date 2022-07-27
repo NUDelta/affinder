@@ -1,5 +1,4 @@
 import {Detectors} from "../../lib/collections/collections";
-import {addReflectionPromptToBlocks} from "./blockly";
 import {splitVarDeclarationAndRules} from "../../lib/detectors/detectors";
 
 Template.detectorInputOutput.onCreated(function() {
@@ -39,9 +38,6 @@ Template.detectorInputOutput.helpers({
 });
 
 Template.detectorInputOutput.events({
-  // 'click #show-abstraction-prompt': function(e) {
-  //   addReflectionPromptToBlocks();
-  // },
   'submit form': function(e) {
     e.preventDefault();
     let code = $('#compiledBlockly').val();

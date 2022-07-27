@@ -30,14 +30,14 @@ const getYelpPlaceInstancesForCurrentCategories = (detectorId) => {
       // location: document.getElementById('cityname').value
       location: Session.get('cityForSimulation')
     };
-    console.log(JSON.stringify(searchByPlaceCategory));
+    // console.log(JSON.stringify(searchByPlaceCategory));
     Meteor.call('yelpFusionBusinessSearch', searchByPlaceCategory, detectorId);
   }
 }
 
 export const getSelectPlaceTag = () => {
   let placeTag = document.getElementById('selectPlaceToAnalyze').value;
-  console.log("placeTag selection: ", placeTag);
+  // console.log("placeTag selection: ", placeTag);
   return placeTag;
 };
 
@@ -48,7 +48,7 @@ const getYelpPlaceInstancesPerPlaceTag = (detectorId) => {
     // location: document.getElementById('cityname').value
     location: Session.get('cityForSimulation')
   }
-  console.log(JSON.stringify(searchByPlaceCategory));
+  // console.log(JSON.stringify(searchByPlaceCategory));
   Meteor.call('yelpFusionBusinessSearch', searchByPlaceCategory, detectorId);
 }
 
@@ -127,7 +127,7 @@ const getYelpPlaceInstancesPerConceptVariable = (detectorId) => {
     return;
   }
   for (i = 0; i < conceptFeatures.length; i++) {
-    console.log('category to search: ', conceptFeatures[i])
+    // console.log('category to search: ', conceptFeatures[i])
     let searchByPlaceCategory = {
       term: '',
       categories: conceptFeatures[i],
@@ -262,7 +262,7 @@ Template.selectConceptVariableDropdown.helpers({
     let concepts = [];
     for (i = 0; i < conceptVariableNames.length; i++) {
       let concept_contextfeatures = dependentContextFeatures(varDecl, rules, conceptVariableNames[i]);
-      console.log("concept_contextfeatures: ", concept_contextfeatures);
+      // console.log("concept_contextfeatures: ", concept_contextfeatures);
       concepts.push({
         name: conceptVariableNames[i],
         features: JSON.stringify(concept_contextfeatures)
