@@ -54,7 +54,9 @@
           <h5><em>Do these places accurately represent "{{conceptVariableHumanReadable}}", thus good for "{{highLevelSituation}}"?</em></h5>
           <ul class="list-group list-group-horizontal">
             <li id="length-sim-concept-list" class="list-group-item">{{lengthSimConceptList}} results found</li>
-            <li class="list-group-item">{{totalReviewCount}} total reviews (proxy for visitation frequency)</li>
+            <!-- early prototype: using total number of reviews to approx visitations -->
+            <!-- <li class="list-group-item">{{totalReviewCount}} total reviews (proxy for visitation frequency)</li> -->
+            <li class="list-group-item">{{totalCheckins}} total checkins</li>
           </ul>
         {{/if}}
       {{/if}}

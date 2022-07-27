@@ -5,6 +5,7 @@ import {WORKSPACE, compiledBlocklyDep, wrapBlocksInXml, createGetVariable,
 import Blockly from 'blockly';
 import {applyDetector, extractAffordances, isolateConceptVariableDetector, splitVarDeclarationAndRules, setOfContextFeaturesInBlockly,
   getConceptVariables, setOfVariableNames, variablesInRule, dependentContextFeatures} from "../../lib/detectors/detectors";
+import {totalCheckins} from './visitations/visitations'
 
 Template.viewExamplePlaces.onCreated(function() {
   this.autorun(() => {
@@ -224,6 +225,15 @@ Template.simulateAndLabelConceptExpression.helpers({
     return examples
       .map(e => e.reviewCount)
       .reduce((a, b) => a + b);
+  },
+  'totalCheckins'() {
+    compiledBlocklyDep.depend();
+    const city = Session.get('cityForSimulation');
+    if (!city) {
+      return;
+    }
+    debugger;
+    return totalCheckins(city);
   },
   'situationArgs'(situation) {
     // const instance = Template.instance();
