@@ -120,6 +120,9 @@ Template.featureDiscovery.helpers({
 
   'includedFeaturesAndVisitations': function(queryId) {
     city = Session.get('cityForSimulation')
+    if (!city) {
+      return;
+    }
     checkin_by_category = checkin_by_category_city[city];
 
     console.log(`checkin_by_category yelp: trains, foursquare: ${yelp2foursquare['trains']}, checkins: ${checkin_by_category[yelp2foursquare['trains']]}`)
