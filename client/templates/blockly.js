@@ -42,7 +42,7 @@ Template.blockly.rendered = function() {
 
 export class ReflectAndExpand {
   static showReflectPrompt(block) {
-    blockName = ReflectAndExpand.parseBlockName(block);
+    let blockName = ReflectAndExpand.parseBlockName(block);
     if (blockName) {
       let detectorDescription = $('input[name=detectorname]').val()
       block.setCommentText(ReflectAndExpand.reflectPromptText(blockName, detectorDescription));
@@ -54,7 +54,7 @@ export class ReflectAndExpand {
   }
   static parseBlockName(block) {
     if (block.getField('VAR')) {
-      blockName = block.getField('VAR').textContent_.data
+      let blockName = block.getField('VAR').textContent_.data
       return blockName;
     }
   }
@@ -64,7 +64,7 @@ export class ReflectAndExpand {
     return abstractConcept;
   }
   static activateExpander(block, commentText) {
-    abstractConcept = ReflectAndExpand.parseReflect(commentText);
+    let abstractConcept = ReflectAndExpand.parseReflect(commentText);
     block.setCommentText(commentText + ReflectAndExpand.expandPromptText(abstractConcept));
     ReflectAndExpand.createConceptVariable(abstractConcept);
   }
