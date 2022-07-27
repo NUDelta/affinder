@@ -38,6 +38,10 @@ Template.blockly.rendered = function() {
       }
     }
   });
+
+  // Initialize a top-level concept variable for the concept expression
+  let detectorDescription = $('input[name=detectorname]').val() || 'SITUATION'
+  ReflectAndExpand.createConceptVariable(detectorDescription);
 };
 
 export class ReflectAndExpand {
