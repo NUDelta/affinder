@@ -129,15 +129,13 @@ Template.featureDiscovery.helpers({
 
     if (queryId) {
       let obj = Queries.findOne(queryId);
-      // Only take yelp categories which have Foursquare checkin data mapped to them
-      let yelpFeaturesWithFSQMapping = obj.categories.filter(item => {
-        fsq_feature = yelp2foursquare[item.feature]
-        return checkin_by_category[fsq_feature]
-      });
+      // Only take yelp categories which have a corresponding Foursquare category
+      let yelpFeaturesWithFSQMapping = obj.categories.filter(item => yelp2foursquare[item.feature]);
       // Now, add an absolute number of checkins data attribute
       yelpFeaturesWithFSQMapping.forEach(item => {
         fsq_feature = yelp2foursquare[item.feature];
-        item['checkins'] = checkin_by_category[fsq_feature];
+        // get the foursquare data, or set it to default 0 checkins
+        item['checkins'] = checkin_by_category[fsq_feature] || 0;
       });
       // Return context-features in descending order by number of checkins
       return yelpFeaturesWithFSQMapping.sort((a, b) => b.checkins-a.checkins);
