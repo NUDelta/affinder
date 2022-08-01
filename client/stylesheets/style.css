@@ -218,6 +218,17 @@ body {
 
 .topcontent {
 	grid-area: topcontent;
+	display: grid;
+	grid-gap: 5px;
+	grid-template-columns: 1fr 1fr;
+	grid-template-areas: "monitorvisitations interactionreflection"
+}
+
+.monitorvisitations {
+	grid-area: monitorvisitations;
+}
+.interactionreflection{
+	grid-area: interactionreflection;
 }
 
 .header {

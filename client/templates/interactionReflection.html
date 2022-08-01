@@ -1,5 +1,5 @@
-<template name="experienceDescription">
-  <div>
+<template name="interactionReflection">
+  <!-- <div>
     <label style="font-size: 15px">Describe the actual shared experience and activity. Essentially, how are people interacting across different contexts?</label>
     <textarea id="oce-description" style="height: 5vh; width: 100%; font-size: 15px; color: black"></textarea>
   </div>
@@ -7,19 +7,19 @@
     {{#each verb in parsedVerbs}}
       {{verb}}
     {{/each}}
-  </div>
+  </div> -->
+
   <div>
-    <label style="font-size: 15px">Describe aspects of the interaction</label>
+    <label style="font-size: 15px">Reformulate experience to the core interaction elements</label>
     <div class="input-group">
       <span class="input-group-addon" id="addon-actions">Specific actions users perform</span>
       <input type="text" class="form-control" id="input-actions" aria-describedby="addon-actions">
     </div>
     <div class="input-group">
-      <span class="input-group-addon" id="addon-qualities">Qualities of objects and the environment</span>
+      <span class="input-group-addon" id="addon-qualities">Qualities of objects/environment</span>
       <input type="text" class="form-control" id="input-qualities" aria-describedby="addon-qualities">
     </div>
   </div>
-
 
   <!-- <form class="input-group">
     <label for="oce-description">

@@ -9,7 +9,9 @@ import {totalCheckins} from './visitations/visitations'
 
 Template.viewExamplePlaces.onCreated(function() {
   this.autorun(() => {
-    this.subscribe('ExampleSituations.HumanReadable.for.detectorId', Session.get('detectorId'));
+    if (Session.get('detectorId')) {
+      this.subscribe('ExampleSituations.HumanReadable.for.detectorId', Session.get('detectorId'));
+    }
   });
 });
 
@@ -140,7 +142,9 @@ const getYelpPlaceInstancesPerConceptVariable = (detectorId) => {
 
 Template.simulateAndLabelConceptExpression.onCreated(function() {
   this.autorun(() => {
-    this.subscribe('ExampleSituations.HumanReadable.for.detectorId', Session.get('detectorId'));
+    if (Session.get('detectorId')) {
+      this.subscribe('ExampleSituations.HumanReadable.for.detectorId', Session.get('detectorId'));
+    }
   });
 
   const exampleSituationsCursor = ExampleSituations.find({});
@@ -232,7 +236,6 @@ Template.simulateAndLabelConceptExpression.helpers({
     if (!city) {
       return;
     }
-    debugger;
     return totalCheckins(city);
   },
   'situationArgs'(situation) {
@@ -266,7 +269,11 @@ Template.selectConceptVariableDropdown.helpers({
   'conceptVariableList'() {
     compiledBlocklyDep.depend();
 
-    let [varDecl, rules] = splitVarDeclarationAndRules(document.getElementById('compiledBlockly').value);
+    const compiledBlockly = document.getElementById('compiledBlockly')
+    if (!compiledBlockly) {
+      return;
+    }
+    let [varDecl, rules] = splitVarDeclarationAndRules(compiledBlockly.value);
     let variableNames = setOfVariableNames(varDecl);
     let [conceptVariableNames, conceptRules] = getConceptVariables(rules);
     let concepts = [];
@@ -284,7 +291,9 @@ Template.selectConceptVariableDropdown.helpers({
 
 Template.exampleSituationIssues.onCreated(function() {
   this.autorun(() => {
-    this.subscribe('ExampleSituations.HumanReadable.for.detectorId', Session.get('detectorId'));
+    if (Session.get('detectorId')) {
+      this.subscribe('ExampleSituations.HumanReadable.for.detectorId', Session.get('detectorId'));
+    }
   });
 });
 
@@ -404,7 +413,11 @@ Template.situationItemLabelView.helpers({
 });
 
 Template.situationItemPrediction.onCreated(function() {
-  this.subscribe('ExampleSituation.HumanReadable.for.detectorId', Session.get('detectorId'));
+  this.autorun(() => {
+    if (Session.get('detectorId')) {
+      this.subscribe('ExampleSituation.HumanReadable.for.detectorId', Session.get('detectorId'));
+    }
+  });
 });
 
 Template.situationItemPrediction.helpers({

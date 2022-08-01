@@ -35,6 +35,7 @@ Meteor.methods({
         }
       } else {
         console.warn("Yelp Category Search is not returning 200 status code");
+        console.warn(response);
       }
     }));
   },
@@ -61,6 +62,25 @@ Meteor.methods({
           'category': category,
           'cooccurances': arrayOfObjects
         });
+      }
+    }));
+  },
+
+  sampleRandomUsers: function(params) {
+    check(params, {
+      limit: Number,
+    })
+    const limit = params.limit;
+    let url = `${CONFIG.AFFINDER_VISITATION_URL}/random_users/?limit=${limit}`;
+    console.log(url);
+    request(url, Meteor.bindEnvironment(function (error, response, body) {
+      if (!error && response.statusCode == 200) {
+        let res = JSON.parse(body);
+        console.log(res)
+      }
+      else {
+        console.warn(error)
+        console.warn(response)
       }
     }));
   },

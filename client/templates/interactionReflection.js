@@ -4,7 +4,7 @@ const pos = require('pos')
 const lexer = new pos.Lexer();
 const tagger = new pos.Tagger();
 
-Template.experienceDescription.onCreated(function() {
+Template.interactionReflection.onCreated(function() {
   this.state = new ReactiveDict();
   this.state.setDefault({
     verbs: [],
@@ -13,7 +13,7 @@ Template.experienceDescription.onCreated(function() {
   })
 });
 
-Template.experienceDescription.helpers({
+Template.interactionReflection.helpers({
 
   parsedVerbs() {
     const instance = Template.instance();
@@ -21,7 +21,7 @@ Template.experienceDescription.helpers({
   }
 });
 
-Template.experienceDescription.events({
+Template.interactionReflection.events({
   'change #oce-description': function(e) {
     const description = e.target.value;
     console.log(description);
