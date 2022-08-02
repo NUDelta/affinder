@@ -3,7 +3,8 @@ import { Meteor } from 'meteor/meteor';
 const yelp = require('yelp-fusion');
 
 import { exec } from 'child_process';
-import {Cooccurances, ExampleSituations, Queries} from "../lib/collections/collections";
+import {Cooccurances, ExampleSituations, Queries,
+  VisitationModelCheckins, VisitationModelUsers} from "../lib/collections/collections";
 import {AUTH, CONFIG} from "../lib/config";
 const request = require('request');
 
@@ -69,14 +70,36 @@ Meteor.methods({
   sampleRandomUsers: function(params) {
     check(params, {
       limit: Number,
+      detectorId: String,
     })
     const limit = params.limit;
-    let url = `${CONFIG.AFFINDER_VISITATION_URL}/random_users/?limit=${limit}`;
-    console.log(url);
-    request(url, Meteor.bindEnvironment(function (error, response, body) {
+    const detectorId = params.detectorId;
+    let random_users_url = `${CONFIG.AFFINDER_VISITATION_URL}/random_users/?limit=${limit}`;
+    request(random_users_url, Meteor.bindEnvironment(function (error, response, body) {
       if (!error && response.statusCode == 200) {
         let res = JSON.parse(body);
-        console.log(res)
+        const userIds = res.users;
+        VisitationModelUsers.upsert({
+          '_id': detectorId,
+        }, {
+          '_id': detectorId,
+          'users': userIds
+        });
+        userIds.forEach((uid) => {
+          const period = 2; // likelihood they will participate every X days?
+          let user_checkins_url = `${CONFIG.AFFINDER_VISITATION_URL}/user_visitation_probability/${uid}/?period=${period}`;
+          request(user_checkins_url, Meteor.bindEnvironment(function (error1, response1, body1) {
+            if (!error1 && response1.statusCode == 200) {
+              let result = JSON.parse(body1);
+              VisitationModelCheckins.upsert({
+                'uid': result.uid,
+              }, {
+                'uid': result.uid,
+                'checkins_by_category': result.checkins_by_category
+              });
+            };
+          }));
+        })
       }
       else {
         console.warn(error)

@@ -1,16 +1,38 @@
 <template name="monitorVisitations">
   <h4>Visitation Model</h4>
-  <label style="font-size: 15px">Reformulate experience to the core interaction elements</label>
   <form>
     <div class="form-group">
-      <label for="cityForSimulation">Select City-based Model</label>
-      <div>
-        <select id="cityForSimulation" class="form-control">
+      <h6>Select City-based Model...</h6>
+      <div class="input-group">
+        <span class="input-group-addon" for="cityForSimulation">City</span>
+        <select id="cityForSimulation" name="cityForSimulation" class="form-control">
           <option>Chicago</option>
           <option>Los Angeles</option>
           <option>Phoenix</option>
         </select>
+        <span class="input-group-addon">
+          <a class="glyphicon glyphicon-info-sign"></a>
+        </span>
       </div>
+    </div>
+    <div>
+      <h6>...Or sample person-based models</h6>
+      <div class="input-group">
+        <span class="input-group-addon" for="personLimit"># of people</span>
+        <input id="personLimit" name="personLimit" type="number" min="5" max="30" value="10" class="form-control"/>
+        <span class="input-group-btn">
+          <button id="samplePersonModel" class="btn btn-primary" type="button">Sample Data!</button>
+        </span>
+      </div>
+      <div class="input-group">
+        <span class="input-group-addon" for="uidForSimulation">Focus on user</span>
+        <select id="uidForSimulation" name="uidForSimulation" class="form-control">
+          {{#each userid in sampledUserIds}}
+            <option>{{userid}}</option>
+          {{/each}}
+        </select>
+      </div>
+      {{ detectorLikelihood uidForSimulation }}
     </div>
   </form>
 </template>
