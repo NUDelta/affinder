@@ -2,19 +2,40 @@
   <h4>Visitation Model</h4>
   <form>
     <div class="form-group">
-      <h6>Select City-based Model...</h6>
       <div class="input-group">
-        <span class="input-group-addon" for="cityForSimulation">City</span>
+        <span class="input-group-addon">
+          For a group of
+        </span>
+        <input min="5" max="30" value="10" id="numUsersInCity" name="numUsersInCity" type="number" class="form-control"/>
+        <span class="input-group-addon" for="numUsersInCity">
+          people
+        </span>
+      </div>
+      <div class="input-group">
+        <span class="input-group-addon" for="cityForSimulation">from the city of</span>
         <select id="cityForSimulation" name="cityForSimulation" class="form-control">
           <option>Chicago</option>
           <option>Los Angeles</option>
           <option>Phoenix</option>
         </select>
-        <span class="input-group-addon">
-          <a class="glyphicon glyphicon-info-sign"></a>
-        </span>
       </div>
+      <h5>The chance that at least one user</h5>
+      <div class="input-group">
+        <span class="input-group-addon">participates every</span>
+        <input id="daysPeriod" name="daysPeriod" type="number" min="1" max="7" value="3" class="form-control"/>
+        <span class="input-group-addon" for="daysPeriod">days</span>
+      </div>
+      <h5>is equal to...</h5>
+      <h5 style="text-decoration-color: blueviolet;">
+        {{#if probabilityOfVisitation}}
+          {{probabilityOfVisitation}} probability
+        {{else}}
+          (Not computed: add to your definition first)
+        {{/if}}
+      </h5>
     </div>
+
+    {{#if displayPersonBased}}
     <div>
       <h6>...Or sample person-based models</h6>
       <div class="input-group">
@@ -34,5 +55,6 @@
       </div>
       {{ detectorLikelihood uidForSimulation }}
     </div>
+    {{/if}}
   </form>
 </template>

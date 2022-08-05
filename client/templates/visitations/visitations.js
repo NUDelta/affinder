@@ -10,6 +10,11 @@ export const checkin_by_category_city = {
   'Phoenix': checkin_by_category_phoenix,
 };
 
+export const numFSQUsersPerCity = {
+  'Los Angeles': 9136,
+  'Phoenix': 3120,
+  'Chicago': 6885,
+};
 /**
  *
  * @param {*} city
@@ -17,7 +22,11 @@ export const checkin_by_category_city = {
  */
 export const totalCheckins = (city) => {
   // FIXME(rlouie): This is all the categories, not neccessarily the top-level concept expression of interest.
-  const [varDecl, rules] = splitVarDeclarationAndRules(document.getElementById('compiledBlockly').value);
+  const compiledBlockly = document.getElementById('compiledBlockly')
+  if (!compiledBlockly) {
+    return;
+  }
+  const [varDecl, rules] = splitVarDeclarationAndRules(compiledBlockly.value);
   const placeTags = setOfContextFeaturesInBlockly(varDecl, rules);
   const checkin_by_category = checkin_by_category_city[city]
   let totalCheckinCount = 0;
