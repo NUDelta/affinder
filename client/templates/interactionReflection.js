@@ -10,6 +10,8 @@ Template.interactionReflection.onCreated(function() {
     verbs: [],
     adjectives: [],
     nouns: [],
+    coreActions: "these core actions",
+    coreQualities: "these core qualities",
   })
 });
 
@@ -18,6 +20,16 @@ Template.interactionReflection.helpers({
   parsedVerbs() {
     const instance = Template.instance();
     return instance.state.get('verbs');
+  },
+
+  coreActions() {
+    const instance = Template.instance();
+    return instance.state.get('coreActions');
+  },
+
+  coreQualities() {
+    const instance = Template.instance();
+    return instance.state.get('coreQualities');
   }
 });
 
@@ -33,4 +45,14 @@ Template.interactionReflection.events({
     const instance = Template.instance();
     instance.state.set('verbs', verbs.map(word => word[0]));
   },
+  'change #input-actions': function(e) {
+    const coreActions = e.target.value;
+    const instance = Template.instance();
+    instance.state.set('coreActions', coreActions);
+  },
+  'change #input-qualities': function(e) {
+    const coreQualities = e.target.value;
+    const instance = Template.instance();
+    instance.state.set('coreQualities', coreQualities);
+  }
 })

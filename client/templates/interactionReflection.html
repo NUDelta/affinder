@@ -9,8 +9,8 @@
     {{/each}}
   </div> -->
 
+  <h4>Distill the Core Interaction Concepts</h4>
   <div>
-    <label style="font-size: 15px">Reformulate experience to the core interaction elements</label>
     <div class="input-group">
       <span class="input-group-addon" id="addon-actions">Specific actions users perform</span>
       <input type="text" class="form-control" id="input-actions" aria-describedby="addon-actions">
@@ -18,6 +18,19 @@
     <div class="input-group">
       <span class="input-group-addon" id="addon-qualities">Qualities of objects/environment</span>
       <input type="text" class="form-control" id="input-qualities" aria-describedby="addon-qualities">
+    </div>
+  </div>
+  <div>
+    <h5>What else also supports <span class="label label-primary">{{ coreActions }}</span>?</h5>
+    <div class="input-group">
+      <span class="input-group-addon" id="addon-actions">Other things or places</span>
+      <input styles="container: body" type="text" class="form-control" id="expand-actions" aria-describedby="addon-actions">
+    </div>
+
+    <h5>What else also has <span class="label label-primary">{{ coreQualities }}</span>?</h5>
+    <div class="input-group">
+      <span class="input-group-addon" id="addon-actions">Other things or places</span>
+      <input styles="container: body" type="text" class="form-control" id="expand-actions" aria-describedby="addon-actions">
     </div>
   </div>
 
