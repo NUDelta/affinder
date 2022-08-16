@@ -26,13 +26,15 @@
         <span class="input-group-addon" for="daysPeriod">days</span>
       </div>
       <h5>is equal to...</h5>
-      <h5 style="text-decoration-color: blueviolet;">
+      <h4>
+        <span class="label label-primary">
         {{#if probabilityOfVisitation}}
           {{probabilityOfVisitation}} probability
         {{else}}
           (Not computed: add to your definition first)
         {{/if}}
-      </h5>
+        </span>
+      </h4>
     </div>
 
     {{#if displayPersonBased}}
