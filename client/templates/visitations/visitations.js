@@ -1,4 +1,4 @@
-import {splitVarDeclarationAndRules, setOfContextFeaturesInBlockly} from '../../../lib/detectors/detectors'
+import { compiledBlocklyDep, ConceptExpressionDefinition } from '../blockly';
 
 export const yelp2foursquare = require('../../../public/yelp2foursquare.json');
 const checkin_by_category_losangeles = require('../../../public/checkins_losangeles_by_category.json');
@@ -21,17 +21,14 @@ export const numFSQUsersPerCity = {
  * @returns total checkins, by summing up all checkin stats for each of the categories in the concept expression
  */
 export const totalCheckins = (city) => {
-  // FIXME(rlouie): This is all the categories, not neccessarily the top-level concept expression of interest.
-  const compiledBlockly = document.getElementById('compiledBlockly')
-  if (!compiledBlockly) {
-    return;
-  }
-  const [varDecl, rules] = splitVarDeclarationAndRules(compiledBlockly.value);
-  const placeTags = setOfContextFeaturesInBlockly(varDecl, rules);
+  compiledBlocklyDep.depend();
+  let conceptExpressionDefinition = new ConceptExpressionDefinition();
+  const placeFeatureNames = conceptExpressionDefinition.allFeatures();
+
   const checkin_by_category = checkin_by_category_city[city]
   let totalCheckinCount = 0;
   // Get corresponding Foursquare checkin data for each place category
-  placeTags.forEach(category => {
+  placeFeatureNames.forEach(category => {
     const fsq_feature = yelp2foursquare[category];
     // get the foursquare data, or set it to default 0 checkins
     totalCheckinCount += checkin_by_category[fsq_feature] || 0;

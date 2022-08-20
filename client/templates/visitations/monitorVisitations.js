@@ -56,19 +56,17 @@ Template.monitorVisitations.events({
 Template.monitorVisitations.helpers({
   // ------ CITY-BASED MODEL HELPERS ------
   totalCheckinsForCity() {
-    compiledBlocklyDep.depend();
     const city = Session.get('cityForSimulation');
     if (!city) {
       return;
     }
+
     return totalCheckins(city);
   },
 
   probabilityOfVisitation() {
-    compiledBlocklyDep.depend();
     const city = Session.get('cityForSimulation');
     const numTotalCheckins = totalCheckins(city);
-    debugger;
     if (!numTotalCheckins) {
       return;
     }

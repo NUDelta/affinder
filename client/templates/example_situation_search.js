@@ -231,7 +231,6 @@ Template.simulateAndLabelConceptExpression.helpers({
       .reduce((a, b) => a + b);
   },
   'totalCheckins'() {
-    compiledBlocklyDep.depend();
     const city = Session.get('cityForSimulation');
     if (!city) {
       return;

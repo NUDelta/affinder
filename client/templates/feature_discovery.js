@@ -9,10 +9,14 @@ import {
   defaultToolbox,
   stringifyToolboxTree,
   wrapBlocksInXml,
-  wrapBlocksInCategory
+  wrapBlocksInCategory,
+  compiledBlocklyDep,
+  ConceptExpressionDefinition,
 } from "./blockly";
+
+module.exports.conceptExpressionDefinition
+
 import {yelp2foursquare, checkin_by_category_city, totalCheckins} from './visitations/visitations'
-import { len } from 'pos/lexicon';
 
 Template.searchBar.onCreated(function() {
   this.subscribe('Queries')
@@ -117,37 +121,53 @@ Template.featureDiscovery.helpers({
     }
     checkin_by_category = checkin_by_category_city[city];
 
-    if (queryId) {
-      let obj = Queries.findOne(queryId);
-      // Only take yelp categories which have a corresponding Foursquare category
-      let yelpFeaturesWithFSQMapping = obj.categories.filter(item => yelp2foursquare[item.feature]);
-      // Now, add an associated checkins data attribute
+    compiledBlocklyDep.depend();
+    let conceptExpressionDefinition = new ConceptExpressionDefinition();
+    const featuresInWorkspace = conceptExpressionDefinition.allFeatures();
 
-      const totalCheckinDenom = totalCheckins(city) || 1;
-      yelpFeaturesWithFSQMapping.forEach(item => {
-        fsq_feature = yelp2foursquare[item.feature];
+    if (queryId) {
+      const searchQuery = Queries.findOne(queryId);
+
+      // Only take yelp categories which have a corresponding Foursquare category
+      let searchResultCategories = searchQuery.categories.filter(categoryObject => {
+        return yelp2foursquare[categoryObject.feature]
+      });
+
+      // Dont show categories which are already in the concept expression definition
+      searchResultCategories = searchResultCategories.filter(categoryObject => {
+        return !featuresInWorkspace.includes(categoryObject.feature)
+      });
+
+      // To compute relative change from current definition, and current definition plus adding the category in the search results,
+      // we need to know what the current likelihood of visitation is.
+      // Note: To do relative change, we can just use total number of checkins, rather than a probability of visitation
+      const currentVisitationLikelihood = totalCheckins(city) || 1;
+
+      // Now, add an associated checkins data attribute
+      searchResultCategories.forEach(categoryObject => {
+        fsq_feature = yelp2foursquare[categoryObject.feature];
         // get the foursquare data, or set it to default 0 checkins
         // if we want to display percentage increases
         let showLikelihoodRatio = true;
         if (showLikelihoodRatio) {
           const checkinCount = checkin_by_category[fsq_feature] || 0;
-          const ratio = Number(checkinCount / totalCheckinDenom);
+          const ratio = Number(checkinCount / currentVisitationLikelihood);
           if (ratio < 1) {
-            item['checkins'] = ratio.toPrecision(1)
+            categoryObject['checkins'] = ratio.toPrecision(1)
           }
           else {
-            item['checkins'] = Math.round(ratio);
+            categoryObject['checkins'] = Math.round(ratio);
           }
         }
         else {
-          item['checkins'] = checkin_by_category[fsq_feature] || 0;
+          categoryObject['checkins'] = checkin_by_category[fsq_feature] || 0;
         }
       });
 
 
 
       // Return context-features in descending order by number of checkins
-      return yelpFeaturesWithFSQMapping.sort((a, b) => b.checkins-a.checkins);
+      return searchResultCategories.sort((a, b) => b.checkins-a.checkins);
     }
   },
 

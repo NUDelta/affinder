@@ -1,5 +1,6 @@
 import Blockly from 'blockly';
-import {applyDetector} from "../../lib/detectors/detectors";
+import { Concept } from 'pos/lexicon';
+import {applyDetector, setOfContextFeaturesInBlockly, splitVarDeclarationAndRules} from "../../lib/detectors/detectors";
 
 export let WORKSPACE;
 
@@ -21,6 +22,11 @@ Template.blockly.rendered = function() {
   WORKSPACE.addChangeListener(function (event) {
     let code = Blockly.JavaScript.workspaceToCode(WORKSPACE);
     document.getElementById('compiledBlockly').value = code;
+
+    let conceptExpressionDefinition = new ConceptExpressionDefinition();
+    conceptExpressionDefinition.update(code);
+    console.log('after update: ', conceptExpressionDefinition.variableDeclaration);
+
     compiledBlocklyDep.changed();
 
     if (event.element == "comment") {
@@ -43,6 +49,26 @@ Template.blockly.rendered = function() {
   let detectorDescription = $('input[name=detectorname]').val() || 'SITUATION'
   ReflectAndExpand.createConceptVariable(detectorDescription);
 };
+
+export class ConceptExpressionDefinition {
+  // Singleton-method
+  constructor() {
+    if (ConceptExpressionDefinition._instance) {
+      return ConceptExpressionDefinition._instance;
+    }
+    ConceptExpressionDefinition._instance = this;
+    this.variableDeclaration = null;
+    this.rules = null;
+  }
+
+  update(compiledBlocklyValue) {
+    [this.variableDeclaration, this.rules] = splitVarDeclarationAndRules(compiledBlocklyValue);
+
+  }
+  allFeatures() {
+    return setOfContextFeaturesInBlockly(this.variableDeclaration, this.rules);
+  }
+}
 
 export class ReflectAndExpand {
   static showReflectPrompt(block) {
