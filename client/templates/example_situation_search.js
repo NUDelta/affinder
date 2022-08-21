@@ -68,6 +68,9 @@ Template.viewExamplePlaces.helpers({
   'placeTagToAnalyze'() {
     return Session.get('placeTagToAnalyze');
   },
+  'cityForSimulation'() {
+    return Session.get('cityForSimulation');
+  },
   'exampleSituations'() {
     let examples = ExampleSituations.find({
       categoriesKey: Session.get('placeTagToAnalyze'),

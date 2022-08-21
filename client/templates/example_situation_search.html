@@ -4,10 +4,10 @@
     <form id="viewExamplePlaces">
       {{> selectPlaceDropdown}}
       <div class="input-group">
-        <input name="search" id="cityname" type="text" class="form-control" placeholder="Type a city name..." required="true">
+        <!-- <input name="search" id="cityname" type="text" class="form-control" placeholder="Type a city name..." required="true"> -->
         <span class="input-group-btn">
           <button class="btn btn-default" type="submit">
-            <span class="glyphicon glyphicon-search"></span> Example Places
+            <span class="glyphicon glyphicon-search"></span> Example Places in {{cityForSimulation}}
           </button>
         </span>
       </div>
@@ -45,7 +45,7 @@
         <!-- <input name="search_sim" id="cityname_sim" type="text" class="form-control" placeholder="Type a city name..." required="true"> -->
         <span class="input-group-btn">
           <button class="btn btn-warning" type="submit">
-            Simulate Concept
+            Simulate Concept in {{cityForSimulation}}
           </button>
         </span>
       </div>

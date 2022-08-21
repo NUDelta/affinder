@@ -70,7 +70,6 @@ Template.monitorVisitations.helpers({
     if (!numTotalCheckins) {
       return;
     }
-    debugger;
     const numTotalUsersInCity = numFSQUsersPerCity[city];
     // data collected over 1 - 1.5 years
     const totalDays = 365
