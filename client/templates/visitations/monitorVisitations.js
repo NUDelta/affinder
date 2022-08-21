@@ -55,6 +55,9 @@ Template.monitorVisitations.events({
 
 Template.monitorVisitations.helpers({
   // ------ CITY-BASED MODEL HELPERS ------
+  cityChoices() {
+    return Object.keys(numFSQUsersPerCity);
+  },
   totalCheckinsForCity() {
     const city = Session.get('cityForSimulation');
     if (!city) {

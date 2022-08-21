@@ -14,9 +14,9 @@
       <div class="input-group">
         <span class="input-group-addon" for="cityForSimulation">from the city of</span>
         <select id="cityForSimulation" name="cityForSimulation" class="form-control">
-          <option>Chicago</option>
-          <option>Los Angeles</option>
-          <option>Phoenix</option>
+          {{#each cityChoice in cityChoices}}
+            <option>{{cityChoice}}</option>
+          {{/each}}
         </select>
       </div>
       <h5>The chance that at least one user</h5>
