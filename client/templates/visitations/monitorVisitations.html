@@ -1,32 +1,40 @@
 <template name="monitorVisitations">
-  <h4>Visitation Model</h4>
-  <form>
-    <div class="form-group">
-      <div class="input-group">
-        <span class="input-group-addon">
-          For a group of
-        </span>
-        <input min="5" max="30" value="10" id="numUsersInCity" name="numUsersInCity" type="number" class="form-control"/>
-        <span class="input-group-addon" for="numUsersInCity">
-          people
-        </span>
+  <h4>Visitation Monitor</h4>
+  <form class="story-form">
+    <div class="story-content">
+      <span>For a group of</span>
+      <div class="story-form-input">
+        <input
+          class="blue-line-border h-4-light-age"
+          id="numUsersInCity"
+          name="numUsersInCity"
+          min="0"
+          value="30"
+          type="number"/>
       </div>
-      <div class="input-group">
-        <span class="input-group-addon" for="cityForSimulation">from the city of</span>
+      <span>people, the probability that a user</span>
+      <span>participates over the next</span>
+      <div class="story-form-input">
+        <input
+          class="blue-line-border h-4-light-age"
+          id="daysPeriod"
+          name="daysPeriod"
+          type="number"
+          min="1"
+          max="7"
+          value="3"/>
+      </div>
+      <span>days is</span>
+      <span></span>
+      <div>
         <select id="cityForSimulation" name="cityForSimulation" class="form-control">
           {{#each cityChoice in cityChoices}}
             <option>{{cityChoice}}</option>
           {{/each}}
         </select>
       </div>
-      <h5>The chance that at least one user</h5>
-      <div class="input-group">
-        <span class="input-group-addon">participates every</span>
-        <input id="daysPeriod" name="daysPeriod" type="number" min="1" max="7" value="3" class="form-control"/>
-        <span class="input-group-addon" for="daysPeriod">days</span>
-      </div>
-      <h5>is equal to...</h5>
-      <h4>
+      <!-- old label to show the probability value -->
+      <!-- <h4>
         <span class="label label-primary">
         {{#if probabilityOfVisitation}}
           {{probabilityOfVisitation}} probability
@@ -34,29 +42,51 @@
           (Not computed: add to your definition first)
         {{/if}}
         </span>
-      </h4>
+      </h4> -->
     </div>
-
-    {{#if displayPersonBased}}
-    <div>
-      <h6>...Or sample person-based models</h6>
-      <div class="input-group">
-        <span class="input-group-addon" for="personLimit"># of people</span>
-        <input id="personLimit" name="personLimit" type="number" min="5" max="30" value="10" class="form-control"/>
-        <span class="input-group-btn">
-          <button id="samplePersonModel" class="btn btn-primary" type="button">Sample Data!</button>
-        </span>
-      </div>
-      <div class="input-group">
-        <span class="input-group-addon" for="uidForSimulation">Focus on user</span>
-        <select id="uidForSimulation" name="uidForSimulation" class="form-control">
-          {{#each userid in sampledUserIds}}
-            <option>{{userid}}</option>
-          {{/each}}
-        </select>
-      </div>
-      {{ detectorLikelihood uidForSimulation }}
-    </div>
-    {{/if}}
   </form>
+  <div class="story-form-input">
+    <input class="blue-line-border h-4-light-age" id="probMaxReferenceLimit" min="0.05" max="1.0" value="0.5" type="number"/>
+  </div>
+  <table>
+    {{#each cityChoice in cityChoices}}
+      <tr>
+        <td>{{cityChoice}}</td>
+        <td style="width: 100%">
+          <div class="progress">
+            <div class="progress-bar" role="progressbar"
+              aria-valuenow="{{progressBarWidth cityChoice}}"
+              aria-valuemin="0"
+              aria-valuemax="100"
+              style="min-width: 3em; width: {{ progressBarWidth cityChoice }}%;">
+            {{probabilityOfVisitation cityChoice}}%
+            </div>
+          </div>
+        </td>
+      </tr>
+    {{/each}}
+  </table>
+
+</template>
+
+<template name="personBasedMonitor">
+  <div>
+    <h6>...Or sample person-based models</h6>
+    <div class="input-group">
+      <span class="input-group-addon" for="personLimit"># of people</span>
+      <input id="personLimit" name="personLimit" type="number" min="5" max="30" value="10" class="form-control"/>
+      <span class="input-group-btn">
+        <button id="samplePersonModel" class="btn btn-primary" type="button">Sample Data!</button>
+      </span>
+    </div>
+    <div class="input-group">
+      <span class="input-group-addon" for="uidForSimulation">Focus on user</span>
+      <select id="uidForSimulation" name="uidForSimulation" class="form-control">
+        {{#each userid in sampledUserIds}}
+          <option>{{userid}}</option>
+        {{/each}}
+      </select>
+    </div>
+    {{ detectorLikelihood uidForSimulation }}
+  </div>
 </template>

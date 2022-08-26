@@ -1,0 +1,84 @@
+/* -- REMOVE ARROWS AND SPINNERS (so the story text can look cleaner) */
+
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
+}
+
+.story-form {
+  display: flex;
+  /* grid-row-gap: 0; */
+  /* align-items: center; */
+}
+
+.story-content {
+  font-size: 16px;
+  letter-spacing: 0;
+  display: inline-block;
+  /* font-family: 'FF Mark'; */
+}
+
+.story-form-text {
+
+}
+
+.story-form-input {
+  /* so its one line */
+  display: inline-flex;
+  /* so the input text is centered with the story-text */
+  /* bottom: -1rem; */
+  /* so each line has space between them */
+  margin-bottom: 1rem;
+  position: relative;
+}
+
+.blue-line-border {
+	border: 0 !important;
+  border-top-color: currentcolor;
+  border-top-style: none;
+  border-top-width: 0px;
+  border-right-color: currentcolor;
+  border-right-style: none;
+  border-right-width: 0px;
+  border-bottom-color: currentcolor;
+  border-bottom-style: none;
+  border-bottom-width: 0px;
+  border-left-color: currentcolor;
+  border-left-style: none;
+  border-left-width: 0px;
+  border-image-outset: 0;
+  border-image-repeat: stretch;
+  border-image-slice: 100%;
+  border-image-source: none;
+  border-image-width: 1;
+	border-radius: 0 !important;
+	border-bottom: 2px solid #145bff !important;
+}
+
+/* some horizontal size */
+.h-4-light-age {
+  width: 70px;
+}
+
+.h-4-large-size-field, .h-4-light-age, .h-4-mid-size-field, .h-4-x-large-size-field[_ngcontent-wvy-c78], .h-4-xx-large-size-field {
+	height: 1.5em;
+	/* color: #040505; */
+  background-color: #444;
+	font-size: 16px;
+	line-height: 16px;
+	font-family: FF Mark;
+	text-align: center;
+	margin-left: 8px;
+	margin-right: 8px;
+	padding-left: 8px !important;
+	padding-right: 8px !important;
+	padding-bottom: 8px !important;
+	box-sizing: border-box;
+}
