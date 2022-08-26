@@ -20,10 +20,10 @@ Template.monitorVisitations.onRendered(function() {
   Session.set('numUsersInCity', numUsersInCity);
   let probabilityOfVisitationHistory = Object.assign({}, numFSQUsersPerCity);
   Object.keys(probabilityOfVisitationHistory).forEach((city) => {
-    probabilityOfVisitationHistory[city] = []
+    probabilityOfVisitationHistory[city] = null;
   });
   Session.set('probabilityOfVisitationHistory', probabilityOfVisitationHistory);
-  Session.set('probMaxReferenceLimit', 0.5);
+  Session.set('probMaxReferenceLimit', 25);
 });
 
 Template.monitorVisitations.events({
@@ -38,23 +38,7 @@ Template.monitorVisitations.events({
   'change #numUsersInCity'(event) {
     Session.set('numUsersInCity', Number(event.target.value));
   },
-  // person-based model events
-  'click #samplePersonModel'(event) {
-    const personLimitElement = document.getElementById('personLimit')
-    const detectorId = Session.get('detectorId')
-    if (!personLimitElement || !detectorId) {
-      console.warn("samplePersonModel submission failed")
-      return;
-    }
-    Meteor.call('sampleRandomUsers', {
-      'limit': Number(personLimitElement.value),
-      'detectorId': detectorId
-    });
-  },
-  'change #uidForSimulation'(event) {
-    uid = event.target.value;
-    Session.set('uidForSimulation', uid);
-  },
+
   'change #probMaxReferenceLimit'(event) {
     limit = event.target.value;
     Session.set('probMaxReferenceLimit', limit);
@@ -68,13 +52,13 @@ Template.monitorVisitations.events({
       const totalDays = 365 // data collected over 1 - 1.5 years
       const daysPeriod = Session.get('daysPeriod');
       const numUsersInCity = Session.get('numUsersInCity');
-      const probability = calculateProbabilityOfVisitation(numTotalCheckins, numTotalUsersInCity, totalDays, daysPeriod, numUsersInCity);
-      probabilityOfVisitationHistory[city].push(probability);
+      const prob = calculateProbabilityOfVisitation(numTotalCheckins, numTotalUsersInCity, totalDays, daysPeriod, numUsersInCity);
+      const result = prob * 100;
+      probabilityOfVisitationHistory[city] = result;
     });
+    console.log(probabilityOfVisitationHistory);
     Session.set('probabilityOfVisitationHistory', probabilityOfVisitationHistory);
   },
-
-
 });
 
 const calculateProbabilityOfVisitation = (numTotalCheckinsInCity, numTotalUsersInCity, totalDays, daysPeriod, numUsersInCity) => {
@@ -118,19 +102,66 @@ Template.monitorVisitations.helpers({
     return result.toPrecision(2);
   },
 
-  progressBarWidth(city) {
-    const numTotalCheckins = totalCheckins(city);
-    const numTotalUsersInCity = numFSQUsersPerCity[city];
-    const totalDays = 365 // data collected over 1 - 1.5 years
-    const daysPeriod = Session.get('daysPeriod');
-    const numUsersInCity = Session.get('numUsersInCity');
-
-    const prob = calculateProbabilityOfVisitation(numTotalCheckins, numTotalUsersInCity, totalDays, daysPeriod, numUsersInCity);
+  progressBarWidth(prob) {
     const referenceValue = Session.get('probMaxReferenceLimit');
     const result = prob / referenceValue * 100;
     return result.toPrecision(2);
   },
 
+  progressHasRegressed(city) {
+    // NOTE: for this helper to re-rerun, need to duplicate the compile blockly dependencies
+    const numTotalCheckins = totalCheckins(city);
+    const numTotalUsersInCity = numFSQUsersPerCity[city];
+    const totalDays = 365 // data collected over 1 - 1.5 years
+    const daysPeriod = Session.get('daysPeriod');
+    const numUsersInCity = Session.get('numUsersInCity');
+    const prob = calculateProbabilityOfVisitation(numTotalCheckins, numTotalUsersInCity, totalDays, daysPeriod, numUsersInCity);
+    const currentProb = prob * 100;
+
+    const probabilityOfVisitationHistory = Session.get('probabilityOfVisitationHistory');
+    const oldProb = probabilityOfVisitationHistory[city];
+
+    return currentProb <= oldProb;
+  },
+
+  oldProbability(city) {
+    const probabilityOfVisitationHistory = Session.get('probabilityOfVisitationHistory');
+    const oldProb = probabilityOfVisitationHistory[city];
+    return oldProb.toPrecision(2);
+  },
+
+  regressionDifference(currentProb, oldProb) {
+    const result = oldProb - currentProb;
+    return result.toPrecision(2);
+  },
+
+  improvedDifference(currentProb, oldProb) {
+    const result = currentProb - oldProb;
+    return result.toPrecision(2);
+  },
+})
+
+Template.personBasedMonitor.events({
+  // person-based model events
+  'click #samplePersonModel'(event) {
+    const personLimitElement = document.getElementById('personLimit')
+    const detectorId = Session.get('detectorId')
+    if (!personLimitElement || !detectorId) {
+      console.warn("samplePersonModel submission failed")
+      return;
+    }
+    Meteor.call('sampleRandomUsers', {
+      'limit': Number(personLimitElement.value),
+      'detectorId': detectorId
+    });
+  },
+  'change #uidForSimulation'(event) {
+    uid = event.target.value;
+    Session.set('uidForSimulation', uid);
+  },
+});
+
+Template.personBasedMonitor.helpers({
   // ------ PERSON-BASED HELPERS -------
   displayPersonBased() {
     // for now, do not focus on person based models
@@ -157,4 +188,4 @@ Template.monitorVisitations.helpers({
 
     // Output the results
   },
-})
+});
