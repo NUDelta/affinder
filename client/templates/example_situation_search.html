@@ -51,13 +51,13 @@
       </div>
       {{#if hasConcept}}
         {{#if lengthSimConceptList}}
-          <h5><em>Do these places accurately represent "{{conceptVariableHumanReadable}}", thus good for "{{highLevelSituation}}"?</em></h5>
-          <ul class="list-group list-group-horizontal">
-            <li id="length-sim-concept-list" class="list-group-item">{{lengthSimConceptList}} results found</li>
+          <!-- <h5><em>Do these places accurately represent "{{conceptVariableHumanReadable}}", thus good for "{{highLevelSituation}}"?</em></h5> -->
+          <!-- <ul class="list-group list-group-horizontal"> -->
+            <!-- <li id="length-sim-concept-list" class="list-group-item">{{lengthSimConceptList}} results found</li> -->
             <!-- early prototype: using total number of reviews to approx visitations -->
             <!-- <li class="list-group-item">{{totalReviewCount}} total reviews (proxy for visitation frequency)</li> -->
-            <li class="list-group-item">{{totalCheckins}} total checkins</li>
-          </ul>
+            <!-- <li class="list-group-item">{{totalCheckins}} total checkins</li> -->
+          <!-- </ul> -->
         {{/if}}
       {{/if}}
     </form>
@@ -174,7 +174,7 @@
 
 <template name="situationItemLabelView">
   {{#if Template.subscriptionsReady}}
-    <p>Label</p>
+    <p>Represents Concept?</p>
     <label>
       <button class="btn btn-small">{{situationLabel situation}}</button>
     </label>
@@ -182,7 +182,7 @@
 </template>
 
 <template name="situationItemLabelEdit">
-  <p>Label</p>
+  <p>Represents Concept?</p>
   <div class="human-labeling">
   {{#if (hasLabel situation)}}
     {{#if (isLabelTrue situation)}}
