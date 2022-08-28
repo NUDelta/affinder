@@ -47,11 +47,22 @@
 <template name="searchBar">
   {{#if Template.subscriptionsReady}}
     <form id="searchBar">
+      <!-- <label for="search">Search a term, find location categories mentioning it</label> -->
       <div class="input-group">
-        <input name="search" type="text" class="form-control" placeholder="Search for...">
+        <input name="search" type="text" class="form-control" placeholder="frisbee, grassy, park">
         <span class="input-group-btn">
           <button class="btn btn-default" type="submit">Go!</button>
         </span>
+      </div>
+      <div class="story-form">
+        <span>Sort by <span class="badge">+visit%</span> in</span>
+        <div class="story-form-input">
+          <select id="cityForSimulation" name="cityForSimulation" class="blue-line-border h-4-large-size-field">
+            {{#each cityChoice in cityChoices}}
+              <option>{{cityChoice}}</option>
+            {{/each}}
+          </select>
+        </div>
       </div>
     </form>
   {{/if}}
@@ -87,7 +98,7 @@
       <button type="button" class="btn-add-cat btn btn-primary btn-xs pull-right btn-panel-item">
         <span class="glyphicon glyphicon-plus"  aria-hidden="true"></span>
       </button>
-      <span class="badge pull-right" style="margin-right: 5px">{{ this.checkins }}x</span>
+      <span class="badge pull-right" style="margin-right: 5px">+{{ this.checkins }}%</span>
     </div>
   </li>
 </template>

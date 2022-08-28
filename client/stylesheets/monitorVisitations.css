@@ -62,12 +62,12 @@ input[type=number] {
 	border-bottom: 2px solid #145bff !important;
 }
 
-/* some horizontal size */
+/* small horizontal size for number fields*/
 .h-4-light-age {
   width: 70px;
 }
 
-.h-4-large-size-field, .h-4-light-age, .h-4-mid-size-field, .h-4-x-large-size-field[_ngcontent-wvy-c78], .h-4-xx-large-size-field {
+.h-4-large-size-field, .h-4-light-age, .h-4-mid-size-field, .h-4-x-large-size-field, .h-4-xx-large-size-field {
 	height: 1.5em;
 	/* color: #040505; */
   background-color: #444;
@@ -82,3 +82,20 @@ input[type=number] {
 	padding-bottom: 8px !important;
 	box-sizing: border-box;
 }
+
+ /* changing bootstrap progress to have a small margin all around  */
+.progress {
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+
+.progress-container-focused {
+  background-color: #04AA6D;
+  margin: 2px 2px 2px 2px;
+}
+
+td {
+  padding-left: 5px;
+  padding-right: 5px;
+}
+

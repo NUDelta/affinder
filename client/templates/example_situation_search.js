@@ -1,7 +1,8 @@
 import {Tracker} from 'meteor/tracker'
 import {ExampleSituations} from "../../lib/collections/collections";
 import {WORKSPACE, compiledBlocklyDep, wrapBlocksInXml, createGetVariable,
-  addReflectionPromptToBlocks} from "./blockly";
+  addReflectionPromptToBlocks,
+  ConceptExpressionDefinition} from "./blockly";
 import Blockly from 'blockly';
 import {applyDetector, extractAffordances, isolateConceptVariableDetector, splitVarDeclarationAndRules, setOfContextFeaturesInBlockly,
   getConceptVariables, setOfVariableNames, variablesInRule, dependentContextFeatures} from "../../lib/detectors/detectors";
@@ -107,9 +108,8 @@ Template.viewExamplePlaces.helpers({
 Template.selectPlaceDropdown.helpers({
   'placeTagList'() {
     compiledBlocklyDep.depend();
-
-    let [varDecl, rules] = splitVarDeclarationAndRules(document.getElementById('compiledBlockly').value);
-    return setOfContextFeaturesInBlockly(varDecl, rules);
+    let conceptExpressionDefinition = new ConceptExpressionDefinition();
+    return conceptExpressionDefinition.allFeatures();
   }
 })
 
@@ -276,7 +276,7 @@ Template.selectConceptVariableDropdown.helpers({
       return;
     }
     let [varDecl, rules] = splitVarDeclarationAndRules(compiledBlockly.value);
-    let variableNames = setOfVariableNames(varDecl);
+    // let variableNames = setOfVariableNames(varDecl);
     let [conceptVariableNames, conceptRules] = getConceptVariables(rules);
     let concepts = [];
     for (i = 0; i < conceptVariableNames.length; i++) {

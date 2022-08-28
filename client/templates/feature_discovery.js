@@ -14,9 +14,8 @@ import {
   ConceptExpressionDefinition,
 } from "./blockly";
 
-module.exports.conceptExpressionDefinition
-
-import {yelp2foursquare, checkin_by_category_city, totalCheckins} from './visitations/visitations'
+import {yelp2foursquare, checkin_by_category_city, totalCheckins, numFSQUsersPerCity} from './visitations/visitations'
+import { calculateProbabilityOfVisitation } from './visitations/monitorVisitations';
 
 Template.searchBar.onCreated(function() {
   this.subscribe('Queries')
@@ -29,6 +28,11 @@ Template.searchBar.events({
     const queryText = $(e.target).find('[name=search]').val();
 
     Session.set("searchInputText", queryText);
+
+    // note: every search, we'll use the cityForSimulation eventually to add the interactional resource-aware information (e.g., +visit_prob%)
+    // thus, we'll update the current city once a search is made
+    city = document.getElementById('cityForSimulation').value;
+    Session.set('cityForSimulation', city);
 
     const baseline = Router.current().params.query.variant == 'B';
     if (!baseline) {
@@ -48,8 +52,18 @@ Template.searchBar.events({
           }
         });
     }
-  }
+  },
+  'change #cityForSimulation'(event) {
+    city = event.target.value;
+    Session.set('cityForSimulation', city);
+  },
 });
+
+Template.searchBar.helpers({
+  cityChoices() {
+    return Object.keys(numFSQUsersPerCity);
+  },
+})
 
 function resolveAllAndExcludedCats(allCats, excludeCats) {
   allCats = allCats.map(function(item) {
@@ -138,33 +152,22 @@ Template.featureDiscovery.helpers({
         return !featuresInWorkspace.includes(categoryObject.feature)
       });
 
-      // To compute relative change from current definition, and current definition plus adding the category in the search results,
-      // we need to know what the current likelihood of visitation is.
-      // Note: To do relative change, we can just use total number of checkins, rather than a probability of visitation
-      const currentVisitationLikelihood = totalCheckins(city) || 1;
+      // standard app-wide constants used for calculating probability of visitation
+      const numTotalUsersInCity = numFSQUsersPerCity[city];
+      const totalDays = 365 // data collected over 1 - 1.5 years
+      const daysPeriod = Session.get('daysPeriod');
+      const numUsersInCity = Session.get('numUsersInCity');
 
       // Now, add an associated checkins data attribute
       searchResultCategories.forEach(categoryObject => {
         fsq_feature = yelp2foursquare[categoryObject.feature];
-        // get the foursquare data, or set it to default 0 checkins
-        // if we want to display percentage increases
-        let showLikelihoodRatio = true;
-        if (showLikelihoodRatio) {
-          const checkinCount = checkin_by_category[fsq_feature] || 0;
-          const ratio = Number(checkinCount / currentVisitationLikelihood);
-          if (ratio < 1) {
-            categoryObject['checkins'] = ratio.toPrecision(1)
-          }
-          else {
-            categoryObject['checkins'] = Math.round(ratio);
-          }
-        }
-        else {
-          categoryObject['checkins'] = checkin_by_category[fsq_feature] || 0;
-        }
+
+        // Based on Foursquare data, how many more checkins would this category add? If no data, set it to default 0 checkins
+        const checkinsAddedByCategory = checkin_by_category[fsq_feature] || 0;
+
+        const increasedProb = calculateProbabilityOfVisitation(checkinsAddedByCategory, numTotalUsersInCity, totalDays, daysPeriod, numUsersInCity);
+        categoryObject['checkins'] = (increasedProb*100).toFixed(1);
       });
-
-
 
       // Return context-features in descending order by number of checkins
       return searchResultCategories.sort((a, b) => b.checkins-a.checkins);

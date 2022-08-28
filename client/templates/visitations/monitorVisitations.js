@@ -12,8 +12,6 @@ Template.monitorVisitations.onCreated(function (){
 })
 
 Template.monitorVisitations.onRendered(function() {
-  city = document.getElementById('cityForSimulation').value;
-  Session.set('cityForSimulation', city);
   const daysPeriod = Number(document.getElementById('daysPeriod').value);
   Session.set('daysPeriod', daysPeriod);
   const numUsersInCity = Number(document.getElementById('numUsersInCity').value);
@@ -28,10 +26,6 @@ Template.monitorVisitations.onRendered(function() {
 
 Template.monitorVisitations.events({
   // city-based model events
-  'change #cityForSimulation'(event) {
-    city = event.target.value;
-    Session.set('cityForSimulation', city);
-  },
   'change #daysPeriod'(event) {
     Session.set('daysPeriod', Number(event.target.value));
   },
@@ -61,7 +55,7 @@ Template.monitorVisitations.events({
   },
 });
 
-const calculateProbabilityOfVisitation = (numTotalCheckinsInCity, numTotalUsersInCity, totalDays, daysPeriod, numUsersInCity) => {
+export const calculateProbabilityOfVisitation = (numTotalCheckinsInCity, numTotalUsersInCity, totalDays, daysPeriod, numUsersInCity) => {
   // e.g., ~2000 checkins at churches
   // you have 52 periods (a week) in a year (360 / 7).
   // So you have ~40 people visiting a church on any given week, for the entire population in Foursquare.
@@ -99,13 +93,32 @@ Template.monitorVisitations.helpers({
 
     const prob = calculateProbabilityOfVisitation(numTotalCheckins, numTotalUsersInCity, totalDays, daysPeriod, numUsersInCity);
     const result = prob * 100;
-    return result.toPrecision(2);
+    return result.toFixed(1);
+  },
+
+  progressContainerClass(city) {
+    // if its the city in focus
+    if (Session.get('cityForSimulation') === city) {
+      return "progress-container-focused";
+    }
+    else {
+      return "progress-container-unfocused";
+    }
+  },
+
+  progressBarActiveStyling(city) {
+    if (Session.get('cityForSimulation') === city) {
+      return "progress-bar-striped active"
+    }
+    else {
+      return ""
+    }
   },
 
   progressBarWidth(prob) {
     const referenceValue = Session.get('probMaxReferenceLimit');
     const result = prob / referenceValue * 100;
-    return result.toPrecision(2);
+    return result.toFixed(1);
   },
 
   progressHasRegressed(city) {
@@ -126,18 +139,24 @@ Template.monitorVisitations.helpers({
 
   oldProbability(city) {
     const probabilityOfVisitationHistory = Session.get('probabilityOfVisitationHistory');
+    if (!probabilityOfVisitationHistory) {
+      return null;
+    }
     const oldProb = probabilityOfVisitationHistory[city];
-    return oldProb.toPrecision(2);
+    if (!oldProb) {
+      return null;
+    }
+    return oldProb.toFixed(1);
   },
 
   regressionDifference(currentProb, oldProb) {
     const result = oldProb - currentProb;
-    return result.toPrecision(2);
+    return result.toFixed(1);
   },
 
   improvedDifference(currentProb, oldProb) {
     const result = currentProb - oldProb;
-    return result.toPrecision(2);
+    return result.toFixed(1);
   },
 })
 

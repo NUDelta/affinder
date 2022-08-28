@@ -1,0 +1,9 @@
+/* larger size field for things like text or text options */
+.h-4-large-size-field {
+  width: 120px;
+}
+
+/* modifying the color of the bootstrap badge to match the focus color of the progress bar */
+.badge {
+  background-color: #04AA6D;
+}
