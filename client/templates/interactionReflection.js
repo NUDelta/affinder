@@ -12,6 +12,7 @@ Template.interactionReflection.onCreated(function() {
     nouns: [],
     coreActions: "these core actions",
     coreQualities: "these core qualities",
+    similarActions: "other similar actions",
   })
 });
 
@@ -30,6 +31,11 @@ Template.interactionReflection.helpers({
   coreQualities() {
     const instance = Template.instance();
     return instance.state.get('coreQualities');
+  },
+
+  similarActions() {
+    const instance = Template.instance();
+    return instance.state.get('similarActions');
   }
 });
 
@@ -54,5 +60,10 @@ Template.interactionReflection.events({
     const coreQualities = e.target.value;
     const instance = Template.instance();
     instance.state.set('coreQualities', coreQualities);
+  },
+  'change #expand-actions': function(e) {
+    const similarActions = e.target.value;
+    const instance = Template.instance();
+    instance.state.set('similarActions', similarActions);
   }
 })

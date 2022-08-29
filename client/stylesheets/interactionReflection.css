@@ -1,0 +1,20 @@
+.h-4-xx-large-size-field {
+  width: 200px;
+  /* width: 100%; */
+}
+
+.h-4-xx-large-size-field {
+	height: 1.5em;
+	/* color: #040505; */
+  background-color: #444;
+	font-size: 14px;
+	line-height: 14px;
+	font-family: FF Mark;
+	/* text-align: center; */
+	margin-left: 7px;
+	margin-right: 7px;
+	padding-left: 7px !important;
+	padding-right: 7px !important;
+	padding-bottom: 7px !important;
+	box-sizing: border-box;
+}

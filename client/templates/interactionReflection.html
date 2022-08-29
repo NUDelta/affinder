@@ -9,28 +9,42 @@
     {{/each}}
   </div> -->
 
-  <h4>Distill the Core Interaction Concepts</h4>
   <div>
-    <div class="input-group">
-      <span class="input-group-addon" id="addon-actions">Specific actions users perform</span>
-      <input type="text" class="form-control" id="input-actions" aria-describedby="addon-actions">
+    <h4>Distill the Core Interaction Concepts</h4>
+    <!-- Distilling actions -->
+    <div class="story-form">
+      <span id="addon-actions">The actions a user engages in are</span>
+      <div class="story-form-input">
+        <input type="text" class="blue-line-border h-4-xx-large-size-field" id="input-actions" aria-describedby="addon-actions">
+      </div>
     </div>
-    <div class="input-group">
-      <span class="input-group-addon" id="addon-qualities">Qualities of objects/environment</span>
-      <input type="text" class="form-control" id="input-qualities" aria-describedby="addon-qualities">
+    <!-- Distilling the functional schema, the qualities of the setting that supports these actions -->
+    <div class="story-form">
+      <span id="addon-qualities">The aspects of a setting that supports the action(s) include</span>
+      <div class="story-form-input">
+        <input type="text" class="blue-line-border h-4-xx-large-size-field" id="input-qualities" aria-describedby="addon-qualities">
+      </div>
     </div>
   </div>
   <div>
-    <h5>What else also supports <span class="label label-primary">{{ coreActions }}</span>?</h5>
-    <div class="input-group">
-      <span class="input-group-addon" id="addon-actions">Other things or places</span>
-      <input styles="container: body" type="text" class="form-control" id="expand-actions" aria-describedby="addon-actions">
+    <h4>Reimagine the Interaction</h4>
+    <div class="story-form">
+      <span>What are actions that are similar in spirit to <span class="label label-primary">{{coreActions}}</span>?</span>
+      <div class="story-form-input">
+        <input type="text" class="blue-line-border h-4-xx-large-size-field" id="expand-actions">
+      </div>
     </div>
-
-    <h5>What else also has <span class="label label-primary">{{ coreQualities }}</span>?</h5>
-    <div class="input-group">
-      <span class="input-group-addon" id="addon-actions">Other things or places</span>
-      <input styles="container: body" type="text" class="form-control" id="expand-actions" aria-describedby="addon-actions">
+    <div class="story-form">
+      <span>What are other settings that support <span class="label label-primary">{{coreActions}}</span> or <span class="label label-primary">{{similarActions}}</span>?</span>
+      <div class="story-form-input">
+        <input type="text" class="blue-line-border h-4-xx-large-size-field" id="expand-action-settings">
+      </div>
+    </div>
+    <div class="story-form">
+      <span>What are other settings that have <span class="label label-primary">{{ coreQualities }}</span>?</span>
+      <div class="story-form-input">
+        <input type="text" class="blue-line-border h-4-xx-large-size-field" id="expand-quality-settings">
+      </div>
     </div>
   </div>
 
