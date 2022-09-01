@@ -132,8 +132,8 @@ export const mockTestDetector = function (userAffordances, varDecl, rules) {
 
 export const defaultToolbox = function () {
   let toolbox = {};
-  toolbox["weather"] = defaultToolboxWeather();
-  toolbox["time"] = defaultToolboxTimeOfDay() + defaultToolboxTimeOfWeek() + defaultToolboxTimeZone();
+  // toolbox["weather"] = defaultToolboxWeather();
+  // toolbox["time"] = defaultToolboxTimeOfDay() + defaultToolboxTimeOfWeek() + defaultToolboxTimeZone();
   toolbox["operators"] = defaultToolboxOperators();
   toolbox["variables"] = defaultToolboxVariables();
   return toolbox;
@@ -145,11 +145,15 @@ export const stringifyToolboxTree = function(toolboxTree) {
     string += toolboxTree["discoveries"];
     string += '<sep gap="48"></sep>';
   }
-  string += toolboxTree["placeCategories"];
-  string += '<sep gap="48"></sep>';
-  string += toolboxTree["weather"];
-  string += toolboxTree["time"];
-  string += '<sep gap="48"></sep>';
+  if (toolboxTree.hasOwnProperty("weather")) {
+    string += toolboxTree["weather"];
+    string += '<sep gap="48"></sep>';
+  }
+  if (toolboxTree.hasOwnProperty("time")) {
+    string += toolboxTree["time"];
+    string += '<sep gap="48"></sep>';
+  }
+  // string += toolboxTree["placeCategories"];
   string += toolboxTree["operators"];
   string += toolboxTree["variables"];
   string += "</xml>";
