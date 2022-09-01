@@ -1,9 +1,14 @@
-.h-4-xx-large-size-field {
-  width: 200px;
-  /* width: 100%; */
+.h-4-x-large-size-field {
+  width: 250px;
 }
 
 .h-4-xx-large-size-field {
+  width: 500px;
+}
+
+
+
+.h-4-xx-large-size-field, .h-4-x-large-size-field {
 	height: 1.5em;
 	/* color: #040505; */
   background-color: #444;
