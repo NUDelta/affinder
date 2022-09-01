@@ -32,7 +32,11 @@ Template.monitorVisitations.events({
   'change #numUsersInCity'(event) {
     Session.set('numUsersInCity', Number(event.target.value));
   },
-
+  'click tr'(event) {
+    if (event.target.className == "city-label") {
+      Session.set('cityForSimulation', event.target.innerHTML);
+    }
+  },
   'change #probMaxReferenceLimit'(event) {
     limit = event.target.value;
     Session.set('probMaxReferenceLimit', limit);

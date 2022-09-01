@@ -59,7 +59,7 @@
         <div class="story-form-input">
           <select id="cityForSimulation" name="cityForSimulation" class="blue-line-border h-4-large-size-field">
             {{#each cityChoice in cityChoices}}
-              <option>{{cityChoice}}</option>
+              <option selected="{{isCitySelected cityChoice}}">{{cityChoice}}</option>
             {{/each}}
           </select>
         </div>

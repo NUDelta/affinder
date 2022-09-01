@@ -63,6 +63,9 @@ Template.searchBar.helpers({
   cityChoices() {
     return Object.keys(numFSQUsersPerCity);
   },
+  isCitySelected(cityChoice) {
+    return Session.equals('cityForSimulation', cityChoice);
+  }
 })
 
 function resolveAllAndExcludedCats(allCats, excludeCats) {
