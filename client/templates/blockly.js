@@ -218,6 +218,10 @@ export const createAndBlock = function(a, b) {
   return createLogicOperationBlock('AND', a, b);
 }
 
+export const createNotBlock = function(a) {
+  return `<block type="logic_negate">${a}</block>`
+}
+
 export const createMultiVarOrBlock = function(abc) {
   if (abc.length === 1) {
     return createGetVariable(abc[0]);
@@ -371,13 +375,14 @@ const defaultToolboxTimeZone = function() {
 
 const defaultToolboxOperators = function() {
   return wrapBlocksInCategory("and, or, not, =",
-    createAndBlock("", "") +
+    createOrBlock(createOrBlock("",""),createOrBlock("","")) +
     createOrBlock("", "") +
-    '<block type="logic_negate"></block>' +
-    '<block type="logic_compare"></block>' +
-    createOrBlock(createOrBlock("",""), "") +
-    createOrBlock(createOrBlock("",""),
-                     createOrBlock("","")));
+    createAndBlock("", createNotBlock("")) +
+    createAndBlock("", "") +
+    createNotBlock(""),
+    // '<block type="logic_compare"></block>' +
+    // createOrBlock(createOrBlock("",""), "")
+  );
 };
 
 const defaultToolboxVariables = function() {

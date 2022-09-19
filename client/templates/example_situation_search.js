@@ -333,6 +333,7 @@ Template.situationItemImageNameCats.events({
   'click .context-feature-link': function(e, target) {
     e.preventDefault();
 
+    // contextFeature used to negate
     const contextFeature = e.target.innerText.match(/(\w+)/g)[0];
 
     let conceptVariable = wrapBlocksInXml(createGetVariable(contextFeature));
