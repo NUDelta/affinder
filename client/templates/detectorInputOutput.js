@@ -1,6 +1,7 @@
 import {Detectors} from "../../lib/collections/collections";
 import {addReflectionPromptToBlocks} from "./blockly";
 import {splitVarDeclarationAndRules} from "../../lib/detectors/detectors";
+import { saveAs } from 'file-saver';
 
 Template.detectorInputOutput.onCreated(function() {
   this.subscribe('Detectors');
@@ -55,6 +56,12 @@ Template.detectorInputOutput.events({
 
     if (Session.get('detectorId')) {
       Detectors.update(Session.get('detectorId'), detector);
+
+      var fileName = `DETECTOR ${detector.description}.json`;
+      var fileToSave = new Blob([JSON.stringify(detector)], {
+          type: 'application/json'
+      });
+      saveAs(fileToSave, fileName);
     } else {
       let detectorId = Detectors.insert(detector);
       Session.set('detectorId', detectorId);
