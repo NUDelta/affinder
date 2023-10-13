@@ -16,7 +16,7 @@ Meteor.methods({
     });
 
     let queryString = queryAttributes.query;
-    let url = CONFIG.AFFINDER_SEARCH_URL + '/categories/' + queryString;
+    let url = CONFIG.AFFINDER_SEARCH_URL + '/categories/' + queryString; //change this
     request(url, Meteor.bindEnvironment(function (error, response, body) {
       if (!error && response.statusCode == 200) {
         let res = JSON.parse(body);
