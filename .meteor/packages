@@ -29,3 +29,4 @@ blockly:javascript
 aldeed:collection2@3.0.0
 underscore
 jquery
+react-meteor-data

@@ -212,9 +212,7 @@ body {
 /* */
 
 /* workspace grid style */
-.sidebar {
-	grid-area: sidebar;
-}
+
 
 .topcontent {
 	grid-area: topcontent;
@@ -232,20 +230,23 @@ body {
 	grid-template-areas: "exampleplaces simulateconcept repairshop";
 	background-color: #fff;
 	color: #444;
+	display: none;
 }
 
 .wrapper {
 	display: grid;
 	grid-gap: 5px;
-	grid-template-columns: 1fr 6fr;
+	grid-template-columns: 2fr 7fr;
 	/* related to blockly-div and feature-list */
-	grid-template-rows: 50vh auto;
+
 	grid-template-areas:
 	"sidebar topcontent"
-	"bottomcontent bottomcontent";
+	;
 	background-color: #fff;
 	color: #444;
+	height : 100vh;
 }
+
 
 .view-example-places {
 	grid-area: exampleplaces;
@@ -285,7 +286,7 @@ body {
 }
 
 .blockly-div {
-	height: 45vh;
+	height: 100vh;
 }
 
 .feature-list {
@@ -431,20 +432,29 @@ body {
 .progress-limit-label {
 	font-size: 0.75em;
 }
+#assistant {
+	height : 100%;
+}
 
 #chat-container {
-	width: 300px;
-	height: 400px;
+display: flex;
+flex-direction: column;
+height: 100%;
+justify-content: space-between;
 	border: 1px solid #ccc;
+
   }
   
   #chat-box {
-	height: 350px;
+	position: relative;
 	overflow-y: auto;
+	display: flex;
+	flex-direction: column;
   }
   
   #chat-input-container {
 	display: flex;
+
   }
   
   #user-input {
@@ -455,4 +465,56 @@ body {
   #send-button {
 	width: 60px;
   }
+  .message {
+	padding: 8px;
+	margin: 4px;
+	border-radius: 8px;
+	max-width: 80%;
+  }
+  
+  /* Styles for sent messages */
+  .message.User{
+	background-color: #007bff; /* Use your preferred background color for sent messages */
+	color: #fff; /* Text color for sent messages */
+	float: right;
+  }
+  
+  /* Styles for received messages */
+  .message.Assistant {
+	background-color: #e0e0e0; /* Use your preferred background color for received messages */
+	color: #000; /* Text color for received messages */
+	float: left;
+  }
+  #prompt-container{
+	position: relative;
+	display: flex;
+	width: 100%;
+	bottom: 0;
+	flex-direction: row;
+	padding : 2%;
+	z-index: 1;
+
+  }
+
+  .prompt{
+	margin : 2%;
+	background : #ff8f8f;
+	padding : 2%;
+	border-radius : 5px;
+	white-space: nowrap;
+
+	
+  }
+  
+  
+  /* Clearfix to handle floating elements */
+  .clearfix::after {
+	content: '';
+	display: table;
+	clear: both;
+  }
+  
+  
+  
+  
   

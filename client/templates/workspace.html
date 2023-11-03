@@ -22,31 +22,21 @@
         <!--</ul>-->
       <!--</nav>-->
     <!--</div>-->
-
     <div id="discover" class="box sidebar">
+    
       {{> featureDiscovery}}
     </div>
+    <div id="assistant" class="box sidebar">
+    
+    </div>
+   
+    
 
     <div id="construct" class="box topcontent">
       {{> detectorInputOutput}}
       {{> blockly}}
     </div>
 
-    <div id="simulate" class="box bottomcontent">
-      <div class="view-example-places">
-        {{> viewExamplePlaces}}
-      </div>
-      {{#if baseline}}
-      {{else}}
-        <div class="simulate-concept-expression">
-          {{> simulateAndLabelConceptExpression}}
-        </div>
-        <div class="concept-issues">
-          {{> chatInterface}}
-          {{> repairShop}}
-        </div>
-      {{/if}}
-      
-    </div>
+ 
   </div>
 </template>

@@ -10,7 +10,9 @@
     "blockly": "^8.0.3",
     "file-saver": "^2.0.5",
     "meteor-node-stubs": "~0.2.4",
-    "request": "^2.83.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "request": "^2.88.2",
     "simpl-schema": "^1.5.5",
     "simple-schema": "^1.1.0",
     "yelp-fusion": "^3.0.0"

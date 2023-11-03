@@ -1,1 +1,7 @@
 /* CSS declarations go here */
+#discover{
+    display:flex;
+}
+.wrapper{
+    height : 100vh;
+}

@@ -21,5 +21,11 @@ Template.chatInterface.events({
       // Append bot's reply to chat box
       chatBox.innerHTML += `<div>Bot: ${data}</div>`;
     },
+
   });
+  Template.chatInterface.rendered = function() {
+    // Initialize the chat box with a welcome message
+    document.getElementById('chat-box').innerHTML = 
+      '<div>Bot: Welcome to the chat!</div>';
+  }
   
