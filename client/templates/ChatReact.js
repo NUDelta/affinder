@@ -1,6 +1,7 @@
 import React from 'react';
 import { useEffect, useState } from 'react';
 import {splitVarDeclarationAndRules} from "../../lib/detectors/detectors";
+import { updateBlocklyWorkspace } from './blockly.js';
 
 function ChatReact () {
    const [messages, setMessages] = useState([]);
@@ -25,13 +26,34 @@ function ChatReact () {
         body: JSON.stringify({ message: message}),
       });
       const data = await response.json();
+
+      const blocklyFormatData = processForBlockly(data);
+      updateBlocklyWorkspace(blocklyFormatData);
+
       const assistantMessage = { user: 'Assistant', message: data };
       setMessages((prevMessages) => [...prevMessages, assistantMessage]);
       console.log(messages)
     } 
 
-
-
+    // reformant LLM data into blockly comaptible format
+    function processForBlockly(jsonString) {
+        try {
+            const llmData = JSON.parse(jsonString);
+            return llmData.items.map(item => {
+                return {
+                    type: "text",
+                    fields: {
+                        TEXT: `${item.name}: ${item.description}`
+                    }
+                };
+            });
+        } catch (error) {
+            console.error("Error processing LLM response:", error);
+            return [];
+        }
+    }
+    
+      
 
 
   function handleSendClick() {

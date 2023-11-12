@@ -197,6 +197,23 @@ export const createMultiVarOrBlock = function(abc) {
   }
 };
 
+export function updateBlocklyWorkspace(blockDefs) {
+  blockDefs.forEach(def => {
+    if (def.type) {
+      const block = WORKSPACE.newBlock(def.type);
+      if (def.fields) {
+        for (const fieldName in def.fields) {
+          block.setFieldValue(def.fields[fieldName], fieldName);
+        }
+      }
+      block.initSvg();
+      block.render();
+    }
+  });
+}
+
+
+
 const defaultToolboxWeather = function() {
   return `
   <category name="Weather" color="210">
