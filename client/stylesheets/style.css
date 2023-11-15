@@ -514,7 +514,15 @@ justify-content: space-between;
 	clear: both;
   }
   
-  
+  .item-bubble {
+    background-color: #a2d5f2;
+    padding: 8px;
+    margin: 4px;
+    border-radius: 8px;
+    max-width: 80%;
+    float: left;
+    clear: both;
+}
   
   
   

@@ -7,6 +7,7 @@ function ChatReact () {
    const [messages, setMessages] = useState([]);
    const [userInput, setUserInput] = useState('');
    const [displayOptions, setDisplayOptions] = useState(false);
+   const [itemsList, setItemsList] = useState([]);
    
 
     useEffect(() => {
@@ -26,12 +27,15 @@ function ChatReact () {
             body: JSON.stringify({ message: message }),
         });
         const data = await response.json();
+        
+        // Update the items list
+        setItemsList(data.items || []);
     
         // Process the response items data and update Blockly workspace
-        if (data.items && data.items.length > 0) {
-            const blocklyFormatData = processForBlockly(data);
-            updateBlocklyWorkspace(blocklyFormatData);
-        }
+        // if (data.items && data.items.length > 0) {
+        //     const blocklyFormatData = processForBlockly(data);
+        //     updateBlocklyWorkspace(blocklyFormatData);
+        // }
     
         const assistantMessage = {
             user: 'Assistant',
@@ -49,22 +53,33 @@ function ChatReact () {
             return {
                 type: "text",
                 fields: {
-                    TEXT: `${item.name}: ${item.description}`
+                    // TEXT: `${item.name}: ${item.description}`
+                    TEXT: `${item.name}`
                 }
             };
         });
     }
-    
-    
-      
 
+    function handleSendClick() {
+        const userMessage = { user: 'User', message: userInput };
+        setMessages((prevMessages) => [...prevMessages, userMessage]);
+        setUserInput('');
+        sendQuery(userInput);
+    }
 
-  function handleSendClick() {
-    const userMessage = { user: 'User', message: userInput };
-    setMessages((prevMessages) => [...prevMessages, userMessage]);
-    setUserInput('');
-    sendQuery(userInput);
-   }
+    const addItemToWorkspace = (item, index) => {
+        const blocklyFormatData = processForBlockly({ items: [item] });
+        updateBlocklyWorkspace(blocklyFormatData);
+        removeItemFromChat(index);
+    };    
+
+    const removeItemFromChat = (index) => {
+        setItemsList(prevItems => prevItems.filter((_, idx) => idx !== index));
+    };
+
+    const askFollowUp = (itemName) => {
+        setUserInput(`Elaborate on ${itemName}`);
+    };
     
     const [prompts, setprompts] = useState(["Give Suggestions","just testing"]);
     function handlePromptQuery() {
@@ -110,6 +125,16 @@ function ChatReact () {
             </div>
             ))}
 
+            {/* Display Items as separate bubbles */}
+            {itemsList.map((item, index) => (
+                    <div key={index} className="item-bubble">
+                        {item.name}
+                        {/* Buttons for actions */}
+                        <button onClick={() => addItemToWorkspace(item, index)}>✔️</button>
+                        <button onClick={() => removeItemFromChat(index)}>❌</button>
+                        <button onClick={() => askFollowUp(item.name)}>❓</button>
+                    </div>
+                ))}
 
             {displayOptions &&
             <div id="prompt-container">
