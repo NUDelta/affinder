@@ -44,6 +44,11 @@ function ChatReact () {
                         : "No answer logic found."
         };
         setMessages((prevMessages) => [...prevMessages, assistantMessage]);
+        
+        // only update if new items are received
+        if (data.items && data.items.length > 0) {
+            setItemsList(data.items);
+        }
         console.log(messages);
     }
     
@@ -104,9 +109,10 @@ function ChatReact () {
         console.log(highlvlconcepts)
 
     
-        const query_prompt = "the user brainstormed categories "+ highlvlconcepts.join(' ') + " for the situation " + description + " what are some other categories that might be relevant?"
+        const query_prompt = "I brainstormed categories: "+ highlvlconcepts.join(' ') + " for the situation " + description + ". What are some other categories that might be relevant?"
         
-        sendQuery(query_prompt);
+        // sendQuery(query_prompt);
+        setUserInput(query_prompt);
 
     }
 
