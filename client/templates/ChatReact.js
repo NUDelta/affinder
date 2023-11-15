@@ -19,39 +19,42 @@ function ChatReact () {
     , []);
 
     async function sendQuery(message) {
-        console.log("sending query" + message)
+        console.log("sending query: " + message);
         const response = await fetch('http://localhost:4000/query', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ message: message}),
-      });
-      const data = await response.json();
-
-      const blocklyFormatData = processForBlockly(data);
-      updateBlocklyWorkspace(blocklyFormatData);
-
-      const assistantMessage = { user: 'Assistant', message: data };
-      setMessages((prevMessages) => [...prevMessages, assistantMessage]);
-      console.log(messages)
-    } 
-
-    // reformant LLM data into blockly comaptible format
-    function processForBlockly(jsonString) {
-        try {
-            const llmData = JSON.parse(jsonString);
-            return llmData.items.map(item => {
-                return {
-                    type: "text",
-                    fields: {
-                        TEXT: `${item.name}: ${item.description}`
-                    }
-                };
-            });
-        } catch (error) {
-            console.error("Error processing LLM response:", error);
-            return [];
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ message: message }),
+        });
+        const data = await response.json();
+    
+        // Process the response items data and update Blockly workspace
+        if (data.items && data.items.length > 0) {
+            const blocklyFormatData = processForBlockly(data);
+            updateBlocklyWorkspace(blocklyFormatData);
         }
+    
+        const assistantMessage = {
+            user: 'Assistant',
+            message: data['answer logic'] && data['answer logic'].answer_logic 
+                        ? data['answer logic'].answer_logic 
+                        : "No answer logic found."
+        };
+        setMessages((prevMessages) => [...prevMessages, assistantMessage]);
+        console.log(messages);
     }
+    
+    // Reformant LLM data into Blockly compatible format
+    function processForBlockly(data) {
+        return data.items.map(item => {
+            return {
+                type: "text",
+                fields: {
+                    TEXT: `${item.name}: ${item.description}`
+                }
+            };
+        });
+    }
+    
     
       
 
