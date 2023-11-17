@@ -133,7 +133,7 @@ function ChatReact () {
 
             {/* Display Items as separate bubbles */}
             {itemsList.map((item, index) => (
-                    <div key={index} className="item-bubble">
+                    <div key={index} className="item-bubble" title={item.description}>
                         {item.name}
                         {/* Buttons for actions */}
                         <button onClick={() => addItemToWorkspace(item, index)}>✔️</button>
