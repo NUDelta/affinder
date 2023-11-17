@@ -116,11 +116,6 @@ function ChatReact () {
 
     }
 
-
-
-  
-
-   
 //    message = {"user":  bot ^user , "message" : message}
     return (
         <div id="chat-container">
