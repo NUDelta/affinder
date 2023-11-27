@@ -13,7 +13,7 @@ function ChatReact () {
     useEffect(() => {
         // Initialize the chat box with a welcome message
         const welcomeMessage = { user: 'Assistant', message: 'Welcome to the chat! Select an option or type your query'  };
-   
+        
         setMessages([welcomeMessage]);
         setDisplayOptions(true);
       }
@@ -29,7 +29,12 @@ function ChatReact () {
         const data = await response.json();
         
         // Update the items list
-        setItemsList(data.items || []);
+        if (data.items && data.items.length > 0) {
+            setItemsList(data.items);
+        } else {
+            // Keep the existing items if no new items are received
+            console.log("No new items received, keeping existing items.");
+        }
     
         // Process the response items data and update Blockly workspace
         // if (data.items && data.items.length > 0) {
@@ -83,7 +88,7 @@ function ChatReact () {
     };
 
     const askFollowUp = (itemName) => {
-        setUserInput(`Elaborate on ${itemName}`);
+        setUserInput(`Explain why ${itemName} is a good suggestion`);
     };
     
     const [prompts, setprompts] = useState(["Give Suggestions","Evaluate and Regroup"]);
@@ -163,11 +168,16 @@ function ChatReact () {
             
         </div>
         <div id="chat-input-container">
-            <input type="text" id="user-input" placeholder="Type your message..." onChange={e => setUserInput(e.target.value)} value={userInput}>
-            </input>
+            <textarea
+                id="user-input"
+                placeholder="Type your message..."
+                onChange={e => setUserInput(e.target.value)}
+                value={userInput}
+                rows="1" // Start with a single line
+            ></textarea>
             <button id="send-button" onClick={handleSendClick}>Send</button>
-
         </div>
+
     </div>
     )
 }
