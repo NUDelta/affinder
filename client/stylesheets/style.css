@@ -437,12 +437,18 @@ body {
 }
 
 #chat-container {
+position: fixed; /* Fixed position relative to the viewport */
+bottom: 0px;      /* Align to the bottom of the viewport */
+left: 0px;       /* Align to the right of the viewport */
+width: 300px;   /* Adjust width as needed */
+height: 400px;  /* Adjust height as needed */
+z-index: 1000;
+background-color: #010101;
+border: 1px solid #ccc;
 display: flex;
 flex-direction: column;
-height: 100%;
 justify-content: space-between;
 	border: 1px solid #ccc;
-
   }
   
   #chat-box {

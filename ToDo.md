@@ -1,10 +1,19 @@
 # To Do file for Affinder and gpt-server
 
+## Bugs
+1. Sometimes, the workspace state isn't fully exported when buttons are pressed. One item is always left out. Reproducible if the user doesn't add items before accepting gpt suggestions.
+
+## Most Urgent
+1. Add the "evaluate workspace" button
+2. Make so that the suggestions don't dissapear after the user talks more to the bot
+3. Let the chat window expand based on the amount of text in it
+
 ## Quick and Important
-1. Move the chat to better location
-2. Improve chat and item bubble design
-3. Improve item description functionality
-4. Add the 'Instructions' panel so the user doesn't get lost
+1. Move the chat to better location - done but can be better
+2. Update the text sent to gpt-server to be more versatile.
+3. Improve chat and item bubble design
+4. Improve item description functionality
+5. Add the 'Instructions' panel so the user doesn't get lost
 
 
 ## Medium and Important

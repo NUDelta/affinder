@@ -86,15 +86,18 @@ function ChatReact () {
         setUserInput(`Elaborate on ${itemName}`);
     };
     
-    const [prompts, setprompts] = useState(["Give Suggestions","just testing"]);
-    function handlePromptQuery() {
-        //GET WORKSPACE DATA
-        console.log("prompting query")
+    const [prompts, setprompts] = useState(["Give Suggestions","Evaluate and Regroup"]);
+    function handlePromptQuery(prompt) {
+        console.log("prompting query");
         let code = $('#compiledBlockly').val();
         var workspacedata = splitVarDeclarationAndRules(code);
-        getHighLevelConcepts(workspacedata);
-        
-    };
+    
+        if (prompt === "Evaluate and Regroup") {
+            getEvaluateConcepts(workspacedata);
+        } else if (prompt === "Give Suggestions") {
+            getHighLevelConcepts(workspacedata);
+        }
+    }
    
     function getHighLevelConcepts(workspacedata) {
         let description= $('input[name=detectorname]').val()
@@ -106,14 +109,21 @@ function ChatReact () {
             highlvlconcepts.push(highlvlconcept)
             
         });
-        console.log(highlvlconcepts)
+        let workspaceVariables = workspacedata[1].join(' ');
+        console.log(highlvlconcepts);
 
-    
-        const query_prompt = "I brainstormed categories: "+ highlvlconcepts.join(' ') + " for the situation " + description + ". What are some other categories that might be relevant?"
-        
+        const query_prompt = `When asked to think about breaking down ${description} into high level categories and then places, the user ended up with this after some time ${workspaceVariables}. Give suggestions for high-level categories the user is not capturing.`;
         // sendQuery(query_prompt);
         setUserInput(query_prompt);
 
+    }
+
+    function getEvaluateConcepts(workspacedata) {
+        let description = $('input[name=detectorname]').val();
+        let workspaceVariables = workspacedata[1].join(' ');
+        const query_prompt = `When asked to think about breaking down ${description} into high level categories and then places, the user ended up with this after some time ${workspaceVariables}. Evaluate and regroup what the user has. Be specific in your feedback and directions.`;
+        setUserInput(query_prompt);
+        // sendQuery(query_prompt);
     }
 
 //    message = {"user":  bot ^user , "message" : message}
@@ -141,7 +151,7 @@ function ChatReact () {
             <div id="prompt-container">
             
              {prompts.map((prompt, index) => (
-                    <div key={index} className="prompt" onClick={handlePromptQuery}>
+                    <div key={index} className="prompt" onClick={() => handlePromptQuery(prompt)}>
                        {prompt}
                     </div>
                 ))}
