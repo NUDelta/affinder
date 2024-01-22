@@ -1,36 +1,38 @@
 <template name="viewExamplePlaces">
   <h4>View Example Places</h4>
   {{#if Template.subscriptionsReady}}
-    <form id="viewExamplePlaces">
-      {{> selectPlaceDropdown}}
-      <div class="input-group">
-        <input name="search" id="cityname" type="text" class="form-control" placeholder="Type a city name..." required="true">
-        <span class="input-group-btn">
-          <button class="btn btn-default" type="submit">
-            <span class="glyphicon glyphicon-search"></span> Example Places
-          </button>
-        </span>
-      </div>
-      {{#if placeTagToAnalyze}}
-        <div>{{lengthOfViewExamplePlaces}} results found</div>
-      {{/if}}
-    </form>
-    <ul class="list-group view-example-places-list">
-      {{#each situation in exampleSituations}}
-        <li class="list-group-item">
-          {{> situationItem (situationArgs situation)}}
-        </li>
-      {{/each}}
-    </ul>
+  <form id="viewExamplePlaces">
+    {{> selectPlaceDropdown}}
+    <div class="input-group">
+      <input name="search" id="cityname" type="text" class="form-control" placeholder="Type a city name..."
+        required="true">
+      <span class="input-group-btn">
+        <button class="btn btn-default" type="submit">
+          <span class="glyphicon glyphicon-search"></span> Example Places
+        </button>
+      </span>
+    </div>
+    {{#if placeTagToAnalyze}}
+    <div>{{lengthOfViewExamplePlaces}} results found</div>
+    {{/if}}
+  </form>
+  <ul class="list-group view-example-places-list">
+    {{#each situation in exampleSituations}}
+    <li class="list-group-item">
+      {{> situationItem (situationArgs situation)}}
+    </li>
+    {{/each}}
+  </ul>
   {{/if}}
 </template>
 
 <template name="selectPlaceDropdown">
   <div class="form-group">
-    <select name="selectPlaceKey" class="form-control" id="selectPlaceToAnalyze" form="viewExamplePlaces" required="true">
+    <select name="selectPlaceKey" class="form-control" id="selectPlaceToAnalyze" form="viewExamplePlaces"
+      required="true">
       <option default value="">Select a place tag...</option>
       {{#each placetag in placeTagList}}
-        <option value="{{placetag}}">{{placetag}}</option>
+      <option value="{{placetag}}">{{placetag}}</option>
       {{/each}}
     </select>
   </div>
@@ -39,37 +41,40 @@
 <template name="simulateAndLabelConceptExpression">
   <h4>Assess Accuracy of Concept Variables</h4>
   {{#if Template.subscriptionsReady}}
-    <form id="simulateConcepts">
-      {{> selectConceptVariableDropdown}}
-      <div class="input-group citystuff">
-        <input name="search_sim" id="cityname_sim" type="text" class="form-control" placeholder="Type a city name..." required="true">
-        <span class="input-group-btn">
-          <button class="btn btn-warning" type="submit">
-            Simulate Concept
-          </button>
-        </span>
-      </div>
-      {{#if hasConcept}}
-        <h5><em>Do these places accurately represent "{{conceptVariableHumanReadable}}", thus good for "{{highLevelSituation}}"?</em></h5>
-      {{/if}}
-      <div id="length-sim-concept-list">{{lengthSimConceptList}} results found</div>
-    </form>
-    <ul class="list-group simulate-concept-expression-list">
-      {{#each situation in detectedSituations}}
-        <li class="list-group-item">
-          {{> situationAnnotateItem (situationArgs situation)}}
-        </li>
-      {{/each}}
-    </ul>
+  <form id="simulateConcepts">
+    {{> selectConceptVariableDropdown}}
+    <div class="input-group citystuff">
+      <input name="search_sim" id="cityname_sim" type="text" class="form-control" placeholder="Type a city name..."
+        required="true">
+      <span class="input-group-btn">
+        <button class="btn btn-warning" type="submit">
+          Simulate Concept
+        </button>
+      </span>
+    </div>
+    {{#if hasConcept}}
+    <h5><em>Do these places accurately represent "{{conceptVariableHumanReadable}}", thus good for
+        "{{highLevelSituation}}"?</em></h5>
+    {{/if}}
+    <div id="length-sim-concept-list">{{lengthSimConceptList}} results found</div>
+  </form>
+  <ul class="list-group simulate-concept-expression-list">
+    {{#each situation in detectedSituations}}
+    <li class="list-group-item">
+      {{> situationAnnotateItem (situationArgs situation)}}
+    </li>
+    {{/each}}
+  </ul>
   {{/if}}
 </template>
 
 <template name="selectConceptVariableDropdown">
   <div class="form-group">
-    <select name="selectConceptVariableKey" class="form-control" id="selectConceptVariableToAnalyze" form="conceptSimulate" required="true">
+    <select name="selectConceptVariableKey" class="form-control" id="selectConceptVariableToAnalyze"
+      form="conceptSimulate" required="true">
       <option default value="">Select a concept variable...</option>
       {{#each concept in conceptVariableList }}
-        <option value="{{concept.features}}">{{concept.name}}</option>
+      <option value="{{concept.features}}">{{concept.name}}</option>
       {{/each}}
     </select>
   </div>
@@ -83,34 +88,82 @@
 <template name="exampleSituationIssues">
   <h5><em>Issue List</em></h5>
   {{#if Template.subscriptionsReady}}
-    <ul class="list-group concept-issues-list">
-      {{#each situation in falsePositives}}
-        <li class="list-group-item false-positive">
-          {{> situationIssueItem (situationArgs situation)}}
-        </li>
-      {{/each}}
-    </ul>
+  <ul class="list-group concept-issues-list">
+    {{#each situation in falsePositives}}
+    <li class="list-group-item false-positive">
+      {{> situationIssueItem (situationArgs situation)}}
+    </li>
+    {{/each}}
+  </ul>
+  <ul class="list-group concept-issues-list">
+    <li class="list-group-item surface-confounding-features one-category">
+
+      <form action="/submit" method="post">
+        <!-- Text box for input -->
+        <label for="userInput">Why do some [insert context feature] like [insert result name] not work?</label>
+        <input type="text" id="userInput" name="userInput" placeholder="Type something...">
+
+        <!-- Submit button -->
+        <button type="submit">Submit</button>
+      </form>
+    </li>
+    <li class="list-group-item surface-confounding-features multiple-category">
+      <form action="/submit" method="post">
+        <!-- Yes or No question -->
+        <label for="yesNoQuestion">It appears that some [insert context feature] are not [insert concept expression].
+          One possible reason: [insert context
+          feature] that are for [insert CONFOUNDING context feature] seems to not work. Exclude them?
+        </label>
+        <div>
+          <input type="radio" id="yes" name="yesNoQuestion" value="yes">
+          <label for="accept">accept</label>
+
+          <input type="radio" id="no" name="yesNoQuestion" value="no">
+          <label for="edit">edit</label>
+        </div>
+
+        <!-- Submit button -->
+        <button type="submit">Submit</button>
+      </form>
+    </li>
+    <li class="list-group-item suggest-additional-context-features">
+      <form action="/submit" method="post">
+        <!-- Yes or No question -->
+        <label for="yesNoQuestion">It appears that some [insert additional context feature] work well. Add [insert
+          additional context feature]?
+        </label>
+        <div>
+          <input type="radio" id="yes" name="yesNoQuestion" value="yes">
+          <label for="accept">accept</label>
+
+          <input type="radio" id="no" name="yesNoQuestion" value="no">
+          <label for="edit">edit</label>
+        </div>
+
+        <!-- Submit button -->
+        <button type="submit">Submit</button>
+      </form>
+    </li>
+  </ul>
+
   {{/if}}
   <h5><em>Resolved Cases</em></h5>
   {{#if Template.subscriptionsReady}}
-    <ul class="list-group concept-issues-list">
-      {{#each situation in trueNegatives}}
-        <li class="list-group-item true-negative" >
-          {{> situationIssueItem (situationArgs situation)}}
-        </li>
-      {{/each}}
-    </ul>
+  <ul class="list-group concept-issues-list">
+    {{#each situation in trueNegatives}}
+    <li class="list-group-item true-negative">
+      {{> situationIssueItem (situationArgs situation)}}
+    </li>
+    {{/each}}
+  </ul>
   {{/if}}
 </template>
 
 <template name="situationItemImageNameCats">
   <div style="display: table-cell; padding-right: 5px;">
     <div class="place-photo-item">
-      <img
-          src={{situation.image_url}}
-          width="90" height="90"
-          style="object-fit: cover; border-radius: 4px; vertical-align: middle;"
-      />
+      <img src={{situation.image_url}} width="90" height="90"
+        style="object-fit: cover; border-radius: 4px; vertical-align: middle;" />
     </div>
   </div>
   <div style="display: table-cell;">
@@ -121,15 +174,15 @@
     </div>
     <div class="place-categories">
       {{#each category in (situationCategoriesAlias situation)}}
-        {{#if baseline}}
-          <span><a href="#">
-            {{category}},
-          </a></span>
-        {{else}}
-          <span><a class="context-feature-link" alias="{{category}}" href="#">
-            {{category}},
-          </a></span>
-        {{/if}}
+      {{#if baseline}}
+      <span><a href="#">
+          {{category}},
+        </a></span>
+      {{else}}
+      <span><a class="context-feature-link" alias="{{category}}" href="#">
+          {{category}},
+        </a></span>
+      {{/if}}
       {{/each}}
     </div>
   </div>
@@ -164,37 +217,37 @@
 
 <template name="situationItemLabelView">
   {{#if Template.subscriptionsReady}}
-    <p>Label</p>
-    <label>
-      <button class="btn btn-small">{{situationLabel situation}}</button>
-    </label>
+  <p>Label</p>
+  <label>
+    <button class="btn btn-small">{{situationLabel situation}}</button>
+  </label>
   {{/if}}
 </template>
 
 <template name="situationItemLabelEdit">
   <p>Label</p>
   <div class="human-labeling">
-  {{#if (hasLabel situation)}}
+    {{#if (hasLabel situation)}}
     {{#if (isLabelTrue situation)}}
-      <label class="checkcontainer">
-        <input type="radio" value="true" checked name="{{situation.alias}}">
-        <span>Yes</span>
-      </label>
-      <label class="checkcontainer">
-        <input type="radio" value="false" name="{{situation.alias}}">
-        <span>No</span>
-      </label>
+    <label class="checkcontainer">
+      <input type="radio" value="true" checked name="{{situation.alias}}">
+      <span>Yes</span>
+    </label>
+    <label class="checkcontainer">
+      <input type="radio" value="false" name="{{situation.alias}}">
+      <span>No</span>
+    </label>
     {{else}}
-      <label class="checkcontainer">
-        <input type="radio" value="true" name="{{situation.alias}}">
-        <span>Yes</span>
-      </label>
-      <label class="checkcontainer">
-        <input type="radio" value="false" checked name="{{situation.alias}}">
-        <span>No</span>
-      </label>
+    <label class="checkcontainer">
+      <input type="radio" value="true" name="{{situation.alias}}">
+      <span>Yes</span>
+    </label>
+    <label class="checkcontainer">
+      <input type="radio" value="false" checked name="{{situation.alias}}">
+      <span>No</span>
+    </label>
     {{/if}}
-  {{else}}
+    {{else}}
     <label class="checkcontainer">
       <input type="radio" value="true" name="{{situation.alias}}">
       <span>Yes</span>
@@ -203,16 +256,16 @@
       <input type="radio" value="false" name="{{situation.alias}}">
       <span>No</span>
     </label>
-  {{/if}}
+    {{/if}}
   </div>
 </template>
 
 <template name="situationItemPrediction">
   {{#if Template.subscriptionsReady}}
-    <p>Prediction</p>
-    <label>
-      <button class="btn btn-small">{{situationPrediction situation}}</button>
-    </label>
+  <p>Prediction</p>
+  <label>
+    <button class="btn btn-small">{{situationPrediction situation}}</button>
+  </label>
   {{/if}}
 </template>
 
@@ -231,11 +284,8 @@
   <div style="display: table; table-layout: auto;">
     <div style="display: table-cell; padding-right: 5px;">
       <div class="place-photo-item">
-        <img
-            src="https://s3-media3.fl.yelpcdn.com/bphoto/FtsOLmsPSp6H5DqvvEWZLg/o.jpg"
-            width="90" height="90"
-            style="border-radius: 4px; vertical-align: middle;"
-        />
+        <img src="https://s3-media3.fl.yelpcdn.com/bphoto/FtsOLmsPSp6H5DqvvEWZLg/o.jpg" width="90" height="90"
+          style="border-radius: 4px; vertical-align: middle;" />
       </div>
     </div>
     <div style="display: table-cell;">
