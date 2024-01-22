@@ -96,8 +96,8 @@
     {{/each}}
   </ul>
   <ul class="list-group concept-issues-list">
+    {{#each situation in falsePositives}}
     <li class="list-group-item surface-confounding-features one-category">
-
       <form action="/submit" method="post">
         <!-- Text box for input -->
         <label for="userInput">Why do some [insert context feature] like [insert result name] not work?</label>
@@ -126,6 +126,7 @@
         <button type="submit">Submit</button>
       </form>
     </li>
+    {{/each}}
     <li class="list-group-item suggest-additional-context-features">
       <form action="/submit" method="post">
         <!-- Yes or No question -->
