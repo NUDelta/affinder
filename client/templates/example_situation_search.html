@@ -97,22 +97,32 @@
   </ul>
   <ul class="list-group concept-issues-list">
     {{#each situation in falsePositives}}
+    {{#each category in situation.categories}}
     <li class="list-group-item surface-confounding-features one-category">
       <form action="/submit" method="post">
         <!-- Text box for input -->
-        <label for="userInput">Why do some [insert context feature] like [insert result name] not work?</label>
+
+
+        <label for="userInput">Why do some {{category.alias}} like {{situation.name}} not work?
+        </label>
+
         <input type="text" id="userInput" name="userInput" placeholder="Type something...">
 
         <!-- Submit button -->
         <button type="submit">Submit</button>
       </form>
     </li>
+    {{/each}}
+
+
+    {{#each category in situation.categories}}
     <li class="list-group-item surface-confounding-features multiple-category">
       <form action="/submit" method="post">
         <!-- Yes or No question -->
-        <label for="yesNoQuestion">It appears that some [insert context feature] are not [insert concept expression].
-          One possible reason: [insert context
-          feature] that are for [insert CONFOUNDING context feature] seems to not work. Exclude them?
+        <label for="yesNoQuestion">It appears that some {{category.alias}} are not
+          {{falsePositives.conceptVariableName}}.
+          One possible reason: {{category.alias}} that are for {{category.alias}} seems to not work.
+          Exclude them?
         </label>
         <div>
           <input type="radio" id="yes" name="yesNoQuestion" value="yes">
@@ -127,11 +137,13 @@
       </form>
     </li>
     {{/each}}
+
+    {{/each}}
     <li class="list-group-item suggest-additional-context-features">
       <form action="/submit" method="post">
         <!-- Yes or No question -->
-        <label for="yesNoQuestion">It appears that some [insert additional context feature] work well. Add [insert
-          additional context feature]?
+        <label for="yesNoQuestion">It appears that some [insert additional context feature] work well. Add
+          [additional context feature]?
         </label>
         <div>
           <input type="radio" id="yes" name="yesNoQuestion" value="yes">
