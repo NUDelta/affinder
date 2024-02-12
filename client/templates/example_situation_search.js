@@ -274,14 +274,36 @@ Template.exampleSituationIssues.helpers({
       [`predictions.${conceptVariableName}`]: false
     }).fetch();
   },
+  'truePositives'() {
+    let conceptVariableName = Session.get('selectedConceptVariableName');
+    if (!conceptVariableName) {
+      return;
+    }
+    return ExampleSituations.find({
+      [`labels.${conceptVariableName}`]: true,
+      [`predictions.${conceptVariableName}`]: true
+    }).fetch();
+  },
   'situationArgs'(situation) {
     // const instance = Template.instance();
     return {
       situation,
       placeCategories: situation.categories.map(obj => obj["alias"]),
-    }
-  }
-});
+      
+        }
+      },
+    'hasSingleCategory'(situation) {
+        // const instance = Template.instance();
+        if (situation.numCategories == 1) {
+        return true;
+      }
+      return false;
+      
+  },
+}
+);
+
+
 
 Template.situationItemImageNameCats.events({
   'click .context-feature-link': function(e, target) {

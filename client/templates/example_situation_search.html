@@ -96,70 +96,24 @@
     {{/each}}
   </ul>
   <ul class="list-group concept-issues-list">
-    {{#each situation in falsePositives}}
-    {{#each category in situation.categories}}
-    <li class="list-group-item surface-confounding-features one-category">
-      <form action="/submit" method="post">
-        <!-- Text box for input -->
-
-
-        <label for="userInput">Why do some {{category.alias}} like {{situation.name}} not work?
-        </label>
-
-        <input type="text" id="userInput" name="userInput" placeholder="Type something...">
-
-        <!-- Submit button -->
-        <button type="submit">Submit</button>
-      </form>
-    </li>
+    
+    {{#each situation in truePositives }}
+    {{> suggestContextFeatures situation = situation categories = situation.categories}}
+    {{/each}}
+    {{#each situation in falsePositives }}
+    {{#if (hasSingleCategory situation)}}
+    {{> promptForReflection situation = situation categories = situation.categories}}
+    {{else}}
+    {{> surfaceConfoundingContextFeatures situation = situation categories = situation.categories}}
+    {{/if}}
     {{/each}}
 
-
-    {{#each category in situation.categories}}
-    <li class="list-group-item surface-confounding-features multiple-category">
-      <form action="/submit" method="post">
-        <!-- Yes or No question -->
-        <label for="yesNoQuestion">It appears that some {{category.alias}} are not
-          {{falsePositives.conceptVariableName}}.
-          One possible reason: {{category.alias}} that are for {{category.alias}} seems to not work.
-          Exclude them?
-        </label>
-        <div>
-          <input type="radio" id="yes" name="yesNoQuestion" value="yes">
-          <label for="accept">accept</label>
-
-          <input type="radio" id="no" name="yesNoQuestion" value="no">
-          <label for="edit">edit</label>
-        </div>
-
-        <!-- Submit button -->
-        <button type="submit">Submit</button>
-      </form>
-    </li>
-    {{/each}}
-
-    {{/each}}
-    <li class="list-group-item suggest-additional-context-features">
-      <form action="/submit" method="post">
-        <!-- Yes or No question -->
-        <label for="yesNoQuestion">It appears that some [insert additional context feature] work well. Add
-          [additional context feature]?
-        </label>
-        <div>
-          <input type="radio" id="yes" name="yesNoQuestion" value="yes">
-          <label for="accept">accept</label>
-
-          <input type="radio" id="no" name="yesNoQuestion" value="no">
-          <label for="edit">edit</label>
-        </div>
-
-        <!-- Submit button -->
-        <button type="submit">Submit</button>
-      </form>
-    </li>
+   
+  
+   
   </ul>
 
-  {{/if}}
+  
   <h5><em>Resolved Cases</em></h5>
   {{#if Template.subscriptionsReady}}
   <ul class="list-group concept-issues-list">
@@ -170,6 +124,8 @@
     {{/each}}
   </ul>
   {{/if}}
+  {{/if}}
+ 
 </template>
 
 <template name="situationItemImageNameCats">
@@ -313,4 +269,65 @@
       </div>
     </div>
   </div>
+</template>
+
+<template name = "suggestContextFeatures">
+
+  
+  <li class="list-group-item ">
+    <form action="/submit" method="post">
+      <!-- Yes or No question -->
+      <label for="yesNoQuestion">It appears that some {{situation.categoriesKey}} that are also 
+        <p>[{{#each category in categories}} {{category.alias}}, {{/each}}] </p> work well. Add them?
+      </label>
+      <div>
+        <input type="radio" id="yes" name="yesNoQuestion" value="yes">
+        <label for="accept">accept</label>
+
+        <input type="radio" id="no" name="yesNoQuestion" value="no">
+        <label for="edit">edit</label>
+      </div>
+
+      <!-- Submit button -->
+      <button type="submit">Submit</button>
+    </form>
+  </li>
+
+ 
+</template>
+<template name = "surfaceConfoundingContextFeatures">
+  <li class="list-group-item surface-confounding-features multiple-category">
+    <form action="/submit" method="post">
+      <!-- Yes or No question -->
+      <label for="yesNoQuestion">It appears that some {{situation.categoriesKey}} are not
+        [conceptVariableName].
+        One possible reason: {{situation.categoriesKey}} that are for
+        <p>[{{#each category in categories}} {{category.alias}}, {{/each}}] </p>  seems to not work.
+        Exclude them?
+      </label>
+      <div>
+        <input type="radio" id="yes" name="yesNoQuestion" value="yes">
+        <label for="accept">accept</label>
+
+        <input type="radio" id="no" name="yesNoQuestion" value="no">
+        <label for="edit">edit</label>
+      </div>
+
+      <!-- Submit button -->
+      <button type="submit">Submit</button>
+    </form>
+  </li>
+</template>
+<template name = "promptForReflection">
+
+  <li class="list-group-item ">
+    <form action="/submit" method="post">
+      <!-- Text box for input -->
+      <label for="userInput">Why do some <p>[{{#each category in categories}} {{category.alias}}, {{/each}}] </p> like {{situation.name}} not work?</label>
+      <input type="text" id="userInput" name="userInput" placeholder="Type something...">
+      <!-- Submit button -->
+      <button type="submit">Submit</button>
+    </form>
+  </li>
+
 </template>
