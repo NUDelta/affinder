@@ -360,6 +360,18 @@ Template.situationItemLabelEdit.helpers({
   }
 });
 
+Template.surfaceConfoundingContextFeatures.helpers({
+  conceptVariableHumanReadable() {
+    const conceptVariableName = Session.get('selectedConceptVariableName');
+    if (!conceptVariableName) {
+      return;
+    }
+    return conceptVariableName.replace(/_/g, " ");
+  }
+});
+
+
+
 Template.situationItemLabelEdit.events({
   'click input': function(e, target) {
     let selectFields = {
