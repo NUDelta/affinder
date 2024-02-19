@@ -278,7 +278,8 @@
     <form action="/submit" method="post">
       <!-- Yes or No question -->
       <label for="yesNoQuestion">It appears that some {{situation.categoriesKey}} that are also 
-        <p>[{{#each category in categories}} {{category.alias}}, {{/each}}] </p> work well. Add them?
+        {{#each category in categories}} {{category.alias}}, {{/each}} work well. 
+        <br>Add  {{#each category in categories}} {{category.alias}}, {{/each}} as requirement?
       </label>
       <div>
         <input type="radio" id="yes" name="yesNoQuestion" value="yes">
@@ -319,18 +320,12 @@
     </form>
   </li>
 </template> -->
-
 <template name="surfaceConfoundingContextFeatures">
   <li class="list-group-item surface-confounding-features multiple-category">
     <form action="/submit" method="post">
       <!-- Yes or No question -->
-      <label for="yesNoQuestion">
-        It appears that some {{ situation.categoriesKey }} are not {{ conceptVariableHumanReadable }}.
-        One possible reason: {{ situation.categoriesKey }} that are for
-        <p>[{{#each category in categories}} {{ category.alias }}, {{/each}}] </p> 
-        seems to not work.
-        Exclude them?
-      </label>
+      <label for="yesNoQuestion">It appears that some {{ situation.categoriesKey }} are not {{ conceptVariableHumanReadable }}. 
+        <br>One possible reason: {{ situation.categoriesKey }} that are for {{#each category in categories}} {{ category.alias }}, {{/each}} seems to not work. Exclude them?</label>
       <div>
         <input type="radio" id="yes" name="yesNoQuestion" value="yes">
         <label for="accept">accept</label>
@@ -347,12 +342,13 @@
 
 
 
+
 <template name = "promptForReflection">
 
   <li class="list-group-item ">
     <form action="/submit" method="post">
       <!-- Text box for input -->
-      <label for="userInput">Why do some <p>[{{#each category in categories}} {{category.alias}}, {{/each}}] </p> like {{situation.name}} not work?</label>
+      <label for="userInput">Why do some {{#each category in categories}} {{category.alias}} (ex. {{/each}} like {{situation.name}}) not work?</label>
       <input type="text" id="userInput" name="userInput" placeholder="Type something...">
       <!-- Submit button -->
       <button type="submit">Submit</button>
