@@ -5,6 +5,7 @@ const yelp = require('yelp-fusion');
 import { exec } from 'child_process';
 import {ExampleSituations, Queries} from "../lib/collections/collections";
 import {AUTH, CONFIG} from "../lib/config";
+import { search } from 'conda';
 const request = require('request');
 
 Meteor.methods({
@@ -49,6 +50,10 @@ Meteor.methods({
 
     const client = yelp.client(AUTH.YELP_API_KEY);
 
+    searchParams.limit = 50;
+    searchParams.offset = 50;
+    //searchParams.offset = searchParams.offset + 50;
+   
     client.search(searchParams).then(response => {
       console.log(`We found ${response.jsonBody.businesses.length} place examples`);
       response.jsonBody.businesses.forEach(business => {

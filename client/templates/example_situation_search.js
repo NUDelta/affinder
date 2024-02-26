@@ -28,6 +28,7 @@ const getYelpPlaceInstancesForCurrentCategories = (detectorId) => {
       term: '',
       categories: (placecategories.length > 1 ? placecategories.join(',') : placecategories[0]),
       location: document.getElementById('cityname').value
+      
     };
     console.log(JSON.stringify(searchByPlaceCategory));
     Meteor.call('yelpFusionBusinessSearch', searchByPlaceCategory, detectorId);
@@ -45,6 +46,7 @@ const getYelpPlaceInstancesPerPlaceTag = (detectorId) => {
     term: '',
     categories: getSelectPlaceTag(),
     location: document.getElementById('cityname').value
+    
   }
   console.log(JSON.stringify(searchByPlaceCategory));
   Meteor.call('yelpFusionBusinessSearch', searchByPlaceCategory, detectorId);
@@ -121,6 +123,7 @@ const getYelpPlaceInstancesPerConceptVariable = (detectorId) => {
       categories: conceptFeatures[i],
       location: document.getElementById('cityname_sim').value
     }
+    
     Meteor.call('yelpFusionBusinessSearch', searchByPlaceCategory, detectorId);
   }
 }
