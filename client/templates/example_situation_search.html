@@ -278,8 +278,9 @@
     <form action="/submit" method="post">
       <!-- Yes or No question -->
       <label for="yesNoQuestion">It appears that some {{situation.categoriesKey}} that are also 
-        {{#each category in categories}} {{category.alias}}, {{/each}} work well. 
+        {{#each category in categories}} {{category.alias}}, {{/each}} work well.
         <br>Add  {{#each category in categories}} {{category.alias}}, {{/each}} as requirement?
+        <br>Note that you should try to search {{situation.categoriesKey}} and {{#each category in categories}} {{category.alias}}, {{/each}} before adding.
       </label>
       <div>
         <input type="radio" id="yes" name="yesNoQuestion" value="yes">
@@ -325,7 +326,9 @@
     <form action="/submit" method="post">
       <!-- Yes or No question -->
       <label for="yesNoQuestion">It appears that some {{ situation.categoriesKey }} are not {{ conceptVariableHumanReadable }}. 
-        <br>One possible reason: {{ situation.categoriesKey }} that are for {{#each category in categories}} {{ category.alias }}, {{/each}} seems to not work. Exclude them?</label>
+        <br>One possible reason: {{ situation.categoriesKey }} that are for {{#each category in categories}} {{ category.alias }}, {{/each}} seems to not work. Exclude them?
+        <br>Note that you should try to search {{situation.categoriesKey}} and {{#each category in categories}} {{category.alias}}, {{/each}} before removing.
+      </label>
       <div>
         <input type="radio" id="yes" name="yesNoQuestion" value="yes">
         <label for="accept">accept</label>

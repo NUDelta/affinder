@@ -51,7 +51,7 @@ Meteor.methods({
     const client = yelp.client(AUTH.YELP_API_KEY);
 
     searchParams.limit = 50;
-    searchParams.offset = 50;
+    // searchParams.offset = 50;
     //searchParams.offset = searchParams.offset + 50;
    
     client.search(searchParams).then(response => {
