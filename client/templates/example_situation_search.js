@@ -340,6 +340,17 @@ Template.exampleSituationIssues.helpers({
 }
 );
 
+Template.exampleSituationIssues.events({
+  'submit form#category-form': function(event) {
+        // Prevent default form submission
+        event.preventDefault();
+    
+        // Hide the form when submit button is clicked
+        $(event.currentTarget).hide();
+      }
+    });
+
+
 
 
 Template.situationItemImageNameCats.events({
