@@ -96,7 +96,12 @@
     {{/each}}
   </ul>
   <ul class="list-group concept-issues-list">
-    
+    <p style="color: rgb(0, 0, 0); background-color: #ffffff; padding: 10px;">
+    <em>When adding context feature with "OR" it increases recall.
+      When adding context feature with "AND" it increases precision.
+      <br>
+      When sufacing confounding context features that need to be excluded, put it as "[Parks] and Not[---] and [Parks] and Not[---]" 
+    <br>When adding context features, put it as "[Parks] and [---] or [Parks] and [---]"" </em></p>
     {{#each situation in truePositives }}
     {{> suggestContextFeatures situation = situation categories = situation.categories}}
     {{/each}}
@@ -107,10 +112,6 @@
     {{> surfaceConfoundingContextFeatures situation = situation categories = situation.categories}}
     {{/if}}
     {{/each}}
-
-   
-  
-   
   </ul>
 
   
@@ -271,9 +272,38 @@
   </div>
 </template>
 
-<template name = "suggestContextFeatures">
+<template name="surfaceConfoundingContextFeatures">
+  <li class="list-group-item surface-confounding-features multiple-category">
+    <form action="/submit" method="post">
+      <!-- Yes or No question -->
+      <label for="yesNoQuestion">It appears that some {{ situation.categoriesKey }} are not {{ conceptVariableHumanReadable }}. 
+        <br>One possible reason: {{ situation.categoriesKey }} that are for {{#each category in categories}} {{ category.alias }}, {{/each}} seems to not work. Exclude them?
+        <br>Note that you should try to search {{situation.categoriesKey}} and {{#each category in categories}} {{category.alias}}, {{/each}} before removing.
+      </label>
+      <div>
+        <input type="radio" id="yes" name="yesNoQuestion" value="yes">
+        <label for="accept">accept</label>
 
-  
+        <input type="radio" id="no" name="yesNoQuestion" value="no">
+        <label for="edit">edit</label>
+      </div>
+      <!-- Submit button -->
+      <button type="submit">Submit</button>
+    </form>
+  </li>
+</template>
+<template name = "promptForReflection">
+  <li class="list-group-item ">
+    <form action="/submit" method="post">
+      <!-- Text box for input -->
+      <label for="userInput">Why do some {{#each category in categories}} {{category.alias}} (ex. {{/each}} like {{situation.name}}) not work?</label>
+      <input type="text" id="userInput" name="userInput" placeholder="Type something...">
+      <!-- Submit button -->
+      <button type="submit">Submit</button>
+    </form>
+  </li>
+</template>
+<template name = "suggestContextFeatures">
   <li class="list-group-item ">
     <form action="/submit" method="post">
       <!-- Yes or No question -->
@@ -321,41 +351,7 @@
     </form>
   </li>
 </template> -->
-<template name="surfaceConfoundingContextFeatures">
-  <li class="list-group-item surface-confounding-features multiple-category">
-    <form action="/submit" method="post">
-      <!-- Yes or No question -->
-      <label for="yesNoQuestion">It appears that some {{ situation.categoriesKey }} are not {{ conceptVariableHumanReadable }}. 
-        <br>One possible reason: {{ situation.categoriesKey }} that are for {{#each category in categories}} {{ category.alias }}, {{/each}} seems to not work. Exclude them?
-        <br>Note that you should try to search {{situation.categoriesKey}} and {{#each category in categories}} {{category.alias}}, {{/each}} before removing.
-      </label>
-      <div>
-        <input type="radio" id="yes" name="yesNoQuestion" value="yes">
-        <label for="accept">accept</label>
-
-        <input type="radio" id="no" name="yesNoQuestion" value="no">
-        <label for="edit">edit</label>
-      </div>
-
-      <!-- Submit button -->
-      <button type="submit">Submit</button>
-    </form>
-  </li>
-</template>
 
 
 
 
-<template name = "promptForReflection">
-
-  <li class="list-group-item ">
-    <form action="/submit" method="post">
-      <!-- Text box for input -->
-      <label for="userInput">Why do some {{#each category in categories}} {{category.alias}} (ex. {{/each}} like {{situation.name}}) not work?</label>
-      <input type="text" id="userInput" name="userInput" placeholder="Type something...">
-      <!-- Submit button -->
-      <button type="submit">Submit</button>
-    </form>
-  </li>
-
-</template>
