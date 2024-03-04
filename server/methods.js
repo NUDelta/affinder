@@ -1,7 +1,6 @@
 'use strict';
 import { Meteor } from 'meteor/meteor';
 const yelp = require('yelp-fusion');
-
 import { exec } from 'child_process';
 import {ExampleSituations, Queries} from "../lib/collections/collections";
 import {AUTH, CONFIG} from "../lib/config";
@@ -44,13 +43,16 @@ Meteor.methods({
       // https://www.yelp.com/developers/documentation/v3/business_search
       term: String,
       location: String,
-      categories: Match.Optional(String)
+      categories: Match.Optional(String),
+      offset: Match.Optional(Number),
     });
     check(detectorId, String);
 
     const client = yelp.client(AUTH.YELP_API_KEY);
 
+
     searchParams.limit = 50;
+    
     // searchParams.offset = 50;
     //searchParams.offset = searchParams.offset + 50;
    

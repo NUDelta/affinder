@@ -21,13 +21,18 @@ const getYelpPlaceInstancesForCurrentCategories = (detectorId) => {
 
   let [varDecl, rules] = splitVarDeclarationAndRules($('#compiledBlockly').val());
   let placecategories = setOfContextFeaturesInBlockly(varDecl, rules);
+  
+  
+  
   if (placecategories.length == 0) {
     alert('Update your context expression to include some place categories');
   } else {
     let searchByPlaceCategory = {
       term: '',
       categories: (placecategories.length > 1 ? placecategories.join(',') : placecategories[0]),
-      location: document.getElementById('cityname').value
+      location: document.getElementById('cityname').value,
+     
+
       
     };
     console.log(JSON.stringify(searchByPlaceCategory));
@@ -41,11 +46,13 @@ const getSelectPlaceTag = () => {
   return placeTag;
 };
 
+
 const getYelpPlaceInstancesPerPlaceTag = (detectorId) => {
   let searchByPlaceCategory = {
     term: '',
     categories: getSelectPlaceTag(),
-    location: document.getElementById('cityname').value
+    location: document.getElementById('cityname').value,
+    
     
   }
   console.log(JSON.stringify(searchByPlaceCategory));
@@ -110,7 +117,7 @@ const getSelectConceptVariableName = () => {
   return e.selectedOptions[0].text;
 }
 
-const getYelpPlaceInstancesPerConceptVariable = (detectorId) => {
+const getYelpPlaceInstancesPerConceptVariable = (detectorId,offset) => {
   let conceptFeatures = getSelectConceptVariableFeatures();
   if (!Array.isArray(conceptFeatures)) {
     console.log('in function getYelpPlaceInstancesPerConceptVariable: \n context features is not an array')
@@ -121,7 +128,9 @@ const getYelpPlaceInstancesPerConceptVariable = (detectorId) => {
     let searchByPlaceCategory = {
       term: '',
       categories: conceptFeatures[i],
-      location: document.getElementById('cityname_sim').value
+      location: document.getElementById('cityname_sim').value,
+      offset: offset
+     
     }
     
     Meteor.call('yelpFusionBusinessSearch', searchByPlaceCategory, detectorId);
@@ -176,7 +185,22 @@ Template.simulateAndLabelConceptExpression.events({
     Session.set('selectedConceptVariableName', conceptVariableName);
     Session.set('selectedConceptVariableFeatures', getSelectConceptVariableFeatures());
     Session.set('locationToSimulateConceptExpression', document.getElementById('cityname_sim').value)
-    getYelpPlaceInstancesPerConceptVariable(Session.get('detectorId'));
+
+    getYelpPlaceInstancesPerConceptVariable(Session.get('detectorId'), parseInt('0'));
+    let labeledPlaces = ExampleSituations.find({
+      [`labels.${conceptVariableName}`]: {$exists: true }
+    });
+    labeledPlaces.forEach((situation) => {
+      runPrediction(situation);
+    });
+  },
+  'submit form#simulateConceptsAgain': function(e, target) {
+    e.preventDefault();
+    const conceptVariableName = getSelectConceptVariableName();
+    Session.set('selectedConceptVariableName', conceptVariableName);
+    Session.set('selectedConceptVariableFeatures', getSelectConceptVariableFeatures());
+    Session.set('locationToSimulateConceptExpression', document.getElementById('cityname_sim').value)
+    getYelpPlaceInstancesPerConceptVariable(Session.get('detectorId'),parseInt('50'));
     let labeledPlaces = ExampleSituations.find({
       [`labels.${conceptVariableName}`]: {$exists: true }
     });
@@ -185,6 +209,16 @@ Template.simulateAndLabelConceptExpression.events({
     });
   },
 });
+
+// Template.refineConceptExpression.events({
+//   'submit form#category-form': function(event) {
+//     // Prevent default form submission
+//     event.preventDefault();
+
+//     // Hide the form when submit button is clicked
+//     $(event.currentTarget).hide();
+//   }
+// });
 
 Template.simulateAndLabelConceptExpression.helpers({
   'detectedSituations'() {
