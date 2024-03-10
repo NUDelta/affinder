@@ -311,6 +311,7 @@
       {{#if @index}} <!-- Skip the first category -->
         <form id = "category-form">
           <input type="hidden" name="category" value="{{category.alias}}">
+          <input type="hidden" name="context-feature" value="{{ situation.categoriesKey }}">
           <label for="yesNoQuestion">It appears that some {{ situation.categoriesKey }} are not {{ conceptVariableHumanReadable }} 
             <br>One possible reason: {{ situation.categoriesKey }} that are for {{ category.alias }}, seems to not work. 
             <br>Consider adding {{ situation.categoriesKey }} AND NOT {{ category.alias }}

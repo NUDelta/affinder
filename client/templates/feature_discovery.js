@@ -152,8 +152,11 @@ Template.featureDiscovery.events({
 
   'click .btn-add-cat': function(e) {
     const cat2add = e.target.closest('li').getAttribute('placeCategory');
+    
 
     let detectorDescription = formatDetectorVarNames(cat2add);
+    
+
     let block = createGetVariable(detectorDescription);
     let blocks = Blockly.Xml.textToDom(wrapBlocksInXml(block));
     if (blocks.firstElementChild) {

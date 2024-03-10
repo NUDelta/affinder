@@ -1,6 +1,6 @@
 import {Tracker} from 'meteor/tracker'
 import {ExampleSituations} from "../../lib/collections/collections";
-import {WORKSPACE, compiledBlocklyDep, wrapBlocksInXml, createGetVariable,
+import {WORKSPACE, compiledBlocklyDep, wrapBlocksInXml, createGetVariable,createAndBlock,
   addReflectionPromptToBlocks} from "./blockly";
 import Blockly from 'blockly';
 import {applyDetector, extractAffordances, isolateConceptVariableDetector, splitVarDeclarationAndRules, setOfContextFeaturesInBlockly,
@@ -347,6 +347,21 @@ Template.exampleSituationIssues.events({
     
         // Hide the form when submit button is clicked
         $(event.currentTarget).hide();
+
+        var form = event.target;
+        
+        // Access individual inputs by name or ID
+        var categoryInput = form.querySelector('input[name="category"]');
+        var contextFeature = form.querySelector('input[name="context-feature"]');
+        var categoryInputValue = categoryInput.value;
+        var contextFeatureValue = contextFeature.value;
+
+        let categoryBlock = createGetVariable(categoryInputValue);
+        let contextFeatureBlock = createGetVariable(contextFeatureValue);
+        let andBlock = createAndBlock(categoryBlock, contextFeatureBlock);
+        let blocks = Blockly.Xml.textToDom(wrapBlocksInXml(andBlock));
+        Blockly.Xml.appendDomToWorkspace(blocks, WORKSPACE);
+        
       }
     });
 
