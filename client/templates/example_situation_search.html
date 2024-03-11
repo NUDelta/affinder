@@ -291,7 +291,7 @@
           </li>
           <li>
               <strong>Step 2. Add Context Features.</strong>
-              <p>When removing features, follow the following format: parks and playgrounds. Like in Step 1, simulate before adding context features, for example, before adding playgrounds, simulate parks and NOT playgrounds.</p>
+              <p>When adding features, follow the following format: parks and playgrounds. Like in Step 1, simulate before adding context features, for example, before adding playgrounds, simulate parks and NOT playgrounds.</p>
           </li>
           <li>
               <strong>Step 3. Combine refined context features with OR and add to concept expression definitions.</strong>
@@ -340,6 +340,8 @@
       {{#if @index}} <!-- Skip the first category -->
         <form id = "category-form">
           <input type="hidden" name="category" value="{{category.alias}}">
+          <input type="hidden" name="context-feature" value="{{ situation.categoriesKey }}">
+
           <label for="yesNoQuestion">It appears that some {{ situation.categoriesKey }} that are {{ category.alias }} work well.
             <br>Add: {{ situation.categoriesKey }} AND {{ category.alias }}?
             <br>Simulate: {{situation.categoriesKey}} AND NOT {{ category.alias }} before adding.
