@@ -91,7 +91,7 @@ function ChatReact () {
         setUserInput(`Explain why ${itemName} is a good suggestion`);
     };
     
-    const [prompts, setprompts] = useState(["Give Suggestions","Evaluate and Regroup"]);
+    const [prompts, setprompts] = useState(["Alternative Suggestions", "Example places"])
     function handlePromptQuery(prompt) {
         console.log("prompting query");
         let code = $('#compiledBlockly').val();
@@ -117,7 +117,7 @@ function ChatReact () {
         let workspaceVariables = workspacedata[1].join(' ');
         console.log(highlvlconcepts);
 
-        const query_prompt = `When asked to think about breaking down ${description} into high level categories and then places, the user ended up with this after some time ${workspaceVariables}. Give suggestions for high-level categories the user is not capturing.`;
+        const query_prompt = `The user's concept expression is ${workspaceVariables}, what are alternative concepts the user has not yet explored? list 5.`;
         // sendQuery(query_prompt);
         setUserInput(query_prompt);
 
@@ -125,6 +125,7 @@ function ChatReact () {
 
     function getEvaluateConcepts(workspacedata) {
         let description = $('input[name=detectorname]').val();
+        print("workspacedata", workspacedata);
         let workspaceVariables = workspacedata[1].join(' ');
         const query_prompt = `When asked to think about breaking down ${description} into high level categories and then places, the user ended up with this after some time ${workspaceVariables}. Evaluate and regroup what the user has. Be specific in your feedback and directions.`;
         setUserInput(query_prompt);

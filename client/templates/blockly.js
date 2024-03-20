@@ -106,6 +106,9 @@ export const defaultToolbox = function () {
   toolbox["time"] = defaultToolboxTimeOfDay() + defaultToolboxTimeOfWeek() + defaultToolboxTimeZone();
   toolbox["operators"] = defaultToolboxOperators();
   toolbox["variables"] = defaultToolboxVariables();
+  toolbox["categories"] = defaultToolboxCategories();
+  toolbox["reflect"] = defaultToolboxReflect();
+  
   return toolbox;
 };
 
@@ -122,6 +125,8 @@ export const stringifyToolboxTree = function(toolboxTree) {
   string += '<sep gap="48"></sep>';
   string += toolboxTree["operators"];
   string += toolboxTree["variables"];
+  string += toolboxTree["categories"];
+
   string += "</xml>";
   return string;
 };
@@ -140,15 +145,7 @@ export const wrapBlocksInCategory = function(name, blocks) {
   return category;
 };
 
-export const createSetVariable = function(name) {
-  let variable = `
-  <block type="variables_set">
-    <field name="VAR">`;
-  variable += name;
-  variable += `</field>
-  </block>`;
-  return variable;
-};
+ 
 
 export const createGetVariable = function(name) {
   let variable = `
@@ -368,3 +365,56 @@ const defaultToolboxVariables = function() {
   <category name="Variables" custom="VARIABLE"></category>
   `
 };
+
+// Define the Blockly block for categories
+Blockly.Blocks['category_block'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField("category:")
+        .appendField( new Blockly.FieldTextInput('name'), 'CATEGORY_NAME')
+        .appendField(new Blockly.FieldMultilineInput('what makes these concepts similar?'), 'CATEGORY_DESCRIPTION');
+        this.appendStatementInput("VARIABLES")
+        .setCheck("Variable")
+        .appendField("Variables:");
+
+
+  }
+};
+
+// Function to add the category block to the toolbox
+const defaultToolboxCategories = function () {
+  return `
+  <category name="Categories">
+    <block type="category_block"></block>
+  </category>
+  `;
+};
+
+// Function to create a new category programmatically
+const createCategory = function (categoryName) {
+  const newBlock = Blockly.Block.obtain(Blockly.getMainWorkspace(), 'category_block');
+  newBlock.setFieldValue(categoryName, 'CATEGORY_NAME');
+  Blockly.getMainWorkspace().addBlock(newBlock);
+};
+
+// Function to delete a category programmatically
+const deleteCategory = function (categoryBlock) {
+  Blockly.getMainWorkspace().deleteBlock(categoryBlock.id);
+};
+Blockly.Blocks['reflection_prompt'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField(new Blockly.FieldImage("https://www.example.com/question_mark_icon.png", 20, 20, "?"), "REFLECTION_PROMPT");
+
+    this.setColour(210);
+    this.setTooltip("Click here for reflection prompt");
+    this.setHelpUrl("");
+  }
+};
+defaultToolboxReflect = function() {
+  return `
+  <category name="Reflect">
+    <block type="reflection_prompt"></block>
+  </category>
+  `;
+}
